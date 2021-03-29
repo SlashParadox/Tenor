@@ -16,3 +16,4 @@ Tenor is currently in pre-alpha, and thus has no releases.
 - ADD TO C# PROJECT
 	- You only need to download the 'Runtime' folder.
 	- In this folder, delete the '.asmdef' file. This is only needed in Unity.
+	- In this folder, delete all '.meta' files. These are only needed in committing from Unity to this repository.
