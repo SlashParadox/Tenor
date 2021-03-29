@@ -3,8 +3,8 @@
     "rootNamespace": "Tenor.Tests.Runtime",
     "references": [
         "GUID:27619889b8ba8c24980f49ee34dbb44a",
-        "GUID:0acc523941302664db1f4e527237feb3",
-        "GUID:af26153341385bf4e9ecf0eb761fd3a7"
+        "GUID:b9160b71730e9ac4880c7c8f598547ad",
+        "GUID:1ed1fdc9559a5164489b3c5ba42c4c60"
     ],
     "includePlatforms": [
         "Editor"
