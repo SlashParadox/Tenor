@@ -18,7 +18,7 @@ public class UT_MathTools_Random
     RejectionRandom randRejection = new RejectionRandom();
 
     byte[] bytes = new byte[4] { 255, 255, 255, 254 };
-    Randomization.GetRandomBytes(StandardRandomGenerators.RejectionRandom, bytes);
+    Randomization.GetRandomBytes(StandardRandomGenerator.RejectionRandom, bytes);
     //Debug.Log(BitConverter.ToInt32(bytes, 0));
     //Debug.Log(BitConverter.GetBytes(int.MaxValue - 1).Print());
     //return;
@@ -33,7 +33,7 @@ public class UT_MathTools_Random
                          
     for (long i = 0; i < 4000000000L; i++)
     {
-      Randomization.GetRandomBytes(StandardRandomGenerators.NETStandard, bytes);
+      Randomization.GetRandomBytes(StandardRandomGenerator.NETStandard, bytes);
       int add = BitConverter.ToInt32(bytes, 0);
       sumStandard += add;
 
@@ -46,7 +46,7 @@ public class UT_MathTools_Random
       if (add < lowest)
         lowest = add;
 
-      Randomization.GetRandomBytes(StandardRandomGenerators.NETStandard, bytes);
+      Randomization.GetRandomBytes(StandardRandomGenerator.NETStandard, bytes);
       add = BitConverter.ToInt32(bytes, 0);
       sumRejection += add;
 

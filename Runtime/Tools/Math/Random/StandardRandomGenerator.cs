@@ -6,7 +6,7 @@ namespace Tenor.Tools.Math
   /// An enum for selecting a global random generator. This is primarily used in the
   /// <see cref="Randomization"/> tool.
   /// </summary>
-  public enum StandardRandomGenerators
+  public enum StandardRandomGenerator
   {
     /// <summary>The standard <see cref="System.Random"/> class.</summary>
     NETStandard,
