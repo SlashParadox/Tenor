@@ -3,7 +3,7 @@
 \file   ILists.cs
 \author Craig Williams
 \par    Last Updated
-        2021-03-07
+        2021-04-01
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -57,7 +57,31 @@ namespace Tenor.Tools.Collection
     }
 
     /// <summary>
-    /// An extension function for determining if a non-null <see cref="IList"/> is empty or null.
+    /// An extension function for determining if a non-null <see cref="IList"/> is not empty.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="ilist"/>.</typeparam>
+    /// <param name="ilist">The <see cref="IList"/> to check.</param>
+    /// <returns>Returns if the <paramref name="ilist"/>'scount is greater than 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotEmpty<T>(this IList<T> ilist)
+    {
+      return ilist.Count > 0;
+    }
+
+    /// <summary>
+    /// An extension function for determining if a non-null <see cref="IList"/> is not empty.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="ilist"/>.</typeparam>
+    /// <param name="ilist">The <see cref="IList"/> to check.</param>
+    /// <returns>Returns if the <paramref name="ilist"/>'s count is greater than 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotEmptyNG(this IList ilist)
+    {
+      return ilist.Count > 0;
+    }
+
+    /// <summary>
+    /// An extension function for determining if a <see cref="IList"/> is empty or null.
     /// </summary>
     /// <typeparam name="T">The type stored in the <paramref name="ilist"/>.</typeparam>
     /// <param name="ilist">The <see cref="IList"/> to check.</param>
@@ -70,7 +94,7 @@ namespace Tenor.Tools.Collection
     }
 
     /// <summary>
-    /// An extension function for determining if a non-null <see cref="IList"/> is empty or null.
+    /// An extension function for determining if a <see cref="IList"/> is empty or null.
     /// </summary>
     /// <param name="ilist">The <see cref="IList"/> to check.</param>
     /// <returns>Returns if the <paramref name="ilist"/> is null or the <paramref name="ilist"/>'s
@@ -79,6 +103,31 @@ namespace Tenor.Tools.Collection
     public static bool IsEmptyOrNullNG(this IList ilist)
     {
       return ilist == null || ilist.Count <= 0;
+    }
+
+    /// <summary>
+    /// An extension function for determining if a <see cref="IList"/> is not empty or null.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="ilist"/>.</typeparam>
+    /// <param name="ilist">The <see cref="IList"/> to check.</param>
+    /// <returns>Returns if the <paramref name="ilist"/> is not null and the
+    /// <paramref name="ilist"/>'s count is greater than 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotEmptyOrNull<T>(this IList<T> ilist)
+    {
+      return ilist != null && ilist.Count > 0;
+    }
+
+    /// <summary>
+    /// An extension function for determining if a <see cref="IList"/> is not empty or null.
+    /// </summary>
+    /// <param name="ilist">The <see cref="IList"/> to check.</param>
+    /// <returns>Returns if the <paramref name="ilist"/> is not null and the
+    /// <paramref name="ilist"/>'s count is greater than 0.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotEmptyOrNullNG(this IList ilist)
+    {
+      return ilist != null && ilist.Count > 0;
     }
 
     /// <summary>
@@ -203,6 +252,112 @@ namespace Tenor.Tools.Collection
       // Otherwise, it returns the default.
       element = default;
       return false;
+    }
+
+    /// <summary>
+    /// A function for swapping values at two indexes. The value at <paramref name="indexA"/>
+    /// becomes the value at <paramref name="indexB"/>, and the value at <paramref name="indexB"/>
+    /// becomes the value at <paramref name="indexA"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="ilist"/>.</typeparam>
+    /// <param name="ilist">The <see cref="IList{T}"/> to swap the values of.</param>
+    /// <param name="indexA">The index of the value to swap to <paramref name="indexB"/>.</param>
+    /// <param name="indexB">The index of the value to swap to <paramref name="indexA"/>.</param>
+    /// <returns>Returns if the swap was successful.</returns>
+    public static bool SwapValues<T>(this IList<T> ilist, int indexA, int indexB)
+    {
+      // Both indexes must be valid in order to swap.
+      if (ilist.IsValidIndex(indexA) && ilist.IsValidIndex(indexB))
+      {
+        T temp = ilist[indexA]; // Make a temp value of A.
+        ilist[indexA] = ilist[indexB]; // Swap A to B.
+        ilist[indexB] = temp; // Swap B to the stored A value.
+
+        return true; // The swap was successful.
+      }
+
+      return false; // The swap was not successful.
+    }
+
+    /// <summary>
+    /// A function for swapping the first of two values. The index of <paramref name="A"/>
+    /// gets the value of <paramref name="B"/>, and the index of <paramref name="B"/>
+    /// gets the value of <paramref name="A"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="ilist"/>.</typeparam>
+    /// <param name="ilist">The <see cref="IList{T}"/> to swap the values of.</param>
+    /// <param name="A">The value to swap to the index of <paramref name="B"/>.</param>
+    /// <param name="B">The value to swap to the index of <paramref name="A"/>.</param>
+    /// <returns>Returns if the swap was successful.</returns>
+    public static bool SwapValues<T>(this IList<T> ilist, T A, T B)
+    {
+      // Get the indexes of the first of each value.
+      int indexA = ilist.IndexOf(A);
+      int indexB = ilist.IndexOf(B);
+
+      // Both indexes must be valid in order to swap.
+      if (ilist.IsValidIndex(indexA) && ilist.IsValidIndex(indexB))
+      {
+        T temp = ilist[indexA]; // Make a temp value of A.
+        ilist[indexA] = ilist[indexB]; // Swap A to B.
+        ilist[indexB] = temp; // Swap B to the stored A value.
+
+        return true; // The swap was successful.
+      }
+      
+      return false; // The swap was not successful.
+    }
+
+    /// <summary>
+    /// A function for swapping values at two indexes. The value at <paramref name="indexA"/>
+    /// becomes the value at <paramref name="indexB"/>, and the value at <paramref name="indexB"/>
+    /// becomes the value at <paramref name="indexA"/>.
+    /// </summary>
+    /// <param name="ilist">The <see cref="IList"/> to swap the values of.</param>
+    /// <param name="indexA">The index of the value to swap to <paramref name="indexB"/>.</param>
+    /// <param name="indexB">The index of the value to swap to <paramref name="indexA"/>.</param>
+    /// <returns>Returns if the swap was successful.</returns>
+    public static bool SwapValuesNG(this IList ilist, int indexA, int indexB)
+    {
+      // Both indexes must be valid in order to swap.
+      if (ilist.IsValidIndexNG(indexA) && ilist.IsValidIndexNG(indexB))
+      {
+        object temp = ilist[indexA]; // Make a temp value of A.
+        ilist[indexA] = ilist[indexB]; // Swap A to B.
+        ilist[indexB] = temp; // Swap B to the stored A value.
+
+        return true; // The swap was successful.
+      }
+
+      return false; // The swap was not successful.
+    }
+
+    /// <summary>
+    /// A function for swapping the first of two values. The index of <paramref name="A"/>
+    /// gets the value of <paramref name="B"/>, and the index of <paramref name="B"/>
+    /// gets the value of <paramref name="A"/>.
+    /// </summary>
+    /// <param name="ilist">The <see cref="IList"/> to swap the values of.</param>
+    /// <param name="A">The value to swap to the index of <paramref name="B"/>.</param>
+    /// <param name="B">The value to swap to the index of <paramref name="A"/>.</param>
+    /// <returns>Returns if the swap was successful.</returns>
+    public static bool SwapValuesNG(this IList ilist, object A, object B)
+    {
+      // Get the indexes of the first of each value.
+      int indexA = ilist.IndexOf(A);
+      int indexB = ilist.IndexOf(B);
+
+      // Both indexes must be valid in order to swap.
+      if (ilist.IsValidIndexNG(indexA) && ilist.IsValidIndexNG(indexB))
+      {
+        object temp = ilist[indexA]; // Make a temp value of A.
+        ilist[indexA] = ilist[indexB]; // Swap A to B.
+        ilist[indexB] = temp; // Swap B to the stored A value.
+
+        return true; // The swap was successful.
+      }
+
+      return false; // The swap was not successful.
     }
 
     /// <summary>

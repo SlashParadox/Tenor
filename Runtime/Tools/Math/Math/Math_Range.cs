@@ -1,7 +1,26 @@
+/**************************************************************************************************/
+/*!
+\file   Math_Range.cs
+\author Craig Williams
+\par    Last Updated
+        2021-04-01
+\par    Copyright
+        Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
+
+\brief
+  A file for tool functions related to checking if a value is within a given range.
+
+\par Bug List
+
+\par References
+*/
+/**************************************************************************************************/
+
 using System;
 
 namespace Tenor.Tools.Math
 {
+  /************************************************************************************************/
   public static partial class Math
   {
     /// <summary>
@@ -684,4 +703,5 @@ namespace Tenor.Tools.Math
       return value > min && value <= max;
     }
   }
+  /************************************************************************************************/
 }

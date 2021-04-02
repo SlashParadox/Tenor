@@ -32,11 +32,13 @@ using UnityEngine;
 
 namespace Tenor.Tools.Math
 {
+  /************************************************************************************************/
   /// <summary>
   /// A kit of functions for generating random values of many types.
   /// </summary>
   public static partial class Randomization
   {
+    /**********************************************************************************************/
     /// <summary>
     /// A class of information used by <see cref="Randomization"/> to determine how to handle
     /// irregular floating point values, such as <see cref="float.PositiveInfinity"/>.
@@ -194,6 +196,7 @@ namespace Tenor.Tools.Math
         copy.CopyFrom(this);
       }
     }
+    /**********************************************************************************************/
 
     /// <summary>The maximum amount of bits usable to create a secure double.</summary>
     private static readonly int MaxSecureDoubleBits = 53;
@@ -7428,4 +7431,5 @@ namespace Tenor.Tools.Math
       return random.InternalGetRandomDecimalII(minValue + new decimal(1, 0, 0, false, MaxDecimalScale), maxValue);
     }
   }
+  /************************************************************************************************/
 }

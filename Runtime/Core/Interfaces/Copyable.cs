@@ -1,9 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/**************************************************************************************************/
+/*!
+\file   Copyable.cs
+\author Craig Williams
+\par    Last Updated
+        2021-04-01
+\par    Copyright
+        Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
+
+\brief
+  A file for an interface that allows for copying values at runtime, without the copy constructor.
+
+\par Bug List
+
+\par References
+*/
+/**************************************************************************************************/
 
 namespace Tenor
 {
+  /************************************************************************************************/
   /// <summary>
   /// A small interface which allows for copying values from one instance of
   /// <typeparamref name="TType"/> to another. This should be paired with a copy constructor.
@@ -26,4 +41,5 @@ namespace Tenor
     /// <param name="copy">The copy <typeparamref name="TType"/> to give values to.</param>
     public abstract void CopyTo(TType copy);
   }
+  /************************************************************************************************/
 }
