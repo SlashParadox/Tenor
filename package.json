@@ -1,9 +1,9 @@
 {
-  "name": "com.mathwiz86.tenor",
+  "name": "com.codeparadox.tenor",
   "version": "0.1.0",
   "displayName": "Tenor For Unity",
   "description": "Tenor is a collection of various tools for C#, extending its functionality\nwith useful additions. This version is built for Unity, including\nUnity-centric editor code.",
-  "unity": "2020.1",
+  "unity": "2021.1",
   "keywords": [
     "tenor",
     "csharp",
