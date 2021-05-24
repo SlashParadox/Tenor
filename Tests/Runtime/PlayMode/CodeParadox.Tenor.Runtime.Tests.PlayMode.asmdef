@@ -1,0 +1,21 @@
+{
+    "name": "CodeParadox.Tenor.Runtime.Tests.PlayMode",
+    "rootNamespace": "CodeParadox.Tenor.Tests.Runtime.PlayMode",
+    "references": [
+        "CodeParadox.Tenor.Runtime.Tests",
+        "CodeParadox.Tenor.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
