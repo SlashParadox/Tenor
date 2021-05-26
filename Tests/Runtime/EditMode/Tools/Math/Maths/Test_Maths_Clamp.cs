@@ -119,8 +119,8 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     /// <param name="value">The value to clamp.</param>
     [Test(TestOf = typeof(Maths))]
     public void Clamp_Short_ReturnsEquality([Random(0, 10, 5)] short min,
-                                           [Random(10, 20, 5)] short max,
-                                           [Random(1, 20, 5)] short value)
+                                            [Random(10, 20, 5)] short max,
+                                            [Random(1, 20, 5)] short value)
     {
       // Get the expected values from clamping.
       short expectedII = value < min ? min : (value > max ? max : value);
@@ -146,8 +146,8 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     /// <param name="value">The value to clamp.</param>
     [Test(TestOf = typeof(Maths))]
     public void Clamp_UShort_ReturnsEquality([Random(1, 10, 5)] ushort min,
-                                           [Random(10, 20, 5)] ushort max,
-                                           [Random(1, 20, 5)] ushort value)
+                                             [Random(10, 20, 5)] ushort max,
+                                             [Random(1, 20, 5)] ushort value)
     {
       // Get the expected values from clamping.
       ushort expectedII = value < min ? min : (value > max ? max : value);
@@ -199,9 +199,9 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     /// <param name="max">The maximum value allowed.</param>
     /// <param name="value">The value to clamp.</param>
     [Test(TestOf = typeof(Maths))]
-    public void Clamp_UInt_ReturnsEquality( [Random(1, 10, 5)] int min,
-                                            [Random(10, 20, 5)] int max,
-                                            [Random(1, 20, 5)] int value)
+    public void Clamp_UInt_ReturnsEquality([Random(1, 10, 5)] int min,
+                                           [Random(10, 20, 5)] int max,
+                                           [Random(1, 20, 5)] int value)
     {
       uint umin = Convert.ToUInt32(min);
       uint umax = Convert.ToUInt32(max);

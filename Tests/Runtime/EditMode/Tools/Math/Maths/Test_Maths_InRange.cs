@@ -26,6 +26,7 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
   /// <summary>
   /// A test class for <see cref="Tenor.Tools.Maths"/>, for checking in-range functions.
   /// </summary>
+  [Explicit] // Comment this to allow this to be run automatically.
   public sealed class Test_Maths_InRange : Test_Maths
   {
     /// <summary>
@@ -80,10 +81,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                               [Random(1, 20, 5)] sbyte value)
     {
       // Get the expected values from clamping.
-      sbyte expectedII = value < min ? min : (value > max ? max : value);
-      sbyte expectedEE = value <= min ? (sbyte)(min + 1) : (value >= max ? (sbyte)(max - 1) : value);
-      sbyte expectedIE = value < min ? min : (value >= max ? (sbyte)(max - 1) : value);
-      sbyte expectedEI = value <= min ? (sbyte)(min + 1) : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -107,10 +108,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                              [Random(1, 20, 5)] byte value)
     {
       // Get the expected values from clamping.
-      byte expectedII = value < min ? min : (value > max ? max : value);
-      byte expectedEE = value <= min ? (byte)(min + 1) : (value >= max ? (byte)(max - 1) : value);
-      byte expectedIE = value < min ? min : (value >= max ? (byte)(max - 1) : value);
-      byte expectedEI = value <= min ? (byte)(min + 1) : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -134,10 +135,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                            [Random(1, 20, 5)] short value)
     {
       // Get the expected values from clamping.
-      short expectedII = value < min ? min : (value > max ? max : value);
-      short expectedEE = value <= min ? (short)(min + 1) : (value >= max ? (short)(max - 1) : value);
-      short expectedIE = value < min ? min : (value >= max ? (short)(max - 1) : value);
-      short expectedEI = value <= min ? (short)(min + 1) : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -161,10 +162,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                                [Random(1, 20, 5)] ushort value)
     {
       // Get the expected values from clamping.
-      ushort expectedII = value < min ? min : (value > max ? max : value);
-      ushort expectedEE = value <= min ? (ushort)(min + 1) : (value >= max ? (ushort)(max - 1) : value);
-      ushort expectedIE = value < min ? min : (value >= max ? (ushort)(max - 1) : value);
-      ushort expectedEI = value <= min ? (ushort)(min + 1) : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -188,10 +189,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                             [Random(1, 20, 5)] int value)
     {
       // Get the expected values from clamping.
-      int expectedII = value < min ? min : (value > max ? max : value);
-      int expectedEE = value <= min ? min + 1 : (value >= max ? max - 1 : value);
-      int expectedIE = value < min ? min : (value >= max ? max - 1 : value);
-      int expectedEI = value <= min ? min + 1 : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -219,10 +220,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       uint uvalue = Convert.ToUInt32(value);
 
       // Get the expected values from clamping.
-      uint expectedII = uvalue < umin ? umin : (uvalue > umax ? umax : uvalue);
-      uint expectedEE = uvalue <= umin ? umin + 1 : (uvalue >= umax ? umax - 1 : uvalue);
-      uint expectedIE = uvalue < umin ? umin : (uvalue >= umax ? umax - 1 : uvalue);
-      uint expectedEI = uvalue <= umin ? umin + 1 : (uvalue > umax ? umax : uvalue);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(uvalue, umin, umax));
@@ -246,10 +247,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                              [Random(1, 20, 5)] long value)
     {
       // Get the expected values from clamping.
-      long expectedII = value < min ? min : (value > max ? max : value);
-      long expectedEE = value <= min ? min + 1 : (value >= max ? max - 1 : value);
-      long expectedIE = value < min ? min : (value >= max ? max - 1 : value);
-      long expectedEI = value <= min ? min + 1 : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -277,10 +278,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       ulong uvalue = Convert.ToUInt64(value);
 
       // Get the expected values from clamping.
-      ulong expectedII = uvalue < umin ? umin : (uvalue > umax ? umax : uvalue);
-      ulong expectedEE = uvalue <= umin ? umin + 1 : (uvalue >= umax ? umax - 1 : uvalue);
-      ulong expectedIE = uvalue < umin ? umin : (uvalue >= umax ? umax - 1 : uvalue);
-      ulong expectedEI = uvalue <= umin ? umin + 1 : (uvalue > umax ? umax : uvalue);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given uvalue and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(uvalue, umin, umax));
@@ -304,11 +305,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                               [Random(1, 20, 5)] float value)
     {
       // Get the expected values from clamping.
-      float epsilon = float.Epsilon;
-      float expectedII = value < min ? min : (value > max ? max : value);
-      float expectedEE = value <= min ? min + epsilon : (value >= max ? max - epsilon : value);
-      float expectedIE = value < min ? min : (value >= max ? max - epsilon : value);
-      float expectedEI = value <= min ? min + epsilon : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -332,11 +332,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                                [Random(1, 20, 5)] double value)
     {
       // Get the expected values from clamping.
-      double epsilon = double.Epsilon;
-      double expectedII = value < min ? min : (value > max ? max : value);
-      double expectedEE = value <= min ? min + epsilon : (value >= max ? max - epsilon : value);
-      double expectedIE = value < min ? min : (value >= max ? max - epsilon : value);
-      double expectedEI = value <= min ? min + epsilon : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -360,11 +359,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
                                                 [Random(1, 20, 5)] decimal value)
     {
       // Get the expected values from clamping.
-      decimal epsilon = (decimal)double.Epsilon;
-      decimal expectedII = value < min ? min : (value > max ? max : value);
-      decimal expectedEE = value <= min ? min + epsilon : (value >= max ? max - epsilon : value);
-      decimal expectedIE = value < min ? min : (value >= max ? max - epsilon : value);
-      decimal expectedEI = value <= min ? min + epsilon : (value > max ? max : value);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given value and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(value, min, max));
@@ -392,10 +390,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       char cvalue = (char)value;
 
       // Get the expected cvalues from clamping.
-      char expectedII = cvalue < cmin ? cmin : (cvalue > cmax ? cmax : cvalue);
-      char expectedEE = cvalue <= cmin ? (char)(cmin + 1) : (cvalue >= cmax ? (char)(cmax - 1) : cvalue);
-      char expectedIE = cvalue < cmin ? cmin : (cvalue >= cmax ? (char)(cmax - 1) : cvalue);
-      char expectedEI = cvalue <= cmin ? (char)(cmin + 1) : (cvalue > cmax ? cmax : cvalue);
+      bool expectedII = value >= min && value <= max ? true : false;
+      bool expectedEE = value > min && value < max ? true : false;
+      bool expectedIE = value >= min && value < max ? true : false;
+      bool expectedEI = value > min && value <= max ? true : false;
 
       // InRange the given cvalue and test in each clamp case.
       Assert.AreEqual(expectedII, Maths.InRangeII(cvalue, cmin, cmax));
