@@ -30,10 +30,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
   public class Test_Maths_Lerp : Test_Maths
   {
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(sbyte, sbyte, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(sbyte, sbyte, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(sbyte, sbyte, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(sbyte, sbyte, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(sbyte, sbyte, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(sbyte, sbyte, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(sbyte, sbyte, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(sbyte, sbyte, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -46,17 +46,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       sbyte expectedUnclamped = (sbyte)(a + (b - a) * t);
       sbyte expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(byte, byte, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(byte, byte, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(byte, byte, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(byte, byte, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(byte, byte, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(byte, byte, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(byte, byte, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(byte, byte, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -69,17 +69,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       byte expectedUnclamped = (byte)(a + (b - a) * t);
       byte expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(short, short, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(short, short, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(short, short, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(short, short, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(short, short, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(short, short, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(short, short, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(short, short, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -92,17 +92,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       short expectedUnclamped = (short)(a + (b - a) * t);
       short expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(ushort, ushort, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(ushort, ushort, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(ushort, ushort, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(ushort, ushort, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(ushort, ushort, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(ushort, ushort, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(ushort, ushort, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(ushort, ushort, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -115,17 +115,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       ushort expectedUnclamped = (ushort)(a + (b - a) * t);
       ushort expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(int, int, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(int, int, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(int, int, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(int, int, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(int, int, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(int, int, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(int, int, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(int, int, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -138,17 +138,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       int expectedUnclamped = (int)(a + (b - a) * t);
       int expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(uint, uint, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(uint, uint, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(uint, uint, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(uint, uint, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(uint, uint, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(uint, uint, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(uint, uint, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(uint, uint, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -161,17 +161,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       uint expectedUnclamped = (uint)(a + (b - a) * t);
       uint expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(long, long, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(long, long, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(long, long, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(long, long, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(long, long, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(long, long, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(long, long, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(long, long, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -184,17 +184,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       long expectedUnclamped = (long)(a + (b - a) * t);
       long expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(ulong, ulong, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(ulong, ulong, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(ulong, ulong, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(ulong, ulong, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(ulong, ulong, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(ulong, ulong, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(ulong, ulong, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(ulong, ulong, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -207,17 +207,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       ulong expectedUnclamped = (ulong)(a + (b - a) * t);
       ulong expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(float, float, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(float, float, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(float, float, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(float, float, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(float, float, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(float, float, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(float, float, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(float, float, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -230,17 +230,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       float expectedUnclamped = a + (b - a) * t;
       float expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(double, double, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(double, double, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(double, double, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(double, double, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(double, double, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(double, double, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(double, double, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(double, double, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -253,17 +253,17 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       double expectedUnclamped = a + (b - a) * t;
       double expectedClamped = Maths.ClampII(expectedUnclamped, a, b);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, t));
-      Assert.AreEqual(expectedClamped, Maths.Lerp(a, b, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(a, b, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(a, b, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(a, b, (double)t));
     }
 
     /// <summary>
-    /// A test for <see cref="Maths.Lerp(decimal, decimal, float)"/>,
-    /// <see cref="<see cref="Maths.Lerp(decimal, decimal, double)"/>"/>,
-    /// <see cref="<see cref="Maths.LerpUnclamped(decimal, decimal, float)"/>"/>, and
-    /// <see cref="<see cref="Maths.LerpUnclamped(decimal, decimal, double)"/>"/>.
+    /// A test for <see cref="Lerp.LerpValue(decimal, decimal, float)"/>,
+    /// <see cref="<see cref="Lerp.LerpValue(decimal, decimal, double)"/>"/>,
+    /// <see cref="<see cref="Lerp.LerpUnclamped(decimal, decimal, float)"/>"/>, and
+    /// <see cref="<see cref="Lerp.LerpUnclamped(decimal, decimal, double)"/>"/>.
     /// </summary>
     /// <param name="a">The minimum value allowed.</param>
     /// <param name="b">The maximum value allowed.</param>
@@ -281,10 +281,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       decimal expectedClamped = Maths.ClampII(expectedUnclamped, da, db);
       decimal expectedClampedD = Maths.ClampII(expectedUnclampedD, da, db);
 
-      Assert.AreEqual(expectedClamped, Maths.Lerp(da, db, t));
-      Assert.AreEqual(expectedClampedD, Maths.Lerp(da, db, (double)t));
-      Assert.AreEqual(expectedUnclamped, Maths.LerpUnclamped(da, db, t));
-      Assert.AreEqual(expectedUnclampedD, Maths.LerpUnclamped(da, db, (double)t));
+      Assert.AreEqual(expectedClamped, Lerp.LerpValue(da, db, t));
+      Assert.AreEqual(expectedClampedD, Lerp.LerpValue(da, db, (double)t));
+      Assert.AreEqual(expectedUnclamped, Lerp.LerpUnclamped(da, db, t));
+      Assert.AreEqual(expectedUnclampedD, Lerp.LerpUnclamped(da, db, (double)t));
     }
   }
   /************************************************************************************************/
