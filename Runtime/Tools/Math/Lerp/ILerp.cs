@@ -21,7 +21,7 @@ namespace CodeParadox.Tenor.Math
   /************************************************************************************************/
   /// <summary>
   /// A useful <see langword="interface"/> for linearly interpolating a value. Use in conjunction
-  /// with the 
+  /// with the <see cref="Tools.Lerp"/> tools.
   /// </summary>
   /// <typeparam name="T"></typeparam>
   public interface ILerp<T>
@@ -33,7 +33,7 @@ namespace CodeParadox.Tenor.Math
     /// <param name="b">The end value, at a <paramref name="t"/> of 1.</param>
     /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
     /// <returns>Returns the interpolated value.</returns>
-    public abstract T Lerp(T a, T b, float t);
+    public abstract ILerp<T> Lerp(ILerp<T> a, ILerp<T> b, float t);
 
     /// <summary>
     /// A function to interpolate between two values.
@@ -42,7 +42,7 @@ namespace CodeParadox.Tenor.Math
     /// <param name="b">The end value, at a <paramref name="t"/> of 1.</param>
     /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
     /// <returns>Returns the interpolated value.</returns>
-    public abstract T Lerp(T a, T b, double t);
+    public abstract ILerp<T> Lerp(ILerp<T> a, ILerp<T> b, double t);
 
     /// <summary>
     /// A function to interpolate between two values, without a clamp.
@@ -52,7 +52,7 @@ namespace CodeParadox.Tenor.Math
     /// <param name="t">The interpolation between the two values.</param>
     /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
     /// 0 to 1 still affect the returned value.</returns>
-    public abstract T LerpUnclamped(T a, T b, float t);
+    public abstract ILerp<T> LerpUnclamped(ILerp<T> a, ILerp<T> b, float t);
 
     /// <summary>
     /// A function to linearly interpolate between two values, without a clamp.
@@ -62,7 +62,7 @@ namespace CodeParadox.Tenor.Math
     /// <param name="t">The interpolation between the two values.</param>
     /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
     /// 0 to 1 still affect the returned value.</returns>
-    public abstract T LerpUnclamped(T a, T b, double t);
+    public abstract ILerp<T> LerpUnclamped(ILerp<T> a, ILerp<T> b, double t);
   }
   /************************************************************************************************/
 }

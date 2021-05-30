@@ -16,6 +16,8 @@
 */
 /**************************************************************************************************/
 
+using CodeParadox.Tenor.Math;
+
 namespace CodeParadox.Tenor.Tools
 {
   /************************************************************************************************/
@@ -569,6 +571,56 @@ namespace CodeParadox.Tenor.Tools
     public static decimal LerpUnclamped(decimal a, decimal b, double t)
     {
       return a + (b - a) * (decimal)t;
+    }
+
+    /// <summary>
+    /// A function to linearly interpolate between two <see cref="ILerp<T>"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static ILerp<T> LerpValue<T>(ILerp<T> a, ILerp<T> b, float t)
+    {
+      return a.Lerp(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to linearly interpolate between two <see cref="ILerp<T>"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static ILerp<T> LerpValue<T>(ILerp<T> a, ILerp<T> b, double t)
+    {
+      return a.Lerp(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to linearly interpolate between two <see cref="ILerp<T>"/>s, without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static ILerp<T> LerpUnclamped<T>(ILerp<T> a, ILerp<T> b, float t)
+    {
+      return a.LerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to linearly interpolate between two <see cref="ILerp<T>"/>s, without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="ILerp<T>"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static ILerp<T> LerpUnclamped<T>(ILerp<T> a, ILerp<T> b, double t)
+    {
+      return a.LerpUnclamped(a, b, t);
     }
   }
   /************************************************************************************************/
