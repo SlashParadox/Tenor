@@ -18,6 +18,7 @@
 /**************************************************************************************************/
 
 using System;
+using System.Numerics;
 
 namespace CodeParadox.Tenor.Tools
 {
@@ -33,7 +34,7 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="min">The minimum value.</param>
     /// <param name="max">The maximum value.</param>
     /// <returns>Returns a clamped <paramref name="value"/>.</returns>
-    public static T ClampII<T>(T value, T min, T max) where T : IComparable<T>
+    public static T ComparableClampII<T>(T value, T min, T max) where T : IComparable<T>
     {
       // Switch on the value.
       return value switch
@@ -56,7 +57,7 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="min">The minimum value.</param>
     /// <param name="max">The maximum value.</param>
     /// <returns>Returns a clamped <paramref name="value"/>.</returns>
-    public static T ClampIING<T>(T value, T min, T max) where T : IComparable
+    public static T ComparableClampIING<T>(T value, T min, T max) where T : IComparable
     {
       // Switch on the value.
       return value switch
@@ -1039,7 +1040,8 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// A function for clamping a <paramref name="value"/> between[<paramref name="min"/>, <paramref name="max"/>].
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
     /// </summary>
     /// <param name="value">The value to clamp.</param>
     /// <param name="min">The minimum value.</param>
@@ -1123,6 +1125,718 @@ namespace CodeParadox.Tenor.Tools
         // Default to the value.
         _ => value,
       };
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static BigInteger ClampII(BigInteger value, BigInteger min, BigInteger max)
+    {
+      // Switch on the value.
+      return value switch
+      {
+        // If less than min, return min.
+        BigInteger v when v < min => min,
+        // If greater than max, return max.
+        BigInteger v when v > max => max,
+        // Default to the value.
+        _ => value,
+      };
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static BigInteger ClampEE(BigInteger value, BigInteger min, BigInteger max)
+    {
+      // Switch on the value.
+      return value switch
+      {
+        // If less than or equal to min, return min + the smallest increment.
+        BigInteger v when v <= min => (min + 1),
+        // If greater than or equal to max, return max - the smallest decrement.
+        BigInteger v when v >= max => (max - 1),
+        // Default to the value.
+        _ => value,
+      };
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static BigInteger ClampIE(BigInteger value, BigInteger min, BigInteger max)
+    {
+      // Switch on the value.
+      return value switch
+      {
+        // If less than min, return min.
+        BigInteger v when v < min => min,
+        // If greater than or equal to max, return max - the smallest decrement.
+        BigInteger v when v >= max => (max - 1),
+        // Default to the value.
+        _ => value,
+      };
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static BigInteger ClampEI(BigInteger value, BigInteger min, BigInteger max)
+    {
+      // Switch on the value.
+      return value switch
+      {
+        // If less than or equal to min, return min + the smallest increment.
+        BigInteger v when v <= min => (min + 1),
+        // If greater than max, return max.
+        BigInteger v when v > max => max,
+        // Default to the value.
+        _ => value,
+      };
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Complex ClampII(Complex value, Complex min, Complex max)
+    {
+      double real = ClampII(value.Real, min.Real, max.Real);
+      double imaginary = ClampII(value.Imaginary, min.Imaginary, max.Imaginary);
+      return new Complex(real, imaginary);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Complex ClampEE(Complex value, Complex min, Complex max)
+    {
+      double real = ClampEE(value.Real, min.Real, max.Real);
+      double imaginary = ClampEE(value.Imaginary, min.Imaginary, max.Imaginary);
+      return new Complex(real, imaginary);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Complex ClampIE(Complex value, Complex min, Complex max)
+    {
+      double real = ClampIE(value.Real, min.Real, max.Real);
+      double imaginary = ClampIE(value.Imaginary, min.Imaginary, max.Imaginary);
+      return new Complex(real, imaginary);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Complex ClampEI(Complex value, Complex min, Complex max)
+    {
+      double real = ClampEI(value.Real, min.Real, max.Real);
+      double imaginary = ClampEI(value.Imaginary, min.Imaginary, max.Imaginary);
+      return new Complex(real, imaginary);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix3x2 ClampII(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      value.M11 = ClampII(value.M11, min.M11, max.M11);
+      value.M12 = ClampII(value.M12, min.M12, max.M12);
+      value.M21 = ClampII(value.M21, min.M21, max.M21);
+      value.M22 = ClampII(value.M22, min.M22, max.M22);
+      value.M31 = ClampII(value.M31, min.M31, max.M31);
+      value.M32 = ClampII(value.M32, min.M32, max.M32);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix3x2 ClampEE(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      value.M11 = ClampEE(value.M11, min.M11, max.M11);
+      value.M12 = ClampEE(value.M12, min.M12, max.M12);
+      value.M21 = ClampEE(value.M21, min.M21, max.M21);
+      value.M22 = ClampEE(value.M22, min.M22, max.M22);
+      value.M31 = ClampEE(value.M31, min.M31, max.M31);
+      value.M32 = ClampEE(value.M32, min.M32, max.M32);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix3x2 ClampIE(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      value.M11 = ClampIE(value.M11, min.M11, max.M11);
+      value.M12 = ClampIE(value.M12, min.M12, max.M12);
+      value.M21 = ClampIE(value.M21, min.M21, max.M21);
+      value.M22 = ClampIE(value.M22, min.M22, max.M22);
+      value.M31 = ClampIE(value.M31, min.M31, max.M31);
+      value.M32 = ClampIE(value.M32, min.M32, max.M32);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix3x2 ClampEI(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      value.M11 = ClampEI(value.M11, min.M11, max.M11);
+      value.M12 = ClampEI(value.M12, min.M12, max.M12);
+      value.M21 = ClampEI(value.M21, min.M21, max.M21);
+      value.M22 = ClampEI(value.M22, min.M22, max.M22);
+      value.M31 = ClampEI(value.M31, min.M31, max.M31);
+      value.M32 = ClampEI(value.M32, min.M32, max.M32);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix4x4 ClampII(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      value.M11 = ClampII(value.M11, min.M11, max.M11);
+      value.M12 = ClampII(value.M12, min.M12, max.M12);
+      value.M13 = ClampII(value.M13, min.M13, max.M13);
+      value.M14 = ClampII(value.M14, min.M14, max.M14);
+      value.M21 = ClampII(value.M21, min.M21, max.M21);
+      value.M22 = ClampII(value.M22, min.M22, max.M22);
+      value.M23 = ClampII(value.M23, min.M23, max.M23);
+      value.M24 = ClampII(value.M24, min.M24, max.M24);
+      value.M31 = ClampII(value.M31, min.M31, max.M31);
+      value.M32 = ClampII(value.M32, min.M32, max.M32);
+      value.M33 = ClampII(value.M33, min.M33, max.M33);
+      value.M34 = ClampII(value.M34, min.M34, max.M34);
+      value.M41 = ClampII(value.M41, min.M41, max.M41);
+      value.M42 = ClampII(value.M42, min.M42, max.M42);
+      value.M43 = ClampII(value.M43, min.M43, max.M43);
+      value.M44 = ClampII(value.M44, min.M44, max.M44);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix4x4 ClampEE(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      value.M11 = ClampEE(value.M11, min.M11, max.M11);
+      value.M12 = ClampEE(value.M12, min.M12, max.M12);
+      value.M13 = ClampEE(value.M13, min.M13, max.M13);
+      value.M14 = ClampEE(value.M14, min.M14, max.M14);
+      value.M21 = ClampEE(value.M21, min.M21, max.M21);
+      value.M22 = ClampEE(value.M22, min.M22, max.M22);
+      value.M23 = ClampEE(value.M23, min.M23, max.M23);
+      value.M24 = ClampEE(value.M24, min.M24, max.M24);
+      value.M31 = ClampEE(value.M31, min.M31, max.M31);
+      value.M32 = ClampEE(value.M32, min.M32, max.M32);
+      value.M33 = ClampEE(value.M33, min.M33, max.M33);
+      value.M34 = ClampEE(value.M34, min.M34, max.M34);
+      value.M41 = ClampEE(value.M41, min.M41, max.M41);
+      value.M42 = ClampEE(value.M42, min.M42, max.M42);
+      value.M43 = ClampEE(value.M43, min.M43, max.M43);
+      value.M44 = ClampEE(value.M44, min.M44, max.M44);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix4x4 ClampIE(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      value.M11 = ClampIE(value.M11, min.M11, max.M11);
+      value.M12 = ClampIE(value.M12, min.M12, max.M12);
+      value.M13 = ClampIE(value.M13, min.M13, max.M13);
+      value.M14 = ClampIE(value.M14, min.M14, max.M14);
+      value.M21 = ClampIE(value.M21, min.M21, max.M21);
+      value.M22 = ClampIE(value.M22, min.M22, max.M22);
+      value.M23 = ClampIE(value.M23, min.M23, max.M23);
+      value.M24 = ClampIE(value.M24, min.M24, max.M24);
+      value.M31 = ClampIE(value.M31, min.M31, max.M31);
+      value.M32 = ClampIE(value.M32, min.M32, max.M32);
+      value.M33 = ClampIE(value.M33, min.M33, max.M33);
+      value.M34 = ClampIE(value.M34, min.M34, max.M34);
+      value.M41 = ClampIE(value.M41, min.M41, max.M41);
+      value.M42 = ClampIE(value.M42, min.M42, max.M42);
+      value.M43 = ClampIE(value.M43, min.M43, max.M43);
+      value.M44 = ClampIE(value.M44, min.M44, max.M44);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Matrix4x4 ClampEI(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      value.M11 = ClampEI(value.M11, min.M11, max.M11);
+      value.M12 = ClampEI(value.M12, min.M12, max.M12);
+      value.M13 = ClampEI(value.M13, min.M13, max.M13);
+      value.M14 = ClampEI(value.M14, min.M14, max.M14);
+      value.M21 = ClampEI(value.M21, min.M21, max.M21);
+      value.M22 = ClampEI(value.M22, min.M22, max.M22);
+      value.M23 = ClampEI(value.M23, min.M23, max.M23);
+      value.M24 = ClampEI(value.M24, min.M24, max.M24);
+      value.M31 = ClampEI(value.M31, min.M31, max.M31);
+      value.M32 = ClampEI(value.M32, min.M32, max.M32);
+      value.M33 = ClampEI(value.M33, min.M33, max.M33);
+      value.M34 = ClampEI(value.M34, min.M34, max.M34);
+      value.M41 = ClampEI(value.M41, min.M41, max.M41);
+      value.M42 = ClampEI(value.M42, min.M42, max.M42);
+      value.M43 = ClampEI(value.M43, min.M43, max.M43);
+      value.M44 = ClampEI(value.M44, min.M44, max.M44);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Plane ClampII(Plane value, Plane min, Plane max)
+    {
+      value.Normal = ClampII(value.Normal, min.Normal, max.Normal);
+      value.D = ClampII(value.D, min.D, max.D);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Plane ClampEE(Plane value, Plane min, Plane max)
+    {
+      value.Normal = ClampEE(value.Normal, min.Normal, max.Normal);
+      value.D = ClampEE(value.D, min.D, max.D);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Plane ClampIE(Plane value, Plane min, Plane max)
+    {
+      value.Normal = ClampIE(value.Normal, min.Normal, max.Normal);
+      value.D = ClampIE(value.D, min.D, max.D);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Plane ClampEI(Plane value, Plane min, Plane max)
+    {
+      value.Normal = ClampEI(value.Normal, min.Normal, max.Normal);
+      value.D = ClampEI(value.D, min.D, max.D);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Quaternion ClampII(Quaternion value, Quaternion min, Quaternion max)
+    {
+      value.X = ClampII(value.X, min.X, max.X);
+      value.Y = ClampII(value.Y, min.Y, max.Y);
+      value.Z = ClampII(value.Z, min.Z, max.Z);
+      value.W = ClampII(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Quaternion ClampEE(Quaternion value, Quaternion min, Quaternion max)
+    {
+      value.X = ClampEE(value.X, min.X, max.X);
+      value.Y = ClampEE(value.Y, min.Y, max.Y);
+      value.Z = ClampEE(value.Z, min.Z, max.Z);
+      value.W = ClampEE(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Quaternion ClampIE(Quaternion value, Quaternion min, Quaternion max)
+    {
+      value.X = ClampIE(value.X, min.X, max.X);
+      value.Y = ClampIE(value.Y, min.Y, max.Y);
+      value.Z = ClampIE(value.Z, min.Z, max.Z);
+      value.W = ClampIE(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Quaternion ClampEI(Quaternion value, Quaternion min, Quaternion max)
+    {
+      value.X = ClampEI(value.X, min.X, max.X);
+      value.Y = ClampEI(value.Y, min.Y, max.Y);
+      value.Z = ClampEI(value.Z, min.Z, max.Z);
+      value.W = ClampEI(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector2 ClampII(Vector2 value, Vector2 min, Vector2 max)
+    {
+      value.X = ClampII(value.X, min.X, max.X);
+      value.Y = ClampII(value.Y, min.Y, max.Y);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector2 ClampEE(Vector2 value, Vector2 min, Vector2 max)
+    {
+      value.X = ClampEE(value.X, min.X, max.X);
+      value.Y = ClampEE(value.Y, min.Y, max.Y);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector2 ClampIE(Vector2 value, Vector2 min, Vector2 max)
+    {
+      value.X = ClampIE(value.X, min.X, max.X);
+      value.Y = ClampIE(value.Y, min.Y, max.Y);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector2 ClampEI(Vector2 value, Vector2 min, Vector2 max)
+    {
+      value.X = ClampEI(value.X, min.X, max.X);
+      value.Y = ClampEI(value.Y, min.Y, max.Y);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector3 ClampII(Vector3 value, Vector3 min, Vector3 max)
+    {
+      value.X = ClampII(value.X, min.X, max.X);
+      value.Y = ClampII(value.Y, min.Y, max.Y);
+      value.Z = ClampII(value.Z, min.Z, max.Z);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector3 ClampEE(Vector3 value, Vector3 min, Vector3 max)
+    {
+      value.X = ClampEE(value.X, min.X, max.X);
+      value.Y = ClampEE(value.Y, min.Y, max.Y);
+      value.Z = ClampEE(value.Z, min.Z, max.Z);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector3 ClampIE(Vector3 value, Vector3 min, Vector3 max)
+    {
+      value.X = ClampIE(value.X, min.X, max.X);
+      value.Y = ClampIE(value.Y, min.Y, max.Y);
+      value.Z = ClampIE(value.Z, min.Z, max.Z);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector3 ClampEI(Vector3 value, Vector3 min, Vector3 max)
+    {
+      value.X = ClampEI(value.X, min.X, max.X);
+      value.Y = ClampEI(value.Y, min.Y, max.Y);
+      value.Z = ClampEI(value.Z, min.Z, max.Z);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector4 ClampII(Vector4 value, Vector4 min, Vector4 max)
+    {
+      value.X = ClampII(value.X, min.X, max.X);
+      value.Y = ClampII(value.Y, min.Y, max.Y);
+      value.Z = ClampII(value.Z, min.Z, max.Z);
+      value.W = ClampII(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector4 ClampEE(Vector4 value, Vector4 min, Vector4 max)
+    {
+      value.X = ClampEE(value.X, min.X, max.X);
+      value.Y = ClampEE(value.Y, min.Y, max.Y);
+      value.Z = ClampEE(value.Z, min.Z, max.Z);
+      value.W = ClampEE(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector4 ClampIE(Vector4 value, Vector4 min, Vector4 max)
+    {
+      value.X = ClampIE(value.X, min.X, max.X);
+      value.Y = ClampIE(value.Y, min.Y, max.Y);
+      value.Z = ClampIE(value.Z, min.Z, max.Z);
+      value.W = ClampIE(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static Vector4 ClampEI(Vector4 value, Vector4 min, Vector4 max)
+    {
+      value.X = ClampEI(value.X, min.X, max.X);
+      value.Y = ClampEI(value.Y, min.Y, max.Y);
+      value.Z = ClampEI(value.Z, min.Z, max.Z);
+      value.W = ClampEI(value.W, min.W, max.W);
+      return value;
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static T ClampII<T>(T value, T min, T max) where T : IClamp<T>
+    {
+      return value.ClampII(value, min, max);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static T ClampEE<T>(T value, T min, T max) where T : IClamp<T>
+    {
+      return value.ClampEE(value, min, max);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// [<paramref name="min"/>, <paramref name="max"/>).
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static T ClampIE<T>(T value, T min, T max) where T : IClamp<T>
+    {
+      return value.ClampIE(value, min, max);
+    }
+
+    /// <summary>
+    /// A function for clamping a <paramref name="value"/> between
+    /// (<paramref name="min"/>, <paramref name="max"/>].
+    /// </summary>
+    /// <param name="value">The value to clamp.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns a clamped <paramref name="value"/>.</returns>
+    public static T ClampEI<T>(T value, T min, T max) where T : IClamp<T>
+    {
+      return value.ClampEI(value, min, max);
     }
   }
   /************************************************************************************************/

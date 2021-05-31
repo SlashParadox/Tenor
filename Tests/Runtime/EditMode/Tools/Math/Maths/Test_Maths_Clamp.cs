@@ -50,8 +50,8 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       ComparableTest ctValue = new ComparableTest(value);
 
       // Compare the values and test them against the expected output.
-      Assert.AreEqual(expected, Maths.ClampII(ctValue, ctMin, ctMax).Value);
-      Assert.AreEqual(expected, Maths.ClampIING(ctValue, ctMin, ctMax).Value);
+      Assert.AreEqual(expected, Maths.ComparableClampII(ctValue, ctMin, ctMax).Value);
+      Assert.AreEqual(expected, Maths.ComparableClampIING(ctValue, ctMin, ctMax).Value);
     }
 
     /// <summary>

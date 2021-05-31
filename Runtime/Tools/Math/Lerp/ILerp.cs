@@ -3,7 +3,7 @@
 \file   ILerp.cs
 \author Craig Williams
 \par    Last Updated
-        2021-05-25
+        2021-05-30
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -23,8 +23,8 @@ namespace CodeParadox.Tenor.Math
   /// A useful <see langword="interface"/> for linearly interpolating a value. Use in conjunction
   /// with the <see cref="Tools.Lerp"/> tools.
   /// </summary>
-  /// <typeparam name="T">The type being lerped. This should be the inheriting type.</typeparam>
-  public interface ILerp<T>
+  /// <typeparam name="T">The type being lerped. This is the inheriting type.</typeparam>
+  public interface ILerp<T> where T : ILerp<T>
   {
     /// <summary>
     /// A function to interpolate between two <typeparamref name="T"/>s.

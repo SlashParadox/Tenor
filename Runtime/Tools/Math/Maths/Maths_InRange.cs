@@ -17,6 +17,7 @@
 /**************************************************************************************************/
 
 using System;
+using System.Numerics;
 
 namespace CodeParadox.Tenor.Tools
 {
@@ -701,6 +702,230 @@ namespace CodeParadox.Tenor.Tools
     public static bool InRangeEI(char value, char min, char max)
     {
       return value > min && value <= max;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of [min, max].
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeII(BigInteger value, BigInteger min, BigInteger max)
+    {
+      return value >= min && value <= max;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of (min, max).
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeEE(BigInteger value, BigInteger min, BigInteger max)
+    {
+      return value > min && value < max;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of [min, max).
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeIE(BigInteger value, BigInteger min, BigInteger max)
+    {
+      return value >= min && value < max;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of (min, max].
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeEI(BigInteger value, BigInteger min, BigInteger max)
+    {
+      return value > min && value <= max;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of [min, max].
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeII(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      return value.M11 >= min.M11 && value.M11 <= max.M11 &&
+             value.M12 >= min.M12 && value.M12 <= max.M12 &&
+             value.M21 >= min.M21 && value.M21 <= max.M21 &&
+             value.M22 >= min.M22 && value.M22 <= max.M22 &&
+             value.M31 >= min.M31 && value.M31 <= max.M31 &&
+             value.M32 >= min.M32 && value.M32 <= max.M32;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of (min, max).
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeEE(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      return value.M11 > min.M11 && value.M11 < max.M11 &&
+             value.M12 > min.M12 && value.M12 < max.M12 &&
+             value.M21 > min.M21 && value.M21 < max.M21 &&
+             value.M22 > min.M22 && value.M22 < max.M22 &&
+             value.M31 > min.M31 && value.M31 < max.M31 &&
+             value.M32 > min.M32 && value.M32 < max.M32;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of [min, max).
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeIE(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      return value.M11 >= min.M11 && value.M11 < max.M11 &&
+             value.M12 >= min.M12 && value.M12 < max.M12 &&
+             value.M21 >= min.M21 && value.M21 < max.M21 &&
+             value.M22 >= min.M22 && value.M22 < max.M22 &&
+             value.M31 >= min.M31 && value.M31 < max.M31 &&
+             value.M32 >= min.M32 && value.M32 < max.M32;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of (min, max].
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeEI(Matrix3x2 value, Matrix3x2 min, Matrix3x2 max)
+    {
+      return value.M11 > min.M11 && value.M11 <= max.M11 &&
+             value.M12 > min.M12 && value.M12 <= max.M12 &&
+             value.M21 > min.M21 && value.M21 <= max.M21 &&
+             value.M22 > min.M22 && value.M22 <= max.M22 &&
+             value.M31 > min.M31 && value.M31 <= max.M31 &&
+             value.M32 > min.M32 && value.M32 <= max.M32;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of [min, max].
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeII(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      return value.M11 >= min.M11 && value.M11 <= max.M11 &&
+             value.M12 >= min.M12 && value.M12 <= max.M12 &&
+             value.M13 >= min.M13 && value.M13 <= max.M13 &&
+             value.M14 >= min.M14 && value.M14 <= max.M14 &&
+             value.M21 >= min.M21 && value.M21 <= max.M21 &&
+             value.M22 >= min.M22 && value.M22 <= max.M22 &&
+             value.M23 >= min.M23 && value.M23 <= max.M23 &&
+             value.M24 >= min.M24 && value.M24 <= max.M24 &&
+             value.M31 >= min.M31 && value.M31 <= max.M31 &&
+             value.M32 >= min.M32 && value.M32 <= max.M32 &&
+             value.M33 >= min.M33 && value.M33 <= max.M33 &&
+             value.M34 >= min.M34 && value.M34 <= max.M34 &&
+             value.M41 >= min.M41 && value.M41 <= max.M41 &&
+             value.M42 >= min.M42 && value.M42 <= max.M42 &&
+             value.M43 >= min.M43 && value.M43 <= max.M43 &&
+             value.M44 >= min.M44 && value.M44 <= max.M44;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of (min, max).
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeEE(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      return value.M11 > min.M11 && value.M11 < max.M11 &&
+             value.M12 > min.M12 && value.M12 < max.M12 &&
+             value.M13 > min.M13 && value.M13 < max.M13 &&
+             value.M14 > min.M14 && value.M14 < max.M14 &&
+             value.M21 > min.M21 && value.M21 < max.M21 &&
+             value.M22 > min.M22 && value.M22 < max.M22 &&
+             value.M23 > min.M23 && value.M23 < max.M23 &&
+             value.M24 > min.M24 && value.M24 < max.M24 &&
+             value.M31 > min.M31 && value.M31 < max.M31 &&
+             value.M32 > min.M32 && value.M32 < max.M32 &&
+             value.M33 > min.M33 && value.M33 < max.M33 &&
+             value.M34 > min.M34 && value.M34 < max.M34 &&
+             value.M41 > min.M41 && value.M41 < max.M41 &&
+             value.M42 > min.M42 && value.M42 < max.M42 &&
+             value.M43 > min.M43 && value.M43 < max.M43 &&
+             value.M44 > min.M44 && value.M44 < max.M44;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of [min, max).
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeIE(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      return value.M11 >= min.M11 && value.M11 < max.M11 &&
+             value.M12 >= min.M12 && value.M12 < max.M12 &&
+             value.M13 >= min.M13 && value.M13 < max.M13 &&
+             value.M14 >= min.M14 && value.M14 < max.M14 &&
+             value.M21 >= min.M21 && value.M21 < max.M21 &&
+             value.M22 >= min.M22 && value.M22 < max.M22 &&
+             value.M23 >= min.M23 && value.M23 < max.M23 &&
+             value.M24 >= min.M24 && value.M24 < max.M24 &&
+             value.M31 >= min.M31 && value.M31 < max.M31 &&
+             value.M32 >= min.M32 && value.M32 < max.M32 &&
+             value.M33 >= min.M33 && value.M33 < max.M33 &&
+             value.M34 >= min.M34 && value.M34 < max.M34 &&
+             value.M41 >= min.M41 && value.M41 < max.M41 &&
+             value.M42 >= min.M42 && value.M42 < max.M42 &&
+             value.M43 >= min.M43 && value.M43 < max.M43 &&
+             value.M44 >= min.M44 && value.M44 < max.M44;
+    }
+
+    /// <summary>
+    /// A function that determines if a value is within a range of (min, max].
+    /// </summary>
+    /// <param name="value">The value to test.</param>
+    /// <param name="min">The minimum value.</param>
+    /// <param name="max">The maximum value.</param>
+    /// <returns>Returns if <paramref name="value"/> is within the wanted range.</returns>
+    public static bool InRangeEI(Matrix4x4 value, Matrix4x4 min, Matrix4x4 max)
+    {
+      return value.M11 > min.M11 && value.M11 <= max.M11 &&
+             value.M12 > min.M12 && value.M12 <= max.M12 &&
+             value.M13 > min.M13 && value.M13 <= max.M13 &&
+             value.M14 > min.M14 && value.M14 <= max.M14 &&
+             value.M21 > min.M21 && value.M21 <= max.M21 &&
+             value.M22 > min.M22 && value.M22 <= max.M22 &&
+             value.M23 > min.M23 && value.M23 <= max.M23 &&
+             value.M24 > min.M24 && value.M24 <= max.M24 &&
+             value.M31 > min.M31 && value.M31 <= max.M31 &&
+             value.M32 > min.M32 && value.M32 <= max.M32 &&
+             value.M33 > min.M33 && value.M33 <= max.M33 &&
+             value.M34 > min.M34 && value.M34 <= max.M34 &&
+             value.M41 > min.M41 && value.M41 <= max.M41 &&
+             value.M42 > min.M42 && value.M42 <= max.M42 &&
+             value.M43 > min.M43 && value.M43 <= max.M43 &&
+             value.M44 > min.M44 && value.M44 <= max.M44;
     }
   }
   /************************************************************************************************/
