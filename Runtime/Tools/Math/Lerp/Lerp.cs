@@ -3,7 +3,7 @@
 \file   Lerp.cs
 \author Craig Williams
 \par    Last Updated
-        2021-05-31
+        2021-06-02
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -11,6 +11,8 @@
   A file for tool functions related to linearly interpolating a value.
 
 \par Bug List
+  NORMAL
+    * Quaternions are hard. 360 degree rotation cannot occur.
 
 \par References
   - https://keithmaggio.wordpress.com/2011/02/15/math-magician-lerp-slerp-and-nlerp/
@@ -1606,34 +1608,6 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// A function to spherically interpolate between two <see cref="Vector3"/>s.
-    /// </summary>
-    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
-    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
-    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
-    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
-    /// <returns>Returns the interpolated value.</returns>
-    public static Vector3 SlerpValue(Vector3 a, Vector3 b, float t, bool shortPath = true)
-    {
-      t = Maths.ClampII(t, 0, 1);
-      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
-    }
-
-    /// <summary>
-    /// A function to spherically interpolate between two <see cref="Vector3"/>s.
-    /// </summary>
-    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
-    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
-    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
-    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
-    /// <returns>Returns the interpolated value.</returns>
-    public static Vector3 SlerpValue(Vector3 a, Vector3 b, double t, bool shortPath = true)
-    {
-      t = Maths.ClampII(t, 0, 1);
-      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
-    }
-
-    /// <summary>
     /// A function to spherically interpolate between two <typeparamref name="T"/>s.
     /// </summary>
     /// <typeparam name="T">The <see cref="ISlerp{T}"/> to interpolate.</typeparam>
@@ -1845,106 +1819,6 @@ namespace CodeParadox.Tenor.Tools
       a.Y = equationA * a.Y + equationB * b.Y;
       a.Z = equationA * a.Z + equationB * b.Z;
       a.W = equationA * a.W + equationB * b.W;
-
-      return a;
-    }
-
-    /// <summary>
-    /// An internal function for handling a short-path spherical interpolation.
-    /// </summary>
-    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
-    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
-    /// <param name="t">The interpolation between the two values.</param>
-    /// <returns>Returns the interpolated value.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Vector3 HandleSlerpShort(Vector3 a, Vector3 b, double t)
-    {
-      bool negate = false;
-      // Get the dot product of the quaternions.
-      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z;
-
-      // If d is negative, we use the negation of the second quaternion, and d's absolute value.
-      if (d < 0.0f)
-      {
-        negate = true;
-        d = -d;
-      }
-
-      // Create hold variables for the sin calculations. These are multiplied later.
-      float equationA;
-      float equationB;
-
-      // If the values are too close, default to normal interpolation.
-      if (d > (1.0f - SlerpEpsilon))
-      {
-        equationA = (float)(1.0f - t); // The first quaternion's multiple.
-        equationB = (float)(negate ? -t : t); // The second quaternion's multiple;
-      }
-      else
-      {
-        double theta = System.Math.Acos(d); // Get the theta angle.
-        double inverseSin = 1.0f / System.Math.Sin(theta); // Get the denominator.
-
-        // Get the quaternion multiples.
-        equationA = (float)(System.Math.Sin((1.0f - t) * theta) * inverseSin);
-        equationB = (float)(negate ? -System.Math.Sin(t * theta) * inverseSin :
-                                      System.Math.Sin(t * theta) * inverseSin);
-      }
-
-      // Multiply the individual components of the quaternion.
-      a.X = equationA * a.X + equationB * b.X;
-      a.Y = equationA * a.Y + equationB * b.Y;
-      a.Z = equationA * a.Z + equationB * b.Z;
-
-      return a;
-    }
-
-    /// <summary>
-    /// An internal function for handling a long-path spherical interpolation.
-    /// </summary>
-    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
-    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
-    /// <param name="t">The interpolation between the two values.</param>
-    /// <returns>Returns the interpolated value.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Vector3 HandleSlerpLong(Vector3 a, Vector3 b, double t)
-    {
-      bool negate = false;
-      // Get the dot product of the quaternions.
-      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z;
-
-      // If d is negative, we must use the negation of the second quaternion.
-      if (d < 0.0f)
-      {
-        d = -d;
-        negate = true;
-      }
-        
-
-      // Create hold variables for the sin calculations. These are multiplied later.
-      float equationA;
-      float equationB;
-
-      // If the values are too close, default to normal interpolation.
-      if (d > (1.0f - SlerpEpsilon))
-      {
-        equationA = (float)(1.0f - t); // The first quaternion's multiple.
-        equationB = (float)(negate ? -t : t); // The second quaternion's multiple;
-      }
-      else
-      {
-        double theta = System.Math.Acos(d); // Get the theta angle.
-        double inverseSin = 1.0f / System.Math.Sin(theta); // Get the denominator.
-
-        // Get the quaternion multiples.
-        equationA = (float)(System.Math.Sin((1.0f - t) * theta) * inverseSin);
-        equationB = (float)(System.Math.Sin(t * theta) * inverseSin);
-      }
-
-      // Multiply the individual components of the quaternion.
-      a.X = equationA * a.X + equationB * b.X;
-      a.Y = equationA * a.Y + equationB * b.Y;
-      a.Z = equationA * a.Z + equationB * b.Z;
 
       return a;
     }
