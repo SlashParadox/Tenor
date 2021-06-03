@@ -1909,7 +1909,11 @@ namespace CodeParadox.Tenor.Tools
 
       // If d is negative, we must use the negation of the second quaternion.
       if (d < 0.0f)
+      {
+        d = -d;
         negate = true;
+      }
+        
 
       // Create hold variables for the sin calculations. These are multiplied later.
       float equationA;
