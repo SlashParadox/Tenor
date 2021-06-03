@@ -3,7 +3,7 @@
 \file   Lerp.cs
 \author Craig Williams
 \par    Last Updated
-        2021-05-30
+        2021-05-31
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -13,11 +13,17 @@
 \par Bug List
 
 \par References
+  - https://keithmaggio.wordpress.com/2011/02/15/math-magician-lerp-slerp-and-nlerp/
+  - https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Numerics/Quaternion.cs
+  - https://doc.magnum.graphics/magnum/namespaceMagnum_1_1Math.html#aa52d32b2fcb66f28a4330fb39fa50589
+  - https://doc.magnum.graphics/magnum/namespaceMagnum_1_1Math.html#a0d790000a3656bf3b1bad2098ec00ea0
+  - https://doc.magnum.graphics/magnum/namespaceMagnum_1_1Math.html#a7af2a318a3c70abee764adfa3b5a3a02
 */
 /**************************************************************************************************/
 
 using CodeParadox.Tenor.Math;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace CodeParadox.Tenor.Tools
 {
@@ -29,6 +35,8 @@ namespace CodeParadox.Tenor.Tools
   /// </summary>
   public static partial class Lerp
   {
+    private const float SlerpEpsilon = 1e-6f;
+
     /// <summary>
     /// A function to linearly interpolate between two <see cref="sbyte"/>s.
     /// </summary>
@@ -939,14 +947,14 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
     /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
     /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
     /// <returns>Returns the interpolated value.</returns>
-    public static Quaternion LerpValue(Quaternion a, Quaternion b, float t)
+    /// <remarks>This does NOT normalize the <see cref="Quaternion"/>! Use
+    /// <see cref="NlerpValue(Quaternion, Quaternion, float, bool)"/> for that!</remarks>
+    public static Quaternion LerpValue(Quaternion a, Quaternion b, float t, bool shortPath = true)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      a.Z = LerpValue(a.Z, b.Z, t);
-      a.W = LerpValue(a.W, b.W, t);
-      return a;
+      t = Maths.ClampII(t, 0, 1);
+      return shortPath ? HandleLerpShort(a, b, t) : HandleLerpLong(a, b, t);
     }
 
     /// <summary>
@@ -955,14 +963,14 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
     /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
     /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
     /// <returns>Returns the interpolated value.</returns>
-    public static Quaternion LerpValue(Quaternion a, Quaternion b, double t)
+    /// <remarks>This does NOT normalize the <see cref="Quaternion"/>! Use
+    /// <see cref="NlerpValue(Quaternion, Quaternion, double, bool)"/> for that!</remarks>
+    public static Quaternion LerpValue(Quaternion a, Quaternion b, double t, bool shortPath = true)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      a.Z = LerpValue(a.Z, b.Z, t);
-      a.W = LerpValue(a.W, b.W, t);
-      return a;
+      float tF = (float)Maths.ClampII(t, 0, 1);
+      return shortPath ? HandleLerpShort(a, b, tF) : HandleLerpLong(a, b, tF);
     }
 
     /// <summary>
@@ -971,15 +979,15 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="a">The first <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
     /// <param name="b">The second <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
     /// <param name="t">The interpolation between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
     /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
     /// 0 to 1 still affect the returned value.</returns>
-    public static Quaternion LerpUnclamped(Quaternion a, Quaternion b, float t)
+    /// <remarks>This does NOT normalize the <see cref="Quaternion"/>! Use
+    /// <see cref="NlerpUnclamped(Quaternion, Quaternion, float, bool)"/> for that!</remarks>
+    public static Quaternion LerpUnclamped(Quaternion a, Quaternion b, float t,
+                                           bool shortPath = true)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      a.Z = LerpUnclamped(a.Z, b.Z, t);
-      a.W = LerpUnclamped(a.W, b.W, t);
-      return a;
+      return shortPath ? HandleLerpShort(a, b, t) : HandleLerpLong(a, b, t);
     }
 
     /// <summary>
@@ -988,15 +996,15 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="a">The first <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
     /// <param name="b">The second <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
     /// <param name="t">The interpolation between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
     /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
     /// 0 to 1 still affect the returned value.</returns>
-    public static Quaternion LerpUnclamped(Quaternion a, Quaternion b, double t)
+    /// <remarks>This does NOT normalize the <see cref="Quaternion"/>! Use
+    /// <see cref="NlerpUnclamped(Quaternion, Quaternion, double, bool)"/> for that!</remarks>
+    public static Quaternion LerpUnclamped(Quaternion a, Quaternion b, double t,
+                                           bool shortPath = true)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      a.Z = LerpUnclamped(a.Z, b.Z, t);
-      a.W = LerpUnclamped(a.W, b.W, t);
-      return a;
+      return shortPath ? HandleLerpShort(a, b, (float)t) : HandleLerpLong(a, b, (float)t);
     }
 
     /// <summary>
@@ -1008,9 +1016,7 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Vector2 LerpValue(Vector2 a, Vector2 b, float t)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      return a;
+      return a + (b - a) * Maths.ClampII(t, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -1022,9 +1028,7 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Vector2 LerpValue(Vector2 a, Vector2 b, double t)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      return a;
+      return a + (b - a) * Maths.ClampII((float)t, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -1037,9 +1041,7 @@ namespace CodeParadox.Tenor.Tools
     /// 0 to 1 still affect the returned value.</returns>
     public static Vector2 LerpUnclamped(Vector2 a, Vector2 b, float t)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      return a;
+      return a + (b - a) * t;
     }
 
     /// <summary>
@@ -1052,9 +1054,7 @@ namespace CodeParadox.Tenor.Tools
     /// 0 to 1 still affect the returned value.</returns>
     public static Vector2 LerpUnclamped(Vector2 a, Vector2 b, double t)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      return a;
+      return a + (b - a) * (float)t;
     }
 
     /// <summary>
@@ -1066,10 +1066,7 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Vector3 LerpValue(Vector3 a, Vector3 b, float t)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      a.Z = LerpValue(a.Z, b.Z, t);
-      return a;
+      return a + (b - a) * Maths.ClampII(t, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -1081,10 +1078,7 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Vector3 LerpValue(Vector3 a, Vector3 b, double t)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      a.Z = LerpValue(a.Z, b.Z, t);
-      return a;
+      return a + (b - a) * Maths.ClampII((float)t, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -1097,10 +1091,7 @@ namespace CodeParadox.Tenor.Tools
     /// 0 to 1 still affect the returned value.</returns>
     public static Vector3 LerpUnclamped(Vector3 a, Vector3 b, float t)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      a.Z = LerpUnclamped(a.Z, b.Z, t);
-      return a;
+      return a + (b - a) * t;
     }
 
     /// <summary>
@@ -1113,10 +1104,7 @@ namespace CodeParadox.Tenor.Tools
     /// 0 to 1 still affect the returned value.</returns>
     public static Vector3 LerpUnclamped(Vector3 a, Vector3 b, double t)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      a.Z = LerpUnclamped(a.Z, b.Z, t);
-      return a;
+      return a + (b - a) * (float)t;
     }
 
     /// <summary>
@@ -1128,11 +1116,7 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Vector4 LerpValue(Vector4 a, Vector4 b, float t)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      a.Z = LerpValue(a.Z, b.Z, t);
-      a.W = LerpValue(a.W, b.W, t);
-      return a;
+      return a + (b - a) * Maths.ClampII(t, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -1144,11 +1128,7 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Vector4 LerpValue(Vector4 a, Vector4 b, double t)
     {
-      a.X = LerpValue(a.X, b.X, t);
-      a.Y = LerpValue(a.Y, b.Y, t);
-      a.Z = LerpValue(a.Z, b.Z, t);
-      a.W = LerpValue(a.W, b.W, t);
-      return a;
+      return a + (b - a) * Maths.ClampII((float)t, 0.0f, 1.0f);
     }
 
     /// <summary>
@@ -1161,11 +1141,7 @@ namespace CodeParadox.Tenor.Tools
     /// 0 to 1 still affect the returned value.</returns>
     public static Vector4 LerpUnclamped(Vector4 a, Vector4 b, float t)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      a.Z = LerpUnclamped(a.Z, b.Z, t);
-      a.W = LerpUnclamped(a.W, b.W, t);
-      return a;
+      return a + (b - a) * t;
     }
 
     /// <summary>
@@ -1178,15 +1154,11 @@ namespace CodeParadox.Tenor.Tools
     /// 0 to 1 still affect the returned value.</returns>
     public static Vector4 LerpUnclamped(Vector4 a, Vector4 b, double t)
     {
-      a.X = LerpUnclamped(a.X, b.X, t);
-      a.Y = LerpUnclamped(a.Y, b.Y, t);
-      a.Z = LerpUnclamped(a.Z, b.Z, t);
-      a.W = LerpUnclamped(a.W, b.W, t);
-      return a;
+      return a + (b - a) * (float)t;
     }
 
     /// <summary>
-    /// A function to linearly interpolate between two <see cref="T"/>s.
+    /// A function to linearly interpolate between two <typeparamref name="T"/>s.
     /// </summary>
     /// <typeparam name="T">The <see cref="ILerp{T}"/> to interpolate.</typeparam>
     /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
@@ -1199,7 +1171,7 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// A function to linearly interpolate between two <see cref="T"/>s.
+    /// A function to linearly interpolate between two <typeparamref name="T"/>s.
     /// </summary>
     /// <typeparam name="T">The <see cref="ILerp{T}"/> to interpolate.</typeparam>
     /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
@@ -1212,7 +1184,7 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// A function to linearly interpolate between two <see cref="T"/>, without a clamp.
+    /// A function to linearly interpolate between two <typeparamref name="T"/>, without a clamp.
     /// </summary>
     /// <typeparam name="T">The <see cref="ILerp{T}"/> to interpolate.</typeparam>
     /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
@@ -1226,7 +1198,7 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// A function to linearly interpolate between two <see cref="T"/>, without a clamp.
+    /// A function to linearly interpolate between two <typeparamref name="T"/>, without a clamp.
     /// </summary>
     /// <typeparam name="T">The <see cref="ILerp{T}"/> to interpolate.</typeparam>
     /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
@@ -1237,6 +1209,734 @@ namespace CodeParadox.Tenor.Tools
     public static T LerpUnclamped<T>(T a, T b, double t) where T : ILerp<T>
     {
       return a.LerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Plane"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Plane"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Plane"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Plane NlerpValue(Plane a, Plane b, float t)
+    {
+      a.Normal = LerpValue(a.Normal, b.Normal, t);
+      a.D = LerpValue(a.D, b.D, t);
+      return Plane.Normalize(a); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Plane"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Plane"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Plane"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Plane NlerpValue(Plane a, Plane b, double t)
+    {
+      a.Normal = LerpValue(a.Normal, b.Normal, t);
+      a.D = LerpValue(a.D, b.D, t);
+      return Plane.Normalize(a); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Plane"/>s, without a
+    /// clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Plane"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Plane"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Plane NlerpUnclamped(Plane a, Plane b, float t)
+    {
+      a.Normal = LerpUnclamped(a.Normal, b.Normal, t);
+      a.D = LerpUnclamped(a.D, b.D, t);
+      return Plane.Normalize(a); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Plane"/>s, without a
+    /// clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Plane"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Plane"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Plane NlerpUnclamped(Plane a, Plane b, double t)
+    {
+      a.Normal = LerpUnclamped(a.Normal, b.Normal, t);
+      a.D = LerpUnclamped(a.D, b.D, t);
+      return Plane.Normalize(a); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Quaternion"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Quaternion NlerpValue(Quaternion a, Quaternion b, float t, bool shortPath = true)
+    {
+      t = Maths.ClampII(t, 0, 1);
+      Quaternion r = shortPath ? HandleLerpShort(a, b, t) : HandleLerpLong(a, b, t);
+      return Quaternion.Normalize(r); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Quaternion"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Quaternion NlerpValue(Quaternion a, Quaternion b, double t, bool shortPath = true)
+    {
+      float tF = (float)Maths.ClampII(t, 0, 1);
+      Quaternion r = shortPath ? HandleLerpShort(a, b, tF) : HandleLerpLong(a, b, tF);
+      return Quaternion.Normalize(r); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Quaternion"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Quaternion NlerpUnclamped(Quaternion a, Quaternion b, float t,
+                                            bool shortPath = true)
+    {
+      Quaternion r = shortPath ? HandleLerpShort(a, b, t) : HandleLerpLong(a, b, t);
+      return Quaternion.Normalize(r); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Quaternion"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Quaternion NlerpUnclamped(Quaternion a, Quaternion b, double t,
+                                            bool shortPath = true)
+    {
+      Quaternion r = shortPath ? HandleLerpShort(a, b, (float)t) : HandleLerpLong(a, b, (float)t);
+      return Quaternion.Normalize(r); // Normalize afterwards.
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector2"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector2"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector2"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector2 NlerpValue(Vector2 a, Vector2 b, float t)
+    {
+      return Vector2.Normalize(a + (b - a) * Maths.ClampII(t, 0.0f, 1.0f));
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector2"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector2"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector2"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector2 NlerpValue(Vector2 a, Vector2 b, double t)
+    {
+      return Vector2.Normalize(a + (b - a) * Maths.ClampII((float)t, 0.0f, 1.0f));
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector2"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Vector2"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Vector2"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Vector2 NlerpUnclamped(Vector2 a, Vector2 b, float t)
+    {
+      return Vector2.Normalize(a + (b - a) * t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector2"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Vector2"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Vector2"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Vector2 NlerpUnclamped(Vector2 a, Vector2 b, double t)
+    {
+      return Vector2.Normalize(a + (b - a) * (float)t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector3"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector3 NlerpValue(Vector3 a, Vector3 b, float t)
+    {
+      return Vector3.Normalize(a + (b - a) * Maths.ClampII(t, 0.0f, 1.0f));
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector3"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector3 NlerpValue(Vector3 a, Vector3 b, double t)
+    {
+      return Vector3.Normalize(a + (b - a) * Maths.ClampII((float)t, 0.0f, 1.0f));
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector3"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Vector3 NlerpUnclamped(Vector3 a, Vector3 b, float t)
+    {
+      return Vector3.Normalize(a + (b - a) * t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector3"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Vector3 NlerpUnclamped(Vector3 a, Vector3 b, double t)
+    {
+      return Vector3.Normalize(a + (b - a) * (float)t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector4"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector4"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector4"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector4 NlerpValue(Vector4 a, Vector4 b, float t)
+    {
+      return Vector4.Normalize(a + (b - a) * Maths.ClampII(t, 0.0f, 1.0f));
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector4"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector4"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector4"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector4 NlerpValue(Vector4 a, Vector4 b, double t)
+    {
+      return Vector4.Normalize(a + (b - a) * Maths.ClampII((float)t, 0.0f, 1.0f));
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector4"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Vector4"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Vector4"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Vector4 NlerpUnclamped(Vector4 a, Vector4 b, float t)
+    {
+      return Vector4.Normalize(a + (b - a) * t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <see cref="Vector4"/>s,
+    /// without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Vector4"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Vector4"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Vector4 NlerpUnclamped(Vector4 a, Vector4 b, double t)
+    {
+      return Vector4.Normalize(a + (b - a) * (float)t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <typeparamref name="T"/>s.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="INlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static T NlerpValue<T>(T a, T b, float t) where T : INlerp<T>
+    {
+      return a.Nlerp(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <typeparamref name="T"/>s.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="INlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static T NlerpValue<T>(T a, T b, double t) where T : INlerp<T>
+    {
+      return a.Nlerp(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <typeparamref name="T"/>,
+    /// without a clamp.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="INlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static T NlerpUnclamped<T>(T a, T b, float t) where T : INlerp<T>
+    {
+      return a.NlerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to normalized-linearly interpolate between two <typeparamref name="T"/>,
+    /// without a clamp.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="INlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static T NlerpUnclamped<T>(T a, T b, double t) where T : INlerp<T>
+    {
+      return a.NlerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <see cref="Quaternion"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Quaternion SlerpValue(Quaternion a, Quaternion b, float t, bool shortPath = true)
+    {
+      t = Maths.ClampII(t, 0, 1);
+      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <see cref="Quaternion"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Quaternion SlerpValue(Quaternion a, Quaternion b, double t, bool shortPath = true)
+    {
+      t = Maths.ClampII(t, 0, 1);
+      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <see cref="Quaternion"/>s, without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Quaternion SlerpUnclamped(Quaternion a, Quaternion b, float t,
+                                           bool shortPath = true)
+    {
+      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <see cref="Quaternion"/>s, without a clamp.
+    /// </summary>
+    /// <param name="a">The first <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The second <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static Quaternion SlerpUnclamped(Quaternion a, Quaternion b, double t,
+                                           bool shortPath = true)
+    {
+      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <see cref="Vector3"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector3 SlerpValue(Vector3 a, Vector3 b, float t, bool shortPath = true)
+    {
+      t = Maths.ClampII(t, 0, 1);
+      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <see cref="Vector3"/>s.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <param name="shortPath">A toggle for forcing the shortest or longest path.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static Vector3 SlerpValue(Vector3 a, Vector3 b, double t, bool shortPath = true)
+    {
+      t = Maths.ClampII(t, 0, 1);
+      return shortPath ? HandleSlerpShort(a, b, t) : HandleSlerpLong(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <typeparamref name="T"/>s.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="ISlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static T SlerpValue<T>(T a, T b, float t) where T : ISlerp<T>
+    {
+      return a.Slerp(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <typeparamref name="T"/>s.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="ISlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation, on a scale of 0 to 1 between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    public static T SlerpValue<T>(T a, T b, double t) where T : ISlerp<T>
+    {
+      return a.Slerp(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <typeparamref name="T"/>,
+    /// without a clamp.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="ISlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static T SlerpUnclamped<T>(T a, T b, float t) where T : ISlerp<T>
+    {
+      return a.SlerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
+    /// A function to spherically interpolate between two <typeparamref name="T"/>,
+    /// without a clamp.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="ISlerp{T}"/> to interpolate.</typeparam>
+    /// <param name="a">The start <typeparamref name="T"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <typeparamref name="T"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value. <paramref name="t"/> values outside the range of
+    /// 0 to 1 still affect the returned value.</returns>
+    public static T SlerpUnclamped<T>(T a, T b, double t) where T : ISlerp<T>
+    {
+      return a.SlerpUnclamped(a, b, t);
+    }
+
+    /// <summary>
+    /// An internal function for handling a short-path linear interpolation.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Quaternion HandleLerpShort(Quaternion a, Quaternion b, float t)
+    {
+      float tInverse = 1.0f - t;
+      // Get the dot product of the quaternions.
+      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;
+
+      // Flip the second quaternion if d is less than 0.
+      if (d >= 0.0f)
+      {
+        // Multiply the individual components of the quaternion.
+        a.X = tInverse * a.X + t * b.X;
+        a.Y = tInverse * a.Y + t * b.Y;
+        a.Z = tInverse * a.Z + t * b.Z;
+        a.W = tInverse * a.W + t * b.W;
+      }
+      else
+      {
+        // Multiply the individual components of the quaternion.
+        a.X = tInverse * a.X - t * b.X;
+        a.Y = tInverse * a.Y - t * b.Y;
+        a.Z = tInverse * a.Z - t * b.Z;
+        a.W = tInverse * a.W - t * b.W;
+      }
+
+      return a;
+    }
+
+    /// <summary>
+    /// An internal function for handling a long-path linear interpolation.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Quaternion HandleLerpLong(Quaternion a, Quaternion b, float t)
+    {
+      float tInverse = 1.0f - t;
+
+      // Multiply the individual components of the quaternion.
+      a.X = tInverse * a.X + t * b.X;
+      a.Y = tInverse * a.Y + t * b.Y;
+      a.Z = tInverse * a.Z + t * b.Z;
+      a.W = tInverse * a.W + t * b.W;
+
+      return a;
+    }
+
+    /// <summary>
+    /// An internal function for handling a short-path spherical interpolation.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Quaternion HandleSlerpShort(Quaternion a, Quaternion b, double t)
+    {
+      bool negate = false;
+      // Get the dot product of the quaternions.
+      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;
+
+      // If d is negative, we use the negation of the second quaternion, and d's absolute value.
+      if (d < 0.0f)
+      {
+        negate = true;
+        d = -d;
+      }
+
+      // Create hold variables for the sin calculations. These are multiplied later.
+      float equationA;
+      float equationB;
+
+      // If the values are too close, default to normal interpolation.
+      if (d > (1.0f - SlerpEpsilon))
+      {
+        equationA = (float)(1.0f - t); // The first quaternion's multiple.
+        equationB = (float)(negate ? -t : t); // The second quaternion's multiple;
+      }
+      else
+      {
+        double theta = System.Math.Acos(d); // Get the theta angle.
+        double inverseSin = 1.0f / System.Math.Sin(theta); // Get the denominator.
+
+        // Get the quaternion multiples.
+        equationA = (float)(System.Math.Sin((1.0f - t) * theta) * inverseSin);
+        equationB = (float)(negate ? -System.Math.Sin(t * theta) * inverseSin :
+                                      System.Math.Sin(t * theta) * inverseSin);
+      }
+
+      // Multiply the individual components of the quaternion.
+      a.X = equationA * a.X + equationB * b.X;
+      a.Y = equationA * a.Y + equationB * b.Y;
+      a.Z = equationA * a.Z + equationB * b.Z;
+      a.W = equationA * a.W + equationB * b.W;
+
+      return a;
+    }
+
+    /// <summary>
+    /// An internal function for handling a long-path spherical interpolation.
+    /// </summary>
+    /// <param name="a">The start <see cref="Quaternion"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Quaternion"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Quaternion HandleSlerpLong(Quaternion a, Quaternion b, double t)
+    {
+      bool negate = false;
+      // Get the dot product of the quaternions.
+      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;
+
+      // If d is negative, we must use the negation of the second quaternion.
+      if (d < 0.0f)
+        negate = true;
+
+      // Create hold variables for the sin calculations. These are multiplied later.
+      float equationA;
+      float equationB;
+
+      // If the values are too close, default to normal interpolation.
+      if (d > (1.0f - SlerpEpsilon))
+      {
+        equationA = (float)(1.0f - t); // The first quaternion's multiple.
+        equationB = (float)(negate ? -t : t); // The second quaternion's multiple;
+      }
+      else
+      {
+        double theta = System.Math.Acos(d); // Get the theta angle.
+        double inverseSin = 1.0f / System.Math.Sin(theta); // Get the denominator.
+
+        // Get the quaternion multiples.
+        equationA = (float)(System.Math.Sin((1.0f - t) * theta) * inverseSin);
+        equationB = (float)(System.Math.Sin(t * theta) * inverseSin);
+      }
+
+      // Multiply the individual components of the quaternion.
+      a.X = equationA * a.X + equationB * b.X;
+      a.Y = equationA * a.Y + equationB * b.Y;
+      a.Z = equationA * a.Z + equationB * b.Z;
+      a.W = equationA * a.W + equationB * b.W;
+
+      return a;
+    }
+
+    /// <summary>
+    /// An internal function for handling a short-path spherical interpolation.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector3 HandleSlerpShort(Vector3 a, Vector3 b, double t)
+    {
+      bool negate = false;
+      // Get the dot product of the quaternions.
+      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+
+      // If d is negative, we use the negation of the second quaternion, and d's absolute value.
+      if (d < 0.0f)
+      {
+        negate = true;
+        d = -d;
+      }
+
+      // Create hold variables for the sin calculations. These are multiplied later.
+      float equationA;
+      float equationB;
+
+      // If the values are too close, default to normal interpolation.
+      if (d > (1.0f - SlerpEpsilon))
+      {
+        equationA = (float)(1.0f - t); // The first quaternion's multiple.
+        equationB = (float)(negate ? -t : t); // The second quaternion's multiple;
+      }
+      else
+      {
+        double theta = System.Math.Acos(d); // Get the theta angle.
+        double inverseSin = 1.0f / System.Math.Sin(theta); // Get the denominator.
+
+        // Get the quaternion multiples.
+        equationA = (float)(System.Math.Sin((1.0f - t) * theta) * inverseSin);
+        equationB = (float)(negate ? -System.Math.Sin(t * theta) * inverseSin :
+                                      System.Math.Sin(t * theta) * inverseSin);
+      }
+
+      // Multiply the individual components of the quaternion.
+      a.X = equationA * a.X + equationB * b.X;
+      a.Y = equationA * a.Y + equationB * b.Y;
+      a.Z = equationA * a.Z + equationB * b.Z;
+
+      return a;
+    }
+
+    /// <summary>
+    /// An internal function for handling a long-path spherical interpolation.
+    /// </summary>
+    /// <param name="a">The start <see cref="Vector3"/>, at a <paramref name="t"/> of 0.</param>
+    /// <param name="b">The end <see cref="Vector3"/>, at a <paramref name="t"/> of 1.</param>
+    /// <param name="t">The interpolation between the two values.</param>
+    /// <returns>Returns the interpolated value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector3 HandleSlerpLong(Vector3 a, Vector3 b, double t)
+    {
+      bool negate = false;
+      // Get the dot product of the quaternions.
+      float d = a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+
+      // If d is negative, we must use the negation of the second quaternion.
+      if (d < 0.0f)
+        negate = true;
+
+      // Create hold variables for the sin calculations. These are multiplied later.
+      float equationA;
+      float equationB;
+
+      // If the values are too close, default to normal interpolation.
+      if (d > (1.0f - SlerpEpsilon))
+      {
+        equationA = (float)(1.0f - t); // The first quaternion's multiple.
+        equationB = (float)(negate ? -t : t); // The second quaternion's multiple;
+      }
+      else
+      {
+        double theta = System.Math.Acos(d); // Get the theta angle.
+        double inverseSin = 1.0f / System.Math.Sin(theta); // Get the denominator.
+
+        // Get the quaternion multiples.
+        equationA = (float)(System.Math.Sin((1.0f - t) * theta) * inverseSin);
+        equationB = (float)(System.Math.Sin(t * theta) * inverseSin);
+      }
+
+      // Multiply the individual components of the quaternion.
+      a.X = equationA * a.X + equationB * b.X;
+      a.Y = equationA * a.Y + equationB * b.Y;
+      a.Z = equationA * a.Z + equationB * b.Z;
+
+      return a;
     }
   }
   /************************************************************************************************/
