@@ -37,7 +37,8 @@ namespace CodeParadox.Tenor.Tools
   /// </summary>
   public static partial class Lerp
   {
-    private const float SlerpEpsilon = 1e-6f;
+    /// <summary>A constant error-based value, matching the one used with .NET.</summary>
+    public const float SlerpEpsilon = 1e-6f;
 
     /// <summary>
     /// A function to linearly interpolate between two <see cref="sbyte"/>s.
