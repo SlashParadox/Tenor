@@ -1814,6 +1814,10 @@ namespace CodeParadox.Tenor.Tools
       if (d < 0.0f)
       {
         negate = true;
+
+        // Edge case: An odd number of vectors are opposite.
+        if (d == -1.0f)
+          d = -d;
       }
 
       // Create hold variables for the sin calculations. These are multiplied later.
