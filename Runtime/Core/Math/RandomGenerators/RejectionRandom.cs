@@ -176,7 +176,7 @@ namespace CodeParadox.Tenor.Math
     public override int Next(int minValue, int maxValue)
     {
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
 
       long difference = (long)maxValue - minValue;
       if (difference <= int.MaxValue)

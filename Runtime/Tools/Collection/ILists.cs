@@ -19,6 +19,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -907,6 +908,69 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function for shuffling an <see cref="IList{T}"/>'s elements. This uses
+    /// <see cref="RandomGenerators.RejectionRandom"/> by default.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Shuffle<T>(this IList<T> il, int startIndex, int lastIndex)
+    {
+      if (il.IsValidIndex(startIndex) && il.IsValidIndexInternal(lastIndex))
+        ShuffleInternal(il, startIndex, lastIndex, RandomGenerators.RejectionRandom);
+    }
+
+    /// <summary>
+    /// A function for shuffling an <see cref="IList{T}"/>'s elements.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    /// <param name="generator">The <see cref="Randomization"/> generator to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Shuffle<T>(this IList<T> il, int startIndex, int lastIndex,
+                                   RandomGenerators generator)
+    {
+      if (il.IsValidIndex(startIndex) && il.IsValidIndexInternal(lastIndex))
+        ShuffleInternal(il, startIndex, lastIndex, generator);
+    }
+
+    /// <summary>
+    /// A function for shuffling an <see cref="IList{T}"/>'s elements.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    /// <param name="generator">The <see cref="Random"/> generator to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Shuffle<T>(this IList<T> il, int startIndex, int lastIndex,
+                                           Random generator)
+    {
+      if (il.IsValidIndex(startIndex) && il.IsValidIndexInternal(lastIndex))
+        ShuffleInternal(il, startIndex, lastIndex, generator);
+    }
+
+    /// <summary>
+    /// A function for shuffling an <see cref="IList{T}"/>'s elements.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    /// <param name="generator">The <see cref="RandomNumberGenerator"/> generator to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Shuffle<T>(this IList<T> il, int startIndex, int lastIndex,
+                                           RandomNumberGenerator generator)
+    {
+      if (il.IsValidIndex(startIndex) && il.IsValidIndexInternal(lastIndex))
+        ShuffleInternal(il, startIndex, lastIndex, generator);
+    }
+
+    /// <summary>
     /// An extension function for printing the contents of an <see cref="IList{T}"/> to a
     /// <see cref="string"/>. This can be useful for debugging purposes.
     /// </summary>
@@ -1161,6 +1225,65 @@ namespace CodeParadox.Tenor.Tools
         il[i] = value;
     }
 
+    /// <summary>
+    /// An internal function for shuffling an <see cref="IList{T}"/>'s elements.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    /// <param name="generator">The <see cref="Randomization"/> generator to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void ShuffleInternal<T>(this IList<T> il, int startIndex, int lastIndex,
+                                           RandomGenerators generator)
+    {
+      // For every element, swap at least once with another random index.
+      for (int i = startIndex; i < lastIndex; i++)
+      {
+        int randomIndex = Randomization.GetRandomIntIE(generator, i, lastIndex);
+        il.SwapValues(i, randomIndex);
+      }
+    }
+
+    /// <summary>
+    /// An internal function for shuffling an <see cref="IList{T}"/>'s elements.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    /// <param name="generator">The <see cref="Random"/> generator to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void ShuffleInternal<T>(this IList<T> il, int startIndex, int lastIndex,
+                                           Random generator)
+    {
+      // For every element, swap at least once with another random index.
+      for (int i = startIndex; i < lastIndex; i++)
+      {
+        int randomIndex = Randomization.GetRandomIntIE(generator, i, lastIndex);
+        il.SwapValues(i, randomIndex);
+      }
+    }
+
+    /// <summary>
+    /// An internal function for shuffling an <see cref="IList{T}"/>'s elements.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
+    /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
+    /// <param name="generator">The <see cref="RandomNumberGenerator"/> generator to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void ShuffleInternal<T>(this IList<T> il, int startIndex, int lastIndex,
+                                           RandomNumberGenerator generator)
+    {
+      // For every element, swap at least once with another random index.
+      for (int i = startIndex; i < lastIndex; i++)
+      {
+        int randomIndex = Randomization.GetRandomIntIE(generator, i, lastIndex);
+        il.SwapValues(i, randomIndex);
+      }
+    }
   }
   /************************************************************************************************/
 }

@@ -477,7 +477,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -501,7 +501,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -525,7 +525,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -549,7 +549,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -592,7 +592,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -618,7 +618,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -644,7 +644,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -670,7 +670,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -710,7 +710,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -736,7 +736,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -762,7 +762,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -788,7 +788,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<sbyte>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -832,7 +832,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -856,7 +856,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -880,7 +880,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -904,7 +904,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -947,7 +947,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -973,7 +973,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -999,7 +999,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1025,7 +1025,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1065,7 +1065,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1091,7 +1091,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1117,7 +1117,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -1143,7 +1143,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<byte>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -1187,7 +1187,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1211,7 +1211,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1235,7 +1235,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1259,7 +1259,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1302,7 +1302,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1328,7 +1328,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1354,7 +1354,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1380,7 +1380,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1420,7 +1420,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1446,7 +1446,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1472,7 +1472,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -1498,7 +1498,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<short>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -1542,7 +1542,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1566,7 +1566,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1590,7 +1590,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1614,7 +1614,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1657,7 +1657,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1683,7 +1683,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1709,7 +1709,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1735,7 +1735,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1776,7 +1776,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1803,7 +1803,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1830,7 +1830,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -1857,7 +1857,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ushort>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -1901,7 +1901,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1925,7 +1925,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -1949,7 +1949,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<int>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -1973,7 +1973,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<int>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2015,7 +2015,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2040,7 +2040,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2065,7 +2065,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<int>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2090,7 +2090,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<int>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2130,7 +2130,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2156,7 +2156,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2182,7 +2182,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2208,7 +2208,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<int>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2252,7 +2252,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2276,7 +2276,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2300,7 +2300,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<uint>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2324,7 +2324,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<uint>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2367,7 +2367,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2393,7 +2393,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2419,7 +2419,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<uint>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2445,7 +2445,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<uint>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2485,7 +2485,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2511,7 +2511,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2537,7 +2537,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2563,7 +2563,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<uint>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2607,7 +2607,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2631,7 +2631,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2655,7 +2655,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<long>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2679,7 +2679,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<long>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2721,7 +2721,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2747,7 +2747,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2773,7 +2773,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<long>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2799,7 +2799,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<long>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2839,7 +2839,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2865,7 +2865,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2891,7 +2891,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -2917,7 +2917,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<long>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -2961,7 +2961,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -2985,7 +2985,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3009,7 +3009,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<ulong>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3033,7 +3033,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<ulong>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -3075,7 +3075,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3101,7 +3101,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3127,7 +3127,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<ulong>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3153,7 +3153,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<ulong>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -3193,7 +3193,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3219,7 +3219,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3245,7 +3245,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3271,7 +3271,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<ulong>(minValue, maxValue, true);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -3377,7 +3377,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3404,7 +3404,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3431,7 +3431,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3460,7 +3460,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -3494,7 +3494,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3526,7 +3526,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3558,7 +3558,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3592,7 +3592,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -3705,7 +3705,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3734,7 +3734,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3763,7 +3763,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3794,7 +3794,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -3829,7 +3829,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3862,7 +3862,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -3895,7 +3895,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -3930,7 +3930,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -4044,7 +4044,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4074,7 +4074,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4104,7 +4104,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4136,7 +4136,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -4172,7 +4172,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4206,7 +4206,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<float>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4240,7 +4240,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4276,7 +4276,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<float>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4385,7 +4385,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4412,7 +4412,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4439,7 +4439,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4468,7 +4468,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -4502,7 +4502,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4534,7 +4534,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4566,7 +4566,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4600,7 +4600,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -4713,7 +4713,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4742,7 +4742,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4771,7 +4771,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4802,7 +4802,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -4837,7 +4837,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4870,7 +4870,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -4903,7 +4903,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -4938,7 +4938,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -5052,7 +5052,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5082,7 +5082,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5112,7 +5112,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -5144,7 +5144,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -5180,7 +5180,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5214,7 +5214,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<double>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5248,7 +5248,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -5284,7 +5284,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(rules), "Passed-in adjustment rules were null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<double>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -5393,7 +5393,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<decimal>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5418,7 +5418,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<decimal>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5442,7 +5442,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<decimal>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -5468,7 +5468,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<decimal>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -5578,7 +5578,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<decimal>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5604,7 +5604,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<decimal>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5630,7 +5630,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<decimal>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -5658,7 +5658,7 @@ namespace CodeParadox.Tenor.Tools
         throw new ArgumentNullException(nameof(random), "Passed-in Random generator was null.");
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<decimal>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;
@@ -5751,7 +5751,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<decimal>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5778,7 +5778,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than the max.
       if (minValue > maxValue)
-        throw new MinMaxException(minValue, maxValue, true);
+        throw new MinMaxException<decimal>(minValue, maxValue, true);
       // Return min immediately if the range is equal.
       if (minValue == maxValue)
         return minValue;
@@ -5805,7 +5805,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<decimal>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue == maxValue - 1)
         return minValue;
@@ -5834,7 +5834,7 @@ namespace CodeParadox.Tenor.Tools
     {
       // Throw an error if the min is greater than or equal to the max.
       if (minValue >= maxValue)
-        throw new MinMaxException(minValue, maxValue, false);
+        throw new MinMaxException<decimal>(minValue, maxValue, false);
       // Return min immediately if the range, after adjustment, is equal.
       if (minValue + 1 == maxValue)
         return minValue;

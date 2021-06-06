@@ -3,7 +3,7 @@
 \file   IClamp.cs
 \author Craig Williams
 \par    Last Updated
-        2021-05-30
+        2021-06-05
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -15,12 +15,12 @@
 \par References
 */
 /**************************************************************************************************/
-namespace CodeParadox.Tenor
+namespace CodeParadox.Tenor.Math
 {
   /************************************************************************************************/
   /// <summary>
-  /// An interface to give a type the ability to clamp values within itself. Use in conjunction
-  /// with the Clamp functions in the <see cref="Tools.Maths"/> tools.
+  /// An <see langword="interface"/> to give a type the ability to clamp values within itself. Use
+  /// in conjunction with the Clamp functions in the <see cref="Tools.Maths"/> tools.
   /// </summary>
   /// <typeparam name="T">The type to clamp. This is the inheriting type.</typeparam>
   public interface IClamp<T> where T : IClamp<T>

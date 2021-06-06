@@ -17,6 +17,7 @@
 */
 /**************************************************************************************************/
 
+using CodeParadox.Tenor.Math;
 using System;
 using System.Numerics;
 

@@ -699,13 +699,14 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Matrix3x2 LerpValue(Matrix3x2 a, Matrix3x2 b, float t)
     {
+      t = Maths.ClampII(t, 0, 1);
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpValue(a.M11, b.M11, t);
-      a.M12 = LerpValue(a.M12, b.M12, t);
-      a.M21 = LerpValue(a.M21, b.M21, t);
-      a.M22 = LerpValue(a.M22, b.M22, t);
-      a.M31 = LerpValue(a.M31, b.M31, t);
-      a.M32 = LerpValue(a.M32, b.M32, t);
+      a.M11 = a.M11 + (b.M11 - a.M11) * t;
+      a.M12 = a.M12 + (b.M12 - a.M12) * t;
+      a.M21 = a.M21 + (b.M21 - a.M21) * t;
+      a.M22 = a.M22 + (b.M22 - a.M22) * t;
+      a.M31 = a.M31 + (b.M31 - a.M31) * t;
+      a.M32 = a.M32 + (b.M32 - a.M32) * t;
       return a;
     }
 
@@ -718,13 +719,14 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Matrix3x2 LerpValue(Matrix3x2 a, Matrix3x2 b, double t)
     {
+      t = Maths.ClampII(t, 0, 1);
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpValue(a.M11, b.M11, t);
-      a.M12 = LerpValue(a.M12, b.M12, t);
-      a.M21 = LerpValue(a.M21, b.M21, t);
-      a.M22 = LerpValue(a.M22, b.M22, t);
-      a.M31 = LerpValue(a.M31, b.M31, t);
-      a.M32 = LerpValue(a.M32, b.M32, t);
+      a.M11 = (float)(a.M11 + (b.M11 - a.M11) * t);
+      a.M12 = (float)(a.M12 + (b.M12 - a.M12) * t);
+      a.M21 = (float)(a.M21 + (b.M21 - a.M21) * t);
+      a.M22 = (float)(a.M22 + (b.M22 - a.M22) * t);
+      a.M31 = (float)(a.M31 + (b.M31 - a.M31) * t);
+      a.M32 = (float)(a.M32 + (b.M32 - a.M32) * t);
       return a;
     }
 
@@ -739,12 +741,12 @@ namespace CodeParadox.Tenor.Tools
     public static Matrix3x2 LerpUnclamped(Matrix3x2 a, Matrix3x2 b, float t)
     {
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpUnclamped(a.M11, b.M11, t);
-      a.M12 = LerpUnclamped(a.M12, b.M12, t);
-      a.M21 = LerpUnclamped(a.M21, b.M21, t);
-      a.M22 = LerpUnclamped(a.M22, b.M22, t);
-      a.M31 = LerpUnclamped(a.M31, b.M31, t);
-      a.M32 = LerpUnclamped(a.M32, b.M32, t);
+      a.M11 = a.M11 + (b.M11 - a.M11) * t;
+      a.M12 = a.M12 + (b.M12 - a.M12) * t;
+      a.M21 = a.M21 + (b.M21 - a.M21) * t;
+      a.M22 = a.M22 + (b.M22 - a.M22) * t;
+      a.M31 = a.M31 + (b.M31 - a.M31) * t;
+      a.M32 = a.M32 + (b.M32 - a.M32) * t;
       return a;
     }
 
@@ -759,12 +761,12 @@ namespace CodeParadox.Tenor.Tools
     public static Matrix3x2 LerpUnclamped(Matrix3x2 a, Matrix3x2 b, double t)
     {
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpUnclamped(a.M11, b.M11, t);
-      a.M12 = LerpUnclamped(a.M12, b.M12, t);
-      a.M21 = LerpUnclamped(a.M21, b.M21, t);
-      a.M22 = LerpUnclamped(a.M22, b.M22, t);
-      a.M31 = LerpUnclamped(a.M31, b.M31, t);
-      a.M32 = LerpUnclamped(a.M32, b.M32, t);
+      a.M11 = (float)(a.M11 + (b.M11 - a.M11) * t);
+      a.M12 = (float)(a.M12 + (b.M12 - a.M12) * t);
+      a.M21 = (float)(a.M21 + (b.M21 - a.M21) * t);
+      a.M22 = (float)(a.M22 + (b.M22 - a.M22) * t);
+      a.M31 = (float)(a.M31 + (b.M31 - a.M31) * t);
+      a.M32 = (float)(a.M32 + (b.M32 - a.M32) * t);
       return a;
     }
 
@@ -777,23 +779,24 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Matrix4x4 LerpValue(Matrix4x4 a, Matrix4x4 b, float t)
     {
+      t = Maths.ClampII(t, 0, 1);
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpValue(a.M11, b.M11, t);
-      a.M12 = LerpValue(a.M12, b.M12, t);
-      a.M13 = LerpValue(a.M13, b.M13, t);
-      a.M14 = LerpValue(a.M14, b.M14, t);
-      a.M21 = LerpValue(a.M21, b.M21, t);
-      a.M22 = LerpValue(a.M22, b.M22, t);
-      a.M23 = LerpValue(a.M23, b.M23, t);
-      a.M24 = LerpValue(a.M24, b.M24, t);
-      a.M31 = LerpValue(a.M31, b.M31, t);
-      a.M32 = LerpValue(a.M32, b.M32, t);
-      a.M33 = LerpValue(a.M33, b.M33, t);
-      a.M34 = LerpValue(a.M34, b.M34, t);
-      a.M41 = LerpValue(a.M41, b.M41, t);
-      a.M42 = LerpValue(a.M42, b.M42, t);
-      a.M43 = LerpValue(a.M43, b.M43, t);
-      a.M44 = LerpValue(a.M44, b.M44, t);
+      a.M11 = a.M11 + (b.M11 - a.M11) * t;
+      a.M12 = a.M12 + (b.M12 - a.M12) * t;
+      a.M13 = a.M13 + (b.M13 - a.M13) * t;
+      a.M14 = a.M14 + (b.M14 - a.M14) * t;
+      a.M21 = a.M21 + (b.M21 - a.M21) * t;
+      a.M22 = a.M22 + (b.M22 - a.M22) * t;
+      a.M23 = a.M23 + (b.M23 - a.M23) * t;
+      a.M24 = a.M24 + (b.M24 - a.M24) * t;
+      a.M31 = a.M31 + (b.M31 - a.M31) * t;
+      a.M32 = a.M32 + (b.M32 - a.M32) * t;
+      a.M33 = a.M33 + (b.M33 - a.M33) * t;
+      a.M34 = a.M34 + (b.M34 - a.M34) * t;
+      a.M41 = a.M41 + (b.M41 - a.M41) * t;
+      a.M42 = a.M42 + (b.M42 - a.M42) * t;
+      a.M43 = a.M43 + (b.M43 - a.M43) * t;
+      a.M44 = a.M44 + (b.M44 - a.M44) * t;
       return a;
     }
 
@@ -806,23 +809,24 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns the interpolated value.</returns>
     public static Matrix4x4 LerpValue(Matrix4x4 a, Matrix4x4 b, double t)
     {
+      t = Maths.ClampII(t, 0, 1);
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpValue(a.M11, b.M11, t);
-      a.M12 = LerpValue(a.M12, b.M12, t);
-      a.M13 = LerpValue(a.M13, b.M13, t);
-      a.M14 = LerpValue(a.M14, b.M14, t);
-      a.M21 = LerpValue(a.M21, b.M21, t);
-      a.M22 = LerpValue(a.M22, b.M22, t);
-      a.M23 = LerpValue(a.M23, b.M23, t);
-      a.M24 = LerpValue(a.M24, b.M24, t);
-      a.M31 = LerpValue(a.M31, b.M31, t);
-      a.M32 = LerpValue(a.M32, b.M32, t);
-      a.M33 = LerpValue(a.M33, b.M33, t);
-      a.M34 = LerpValue(a.M34, b.M34, t);
-      a.M41 = LerpValue(a.M41, b.M41, t);
-      a.M42 = LerpValue(a.M42, b.M42, t);
-      a.M43 = LerpValue(a.M43, b.M43, t);
-      a.M44 = LerpValue(a.M44, b.M44, t);
+      a.M11 = (float)(a.M11 + (b.M11 - a.M11) * t);
+      a.M12 = (float)(a.M12 + (b.M12 - a.M12) * t);
+      a.M13 = (float)(a.M13 + (b.M13 - a.M13) * t);
+      a.M14 = (float)(a.M14 + (b.M14 - a.M14) * t);
+      a.M21 = (float)(a.M21 + (b.M21 - a.M21) * t);
+      a.M22 = (float)(a.M22 + (b.M22 - a.M22) * t);
+      a.M23 = (float)(a.M23 + (b.M23 - a.M23) * t);
+      a.M24 = (float)(a.M24 + (b.M24 - a.M24) * t);
+      a.M31 = (float)(a.M31 + (b.M31 - a.M31) * t);
+      a.M32 = (float)(a.M32 + (b.M32 - a.M32) * t);
+      a.M33 = (float)(a.M33 + (b.M33 - a.M33) * t);
+      a.M34 = (float)(a.M34 + (b.M34 - a.M34) * t);
+      a.M41 = (float)(a.M41 + (b.M41 - a.M41) * t);
+      a.M42 = (float)(a.M42 + (b.M42 - a.M42) * t);
+      a.M43 = (float)(a.M43 + (b.M43 - a.M43) * t);
+      a.M44 = (float)(a.M44 + (b.M44 - a.M44) * t);
       return a;
     }
 
@@ -837,22 +841,22 @@ namespace CodeParadox.Tenor.Tools
     public static Matrix4x4 LerpUnclamped(Matrix4x4 a, Matrix4x4 b, float t)
     {
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpUnclamped(a.M11, b.M11, t);
-      a.M12 = LerpUnclamped(a.M12, b.M12, t);
-      a.M13 = LerpUnclamped(a.M13, b.M13, t);
-      a.M14 = LerpUnclamped(a.M14, b.M14, t);
-      a.M21 = LerpUnclamped(a.M21, b.M21, t);
-      a.M22 = LerpUnclamped(a.M22, b.M22, t);
-      a.M23 = LerpUnclamped(a.M23, b.M23, t);
-      a.M24 = LerpUnclamped(a.M24, b.M24, t);
-      a.M31 = LerpUnclamped(a.M31, b.M31, t);
-      a.M32 = LerpUnclamped(a.M32, b.M32, t);
-      a.M33 = LerpUnclamped(a.M33, b.M33, t);
-      a.M34 = LerpUnclamped(a.M34, b.M34, t);
-      a.M41 = LerpUnclamped(a.M41, b.M41, t);
-      a.M42 = LerpUnclamped(a.M42, b.M42, t);
-      a.M43 = LerpUnclamped(a.M43, b.M43, t);
-      a.M44 = LerpUnclamped(a.M44, b.M44, t);
+      a.M11 = a.M11 + (b.M11 - a.M11) * t;
+      a.M12 = a.M12 + (b.M12 - a.M12) * t;
+      a.M13 = a.M13 + (b.M13 - a.M13) * t;
+      a.M14 = a.M14 + (b.M14 - a.M14) * t;
+      a.M21 = a.M21 + (b.M21 - a.M21) * t;
+      a.M22 = a.M22 + (b.M22 - a.M22) * t;
+      a.M23 = a.M23 + (b.M23 - a.M23) * t;
+      a.M24 = a.M24 + (b.M24 - a.M24) * t;
+      a.M31 = a.M31 + (b.M31 - a.M31) * t;
+      a.M32 = a.M32 + (b.M32 - a.M32) * t;
+      a.M33 = a.M33 + (b.M33 - a.M33) * t;
+      a.M34 = a.M34 + (b.M34 - a.M34) * t;
+      a.M41 = a.M41 + (b.M41 - a.M41) * t;
+      a.M42 = a.M42 + (b.M42 - a.M42) * t;
+      a.M43 = a.M43 + (b.M43 - a.M43) * t;
+      a.M44 = a.M44 + (b.M44 - a.M44) * t;
       return a;
     }
 
@@ -867,22 +871,22 @@ namespace CodeParadox.Tenor.Tools
     public static Matrix4x4 LerpUnclamped(Matrix4x4 a, Matrix4x4 b, double t)
     {
       // Each value has to be lerped individually, to avoid a dot product.
-      a.M11 = LerpUnclamped(a.M11, b.M11, t);
-      a.M12 = LerpUnclamped(a.M12, b.M12, t);
-      a.M13 = LerpUnclamped(a.M13, b.M13, t);
-      a.M14 = LerpUnclamped(a.M14, b.M14, t);
-      a.M21 = LerpUnclamped(a.M21, b.M21, t);
-      a.M22 = LerpUnclamped(a.M22, b.M22, t);
-      a.M23 = LerpUnclamped(a.M23, b.M23, t);
-      a.M24 = LerpUnclamped(a.M24, b.M24, t);
-      a.M31 = LerpUnclamped(a.M31, b.M31, t);
-      a.M32 = LerpUnclamped(a.M32, b.M32, t);
-      a.M33 = LerpUnclamped(a.M33, b.M33, t);
-      a.M34 = LerpUnclamped(a.M34, b.M34, t);
-      a.M41 = LerpUnclamped(a.M41, b.M41, t);
-      a.M42 = LerpUnclamped(a.M42, b.M42, t);
-      a.M43 = LerpUnclamped(a.M43, b.M43, t);
-      a.M44 = LerpUnclamped(a.M44, b.M44, t);
+      a.M11 = (float)(a.M11 + (b.M11 - a.M11) * t);
+      a.M12 = (float)(a.M12 + (b.M12 - a.M12) * t);
+      a.M13 = (float)(a.M13 + (b.M13 - a.M13) * t);
+      a.M14 = (float)(a.M14 + (b.M14 - a.M14) * t);
+      a.M21 = (float)(a.M21 + (b.M21 - a.M21) * t);
+      a.M22 = (float)(a.M22 + (b.M22 - a.M22) * t);
+      a.M23 = (float)(a.M23 + (b.M23 - a.M23) * t);
+      a.M24 = (float)(a.M24 + (b.M24 - a.M24) * t);
+      a.M31 = (float)(a.M31 + (b.M31 - a.M31) * t);
+      a.M32 = (float)(a.M32 + (b.M32 - a.M32) * t);
+      a.M33 = (float)(a.M33 + (b.M33 - a.M33) * t);
+      a.M34 = (float)(a.M34 + (b.M34 - a.M34) * t);
+      a.M41 = (float)(a.M41 + (b.M41 - a.M41) * t);
+      a.M42 = (float)(a.M42 + (b.M42 - a.M42) * t);
+      a.M43 = (float)(a.M43 + (b.M43 - a.M43) * t);
+      a.M44 = (float)(a.M44 + (b.M44 - a.M44) * t);
       return a;
     }
 
