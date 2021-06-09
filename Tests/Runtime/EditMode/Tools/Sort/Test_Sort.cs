@@ -3,7 +3,7 @@
 \file   Test_Sort.cs
 \author Craig Williams
 \par    Last Updated
-        2021-06-05
+        2021-06-08
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -19,6 +19,8 @@
 using CodeParadox.Tenor.Tools;
 using System.Collections.Generic;
 using NUnit.Framework;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace CodeParadox.Tenor.Tests.Runtime.EditMode
 {
@@ -28,6 +30,9 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
   /// </summary>
   public class Test_Sort
   {
+    /// <summary>The <see cref="Comparison{T}"/> function used in these tests.</summary>
+    private readonly Comparison<int> compareTest = Sort.CompareMinToMax;
+
     /// <summary>
     /// A test for <see cref="Sort.IsSortedLinear{T}(IList{T}, System.Comparison{T})"/>
     /// and <see cref="Sort.IsSortedLinear{T}(IList{T}, System.Comparison{T}, int, int)"/>.
@@ -137,20 +142,166 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Sort.BogoSort{T}(IList{T}, System.Comparison{T}, int, int)"/>.
+    /// A test for <see cref="Sort.BubbleSort{T}(IList{T}, System.Comparison{T})"/>.
     /// </summary>
     /// <param name="size">The size of the array.</param>
-    /// <param name="min">The inclusive starting index to sort from.</param>
-    /// <param name="max">The exclusive last index to sort to.</param>
     [Test(TestOf = typeof(Sort))] [Timeout(20000)]
-    public void BogoSort_Partial_ReturnsSuccess([Random(10, 15, 5)] int size,
-                                                [Random(1, 8, 5)] int min,
-                                                [Random(8, 10, 5)] int max)
+    public void BubbleSort_Full_ReturnsSuccess([Random(30, 100, 5)] int size)
     {
-      int[] array = Generate.RandomNumberArray(size, 0, size); // Make a random array.
-      Sort.BogoSort(array, Sort.CompareMinToMax, min, max); // Sort the array.
-      // Assert the array is sorted.
-      Assert.IsTrue(array.IsSortedLinear(Sort.CompareMinToMax, min, max));
+      HandleSort(size, (a, c, s, l) => Sort.BubbleSort(a, c));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.BubbleSort{T}(IList{T}, System.Comparison{T}, int, int)"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void BubbleSort_Partial_ReturnsSuccess([Random(80, 100, 5)] int size,
+                                                  [Random(0, 40, 5)] int startIndex,
+                                                  [Random(50, 80, 5)] int lastIndex)
+    {
+      HandleSort(size, startIndex, lastIndex, (a, c, s, l) => Sort.BubbleSort(a, c, s, l));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.HeapSort{T}(IList{T}, System.Comparison{T})"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void HeapSort_Full_ReturnsSuccess([Random(30, 100, 5)] int size)
+    {
+      HandleSort(size, (a, c, s, l) => Sort.HeapSort(a, c));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.HeapSort{T}(IList{T}, System.Comparison{T}, int, int)"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void HeapSort_Partial_ReturnsSuccess([Random(80, 100, 5)] int size,
+                                                  [Random(0, 40, 5)] int startIndex,
+                                                  [Random(50, 80, 5)] int lastIndex)
+    {
+      HandleSort(size, startIndex, lastIndex, (a, c, s, l) => Sort.HeapSort(a, c, s, l));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.SelectionSort{T}(IList{T}, System.Comparison{T})"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void SelectionSort_Full_ReturnsSuccess([Random(30, 100, 5)] int size)
+    {
+      HandleSort(size, (a, c, s, l) => Sort.SelectionSort(a, c));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.SelectionSort{T}(IList{T}, System.Comparison{T}, int, int)"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void SelectionSort_Partial_ReturnsSuccess([Random(80, 100, 5)] int size,
+                                                     [Random(0, 40, 5)] int startIndex,
+                                                     [Random(50, 80, 5)] int lastIndex)
+    {
+      HandleSort(size, startIndex, lastIndex, (a, c, s, l) => Sort.SelectionSort(a, c, s, l));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.QuickSort{T}(IList{T}, System.Comparison{T})"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void QuickSort_Full_ReturnsSuccess([Random(30, 100, 5)] int size)
+    {
+      HandleSort(size, (a, c, s, l) => Sort.QuickSort(a, c));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.QuickSort{T}(IList{T}, System.Comparison{T}, int, int)"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void QuickSort_Partial_ReturnsSuccess([Random(80, 100, 5)] int size,
+                                                 [Random(0, 40, 5)] int startIndex,
+                                                 [Random(50, 80, 5)] int lastIndex)
+    {
+      HandleSort(size, startIndex, lastIndex, (a, c, s, l) => Sort.QuickSort(a, c, s, l));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.InsertionSort{T}(IList{T}, System.Comparison{T})"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void InsertionSort_Full_ReturnsSuccess([Random(30, 100, 5)] int size)
+    {
+      HandleSort(size, (a, c, s, l) => Sort.InsertionSort(a, c));
+    }
+
+    /// <summary>
+    /// A test for <see cref="Sort.InsertionSort{T}(IList{T}, System.Comparison{T}, int, int)"/>.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [Test(TestOf = typeof(Sort))] [Timeout(20000)]
+    public void InsertionSort_Partial_ReturnsSuccess([Random(80, 100, 5)] int size,
+                                                     [Random(0, 40, 5)] int startIndex,
+                                                     [Random(50, 80, 5)] int lastIndex)
+    {
+      HandleSort(size, startIndex, lastIndex, (a, c, s, l) => Sort.InsertionSort(a, c, s, l));
+    }
+
+    /// <summary>
+    /// A helper function for handling each sort test.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="sortFunc">The function that calls the type of sort to test. This takes
+    /// in the array <paramref name="size"/>, <see cref="compareTest"/> function,
+    /// 0 as a start index, and <paramref name="size"/> as the last index.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void HandleSort(int size, Action<int[], Comparison<int>, int, int> sortFunc)
+    {
+      HandleSort(size, 0, size, sortFunc);
+    }
+
+    /// <summary>
+    /// A helper function for handling each sort test.
+    /// </summary>
+    /// <param name="size">The size of the array.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    /// <param name="sortFunc">The function that calls the type of sort to test. This takes
+    /// in the array <paramref name="size"/>, <see cref="compareTest"/> function,
+    /// <paramref name="startIndex"/>, and <paramref name="lastIndex"/>.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void HandleSort(int size, int startIndex, int lastIndex,
+                            Action<int[], Comparison<int>, int, int> sortFunc)
+    {
+      // Make a random number array, along with a copy of its values.
+      int[] array = Generate.RandomNumberArray(size, 0, size);
+      int[] copy = array.ShallowCopy();
+
+      // Sort the array and assert that it was sorted.
+      sortFunc(array, compareTest, startIndex, lastIndex);
+      Assert.IsTrue(array.IsSortedLinear(compareTest, startIndex, lastIndex), array.Print());
+
+      // Make sure the starting elements were not affected.
+      for (int i = 0; i < startIndex; i++)
+        Assert.AreEqual(copy[i], array[i], $"Original: {copy[i]}, Sorted: {array[i]}");
+
+      // Make sure the ending elements were not affected.
+      for (int i = lastIndex; i < array.Length; i++)
+        Assert.AreEqual(copy[i], array[i], $"Original: {copy[i]}, Sorted: {array[i]}");
     }
   }
   /************************************************************************************************/

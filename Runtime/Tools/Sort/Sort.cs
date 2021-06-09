@@ -3,7 +3,7 @@
 \file   Sort.cs
 \author Craig Williams
 \par    Last Updated
-        2021-06-05
+        2021-06-08
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -13,10 +13,13 @@
 \par Bug List
 
 \par References
+  - https://www.geeksforgeeks.org/heap-sort/
+  - https://www.geeksforgeeks.org/iterative-quick-sort/
 */
 /**************************************************************************************************/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -172,6 +175,184 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function which uses a true Bogo Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <remarks>This algorithm is for educational purposes only. Never use this in 
+    /// production code.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void TrueBogoSort<T>(IList<T> il, Comparison<T> compare)
+    {
+      if (ParametersAreValid(il, compare))
+        TrueBogoSortInternal(il, compare, 0, il.Count);
+    }
+
+    /// <summary>
+    /// A function which uses a true Bogo Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    /// <remarks>This algorithm is for educational purposes only. Never use this in 
+    /// production code.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void TrueBogoSort<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                       int lastIndex)
+    {
+      if (ParametersAreValid(il, compare, startIndex, lastIndex))
+        TrueBogoSortInternal(il, compare, startIndex, lastIndex);
+    }
+
+    /// <summary>
+    /// A function which uses a Bubble Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void BubbleSort<T>(IList<T> il, Comparison<T> compare)
+    {
+      if (ParametersAreValid(il, compare))
+        BubbleSortInternal(il, compare, 0, il.Count);
+    }
+
+    /// <summary>
+    /// A function which uses a Bubble Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void BubbleSort<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                     int lastIndex)
+    {
+      if (ParametersAreValid(il, compare, startIndex, lastIndex))
+        BubbleSortInternal(il, compare, startIndex, lastIndex);
+    }
+
+    /// <summary>
+    /// A function which uses a Heap Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void HeapSort<T>(IList<T> il, Comparison<T> compare)
+    {
+      if (ParametersAreValid(il, compare))
+        HeapSortInternal(il, compare, 0, il.Count);
+    }
+
+    /// <summary>
+    /// A function which uses a Heap Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void HeapSort<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                   int lastIndex)
+    {
+      if (ParametersAreValid(il, compare, startIndex, lastIndex))
+        HeapSortInternal(il, compare, startIndex, lastIndex);
+    }
+
+    /// <summary>
+    /// A function which uses a Selection Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void SelectionSort<T>(IList<T> il, Comparison<T> compare)
+    {
+      if (ParametersAreValid(il, compare))
+        SelectionSortInternal(il, compare, 0, il.Count);
+    }
+
+    /// <summary>
+    /// A function which uses a Selection Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void SelectionSort<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                        int lastIndex)
+    {
+      if (ParametersAreValid(il, compare, startIndex, lastIndex))
+        SelectionSortInternal(il, compare, startIndex, lastIndex);
+    }
+
+    /// <summary>
+    /// A function which uses a Quick Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void QuickSort<T>(IList<T> il, Comparison<T> compare)
+    {
+      if (ParametersAreValid(il, compare))
+        QuickSortInternal(il, compare, 0, il.Count);
+    }
+
+    /// <summary>
+    /// A function which uses a Quick Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void QuickSort<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                    int lastIndex)
+    {
+      if (ParametersAreValid(il, compare, startIndex, lastIndex))
+        QuickSortInternal(il, compare, startIndex, lastIndex);
+    }
+
+    /// <summary>
+    /// A function which uses an Insertion Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void InsertionSort<T>(IList<T> il, Comparison<T> compare)
+    {
+      if (ParametersAreValid(il, compare))
+        InsertionSortInternal(il, compare, 0, il.Count);
+    }
+
+    /// <summary>
+    /// A function which uses an Insertion Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void InsertionSort<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                        int lastIndex)
+    {
+      if (ParametersAreValid(il, compare, startIndex, lastIndex))
+        InsertionSortInternal(il, compare, startIndex, lastIndex);
+    }
+
+    /// <summary>
     /// An internal function to check if some <see cref="IList{T}"/> is sorted, based on some
     /// <see cref="Comparison{T}"/> function. This uses a Linear Method.
     /// </summary>
@@ -192,7 +373,7 @@ namespace CodeParadox.Tenor.Tools
         if (compare(il[i - 1], il[i]) > 0)
           return false;
       }
-
+        
       return true; // The ilist is sorted.
     }
 
@@ -332,6 +513,291 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// An internal function which uses a true Bogo Sort algorithm to sort some
+    /// <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    /// <remarks>This algorithm is for educational purposes only. Never use this in 
+    /// production code.</remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void TrueBogoSortInternal<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                               int lastIndex)
+    {
+      while (!IsSortedLinearInternal(il, compare, startIndex, lastIndex))
+        il.Shuffle(startIndex, lastIndex);
+    }
+
+    /// <summary>
+    /// An internal function which uses a Bubble Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void BubbleSortInternal<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                              int lastIndex)
+    {
+      // Create two temporary values for holding onto data.
+      T tempA;
+      T tempB;
+
+      // Swap for the entire array section.
+      for (int i = startIndex; i < lastIndex - 1; i++)
+      {
+        bool hasSwapped = false; // A toggle for if any swaps were done.
+        tempA = il[startIndex]; // Get the first comparison value.
+        int innerLastIndex = lastIndex - (i - startIndex);
+
+        // Swap for the remainder of the array section.
+        for (int j = startIndex + 1; j < innerLastIndex; j++)
+        {
+          tempB = il[j]; // Get the second comparison value.
+
+          // If the values are not sorted, swap adjacent values.
+          if (compare(tempA, tempB) > 0)
+          {
+            il.SwapValues(j, j - 1);
+            hasSwapped = true;
+          }
+          else
+            tempA = tempB; // Otherwise, replace the first comparison to make a new pivot.
+        }
+
+        // If nothing was swapped, the array is in order, and the loop can be stopped.
+        if (!hasSwapped)
+          break;
+      }
+    }
+
+    /// <summary>
+    /// An internal function which uses a Heap Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void HeapSortInternal<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                            int lastIndex)
+    {
+      int lastSortedIndex = lastIndex - startIndex; // Get the last valid index to sort.
+      int heapStart = startIndex + (lastSortedIndex - 2) / 2; // Get the starting heap index.
+      
+      // Perform the loop backwards to begin creating heaps.
+      for (int i = heapStart; i >= startIndex; i--)
+        HeapSortBuildHeap(il, compare, startIndex, lastIndex, i);
+
+      // Swap values within the array section.
+      for (int i = 1; i < lastSortedIndex; i++)
+      {
+        int highPartition = lastIndex - i; // The highest index to go to in the heap.
+        il.SwapValues(startIndex, highPartition); // Swap the values in the partition.
+        HeapSortBuildHeap(il, compare, startIndex, highPartition, startIndex); // Update the heap.
+      }
+    }
+
+    /// <summary>
+    /// An internal function for building a heap for use with the Heap Sort Algorithm.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    /// <param name="pivot">The pivot index to create the partition around.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void HeapSortBuildHeap<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                             int lastIndex, int pivot)
+    {
+      T pivotItem = il[pivot]; // Get the item that represents the pivot.
+
+      // Continue until the heap is built.
+      while (true)
+      {
+        // Create two pivot indexes around the given pivot.
+        int pivotLow = startIndex + (pivot - startIndex) * 2 + 1;
+        int pivotHigh = pivotLow + 1;
+
+        // If past the max, break immediately.
+        if (pivotLow >= lastIndex)
+          break;
+
+        T itemLeft = il[pivotLow]; // Get the first compared value.
+
+        // If the higher pivot is valid, compare with a second value.
+        if (pivotHigh < lastIndex)
+        {
+          T itemRight = il[pivotHigh]; // Get the second compared value.
+
+          // If the values are in order, update the low item and pivot.
+          if (compare(itemLeft, itemRight) <= 0)
+          {
+            pivotLow = pivotHigh;
+            itemLeft = itemRight;
+          }
+        }
+
+        // If the pivot is in order with the left, lower item, then this can break.
+        if (compare(itemLeft, pivotItem) <= 0)
+          break;
+
+        // Otherwise, swap the values, and update the main pivot.
+        il.SwapValues(pivot, pivotLow);
+        pivot = pivotLow;
+      }
+    }
+
+    /// <summary>
+    /// An internal function which uses a Selection Sort algorithm to sort some
+    /// <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void SelectionSortInternal<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                                 int lastIndex)
+    {
+      // Loop through the section of the ilist to be sorted.
+      for (int i = startIndex; i < lastIndex - 1; i++)
+      {
+        int minIndex = i; // The index containing the smallest value.
+
+        // For the remaining indexes, continuously compare to get the smallest value.
+        for (int j = i; j < lastIndex; j++)
+        {
+          if (compare(il[minIndex], il[j]) > 0)
+            minIndex = j;
+        }
+
+        il.SwapValues(minIndex, i); // Swap the minimum index with the current index.
+      }
+    }
+
+    /// <summary>
+    /// An internal function which uses a Quick Sort algorithm to sort some <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void QuickSortInternal<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                             int lastIndex)
+    {
+      int[] stack = new int[lastIndex - startIndex]; // Create a stack of the swaps required.
+      int stackTopIndex = -1; // The top index of the stack.
+      int stackLow = startIndex; // The low value of the stack.
+      int stackHigh = lastIndex - 1; // The high value of the stack.
+
+      // Initialize the stack by pushing on the low and high values.
+      stack[++stackTopIndex] = stackLow;
+      stack[++stackTopIndex] = stackHigh;
+
+      // Continue removing from the stack until all swaps are finished.
+      while (stackTopIndex >= 0)
+      {
+        // Remove the current high and low values from the stack.
+        stackHigh = stack[stackTopIndex--];
+        stackLow = stack[stackTopIndex--];
+
+        // Find a pivot value at random and set it to its sorted position.
+        int pivot = QuickSortGetPivot(il, compare, stackLow, stackHigh);
+
+        // If there are elements to the left of the pivot, add them to the stack.
+        if (pivot - 1 > stackLow)
+        {
+          stack[++stackTopIndex] = stackLow;
+          stack[++stackTopIndex] = pivot - 1;
+        }
+
+        // If there are elements to the right of the pivot, add them to the stack.
+        if (pivot + 1 < stackHigh)
+        {
+          stack[++stackTopIndex] = pivot + 1;
+          stack[++stackTopIndex] = stackHigh;
+        }
+      }
+    }
+
+    /// <summary>
+    /// An internal function for finding a pivot position when using the Quick Sort Algorithm.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int QuickSortGetPivot<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                            int lastIndex)
+    {
+      // Generate a random pivot for better accuracy and speed.
+      int randomPivot = Randomization.GetRandomIntII(RandomGenerators.RejectionRandom, startIndex, lastIndex);
+      il.SwapValues(randomPivot, lastIndex);
+      T pivotItem = il[lastIndex];
+
+      int pivotIndex = startIndex - 1; // Get a starting index.
+
+      // Loop through the entire ilist section.
+      for (int i = startIndex; i < lastIndex; i++)
+      {
+        // If the pivot is not in order, swap the value and increment the pivot.
+        if (compare(pivotItem, il[i]) > 0)
+        {
+          pivotIndex++;
+          il.SwapValues(pivotIndex, i);
+        }
+      }
+
+      // Make one final swap with the highest index, before returning.
+      pivotIndex++;
+      il.SwapValues(pivotIndex, lastIndex);
+      return pivotIndex;
+    }
+
+    /// <summary>
+    /// An internal function which uses an Insertion Sort algorithm to sort some
+    /// <see cref="IList{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to sort.</param>
+    /// <param name="compare">The <see cref="Comparison{T}"/> function to use.</param>
+    /// <param name="startIndex">The inclusive starting index to sort from.</param>
+    /// <param name="lastIndex">The exclusive last index to sort to.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void InsertionSortInternal<T>(IList<T> il, Comparison<T> compare, int startIndex,
+                                                 int lastIndex)
+    {
+      for (int i = startIndex + 1; i < lastIndex; i++)
+      {
+        T currentKey = il[i]; // Get a key item to compare everything to.
+        int j = i - 1; // Make an indexer for moving elements ahead.
+
+        for (; j >= startIndex; j--)
+        {
+          // If the current elements are in order with the key, break early.
+          if (compare(il[j], currentKey) < 0)
+            break;
+
+          il[j + 1] = il[j]; // Shift elements one ahead of their current position.
+        }
+
+        il[j + 1] = currentKey; // Place the key back into the ilist, regardless of the break.
+      }
+    }
+
+    /// <summary>
     /// A helper function for checking if the typical parameters for a <see cref="Sort"/> function
     /// are valid.
     /// </summary>
@@ -359,8 +825,9 @@ namespace CodeParadox.Tenor.Tools
     private static bool ParametersAreValid<T>(IList<T> il, Comparison<T> compare, int startIndex,
                                               int lastIndex)
     {
-      return il.IsNotEmptyOrNull() && compare != null && Maths.InRangeIE(startIndex, 0, lastIndex) &&
-             Maths.InRangeII(lastIndex, startIndex, il.Count);
+      return ParametersAreValid(il, compare)
+             && Maths.InRangeIE(startIndex, 0, lastIndex - 1)
+             && Maths.InRangeII(lastIndex, startIndex, il.Count);
     }
   }
   /************************************************************************************************/

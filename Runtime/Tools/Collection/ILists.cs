@@ -3,7 +3,7 @@
 \file   ILists.cs
 \author Craig Williams
 \par    Last Updated
-        2021-05-20
+        2021-06-08
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Linq;
 
 namespace CodeParadox.Tenor.Tools
 {
@@ -913,6 +914,19 @@ namespace CodeParadox.Tenor.Tools
     /// </summary>
     /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
     /// <param name="il">The <see cref="IList{T}"/> to check.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Shuffle<T>(this IList<T> il)
+    {
+      if (il.IsNotEmptyOrNull())
+        ShuffleInternal(il, 0, il.Count, RandomGenerators.RejectionRandom);
+    }
+
+    /// <summary>
+    /// A function for shuffling an <see cref="IList{T}"/>'s elements. This uses
+    /// <see cref="RandomGenerators.RejectionRandom"/> by default.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="il"/>.</typeparam>
+    /// <param name="il">The <see cref="IList{T}"/> to check.</param>
     /// <param name="startIndex">The starting index to handle replacing from, inclusive</param>
     /// <param name="lastIndex">The last index to handle replacing from, exclusive.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -948,7 +962,7 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="generator">The <see cref="Random"/> generator to use.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Shuffle<T>(this IList<T> il, int startIndex, int lastIndex,
-                                           Random generator)
+                                  Random generator)
     {
       if (il.IsValidIndex(startIndex) && il.IsValidIndexInternal(lastIndex))
         ShuffleInternal(il, startIndex, lastIndex, generator);
@@ -964,10 +978,37 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="generator">The <see cref="RandomNumberGenerator"/> generator to use.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Shuffle<T>(this IList<T> il, int startIndex, int lastIndex,
-                                           RandomNumberGenerator generator)
+                                  RandomNumberGenerator generator)
     {
       if (il.IsValidIndex(startIndex) && il.IsValidIndexInternal(lastIndex))
         ShuffleInternal(il, startIndex, lastIndex, generator);
+    }
+
+    /// <summary>
+    /// A function for creating a shallow copy of a given <paramref name="array"/>.
+    /// </summary>
+    /// <typeparam name="T">The type stored in the <paramref name="array"/>.</typeparam>
+    /// <param name="array">The array to make a copy of.</param>
+    /// <returns>Returns the copied array. If the <paramref name="array"/> is empty or
+    /// <see langword="null"/>, returns <see langword="null"/>.</returns>
+    /// <remarks>As a shallow copy, new values are not created, if the values are reference
+    /// types.</remarks>
+    public static T[] ShallowCopy<T>(this T[] array)
+    {
+      // Make sure the array is not null.
+      if (array.IsNotEmptyOrNull())
+      {
+        int length = array.Length; // Get the length.
+        T[] copy = new T[length]; // Make a new array with the right length.
+
+        // Copy every value.
+        for (int i = 0; i < length; i++)
+          copy[i] = array[i];
+
+        return copy; // Return the copy.
+      }
+
+      return null; // Return null if the array is null or empty.
     }
 
     /// <summary>
