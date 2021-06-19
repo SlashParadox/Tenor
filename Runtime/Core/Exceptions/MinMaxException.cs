@@ -38,7 +38,7 @@ namespace CodeParadox.Tenor.Exceptions
     { }
 
     /// <summary>
-    /// A constructor for a <see cref="MinMaxException"/>, which will create a formatted
+    /// A constructor for a <see cref="MinMaxException{T}"/>, which will create a formatted
     /// string based on the values that were passed.
     /// </summary>
     /// <param name="givenMin">The minimum value passed in.</param>
@@ -49,14 +49,14 @@ namespace CodeParadox.Tenor.Exceptions
       : base(BuildMessage(givenMin, givenMax, allowedEqual)) { }
 
     /// <summary>
-    /// A helper function to give more context to a <see cref="MinMaxException"/> when one is
+    /// A helper function to give more context to a <see cref="MinMaxException{T}"/> when one is
     /// thrown. This should never be accessed outside of constructors.
     /// </summary>
     /// <param name="givenMin">The minimum value passed in.</param>
     /// <param name="givenMax">The maximum value passed in.</param>
     /// <param name="allowedEqual">A bool determining if <paramref name="givenMin"/>
     /// was allowed to equal <paramref name="givenMax"/>.</param>
-    /// <returns>Returns a formatted message for a <see cref="MinMaxException"/>.</returns>
+    /// <returns>Returns a formatted message for a <see cref="MinMaxException{T}"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static string BuildMessage(string givenMin, string givenMax, bool allowedEqual)
     {
@@ -70,17 +70,16 @@ namespace CodeParadox.Tenor.Exceptions
     }
 
     /// <summary>
-    /// A helper function to give more context to a <see cref="MinMaxException"/> when one is
+    /// A helper function to give more context to a <see cref="MinMaxException{T}"/> when one is
     /// thrown. This should never be accessed outside of constructors.
     /// </summary>
-    /// <typeparam name="T">The type of the min max. This should be a numeric type.</typeparam>
     /// <param name="givenMin">The minimum value passed in.</param>
     /// <param name="givenMax">The maximum value passed in.</param>
     /// <param name="allowedEqual">A bool determining if <paramref name="givenMin"/>
     /// was allowed to equal <paramref name="givenMax"/>.</param>
-    /// <returns>Returns a formatted message for a <see cref="MinMaxException"/>.</returns>
+    /// <returns>Returns a formatted message for a <see cref="MinMaxException{T}"/>.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static string BuildMessage<T>(T givenMin, T givenMax, bool allowedEqual)
+    private static string BuildMessage(T givenMin, T givenMax, bool allowedEqual)
     {
       return BuildMessage(givenMin.ToString(), givenMax.ToString(), allowedEqual);
     }
