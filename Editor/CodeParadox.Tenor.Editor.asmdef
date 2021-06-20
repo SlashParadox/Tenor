@@ -1,7 +1,9 @@
 {
     "name": "CodeParadox.Tenor.Editor",
     "rootNamespace": "CodeParadox.Tenor.UnityEditor",
-    "references": [],
+    "references": [
+        "CodeParadox.Tenor.Runtime"
+    ],
     "includePlatforms": [
         "Editor"
     ],
@@ -12,7 +14,9 @@
         "nunit.framework.dll"
     ],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "TENOR_INITIALIZE_TASKS_FOR_UNITY"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

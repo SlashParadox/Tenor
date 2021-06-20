@@ -11,6 +11,8 @@
   A file for a class representing a debug logger that can be extended into multiple loggers.
 
 \par Bug List
+  CRITICAL
+    * In Unity, the ErrorLog functionality does not work. This must be fixed by Unity.
 
 \par References
 */
@@ -21,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text;
 
 namespace CodeParadox.Tenor.Diagnostics
@@ -64,7 +67,9 @@ namespace CodeParadox.Tenor.Diagnostics
     /// <summary>The default <see cref="DateTime"/> formatting for all <see cref="Log"/>s.</summary>
     public static string GlobalDateFormat
       { get { return globalFilePath.DateFormat; } set { globalFilePath.DateFormat = value; } }
-
+    /// <summary>The mode for the <see cref="errorLog"/>, and how it handles
+    /// <see cref="Exception"/>s.</summary>
+    public static ErrorLogMode ErrorMode { get { return errorLogMode; } set { SetErrorLogMode(value); } }
     /// <summary>The default <see cref="Level"/> for logging normal messages. Defaults to
     /// <see cref="Level.Information"/>.</summary>
     public static Level DefaultLogLevel
@@ -73,9 +78,6 @@ namespace CodeParadox.Tenor.Diagnostics
     /// <see cref="Level.Critical"/>.</summary>
     public static Level DefaultExceptionLevel
       { get { return defaultExceptionLevel; } set { SetDefaultExceptionLevel(value); } }
-    /// <summary>The sole <see cref="Log"/> that reads <see cref="Exception"/>s across the
-    /// entire program. Only one <see cref="Log"/> can do this at a time to prevent spam.</summary>
-    private static Log ErrorLog { get { return errorLog; } set { errorLog = value; } }
 
     /// <summary>A <see cref="Dictionary{TKey, TValue}"/> of registered <see cref="Log"/>s.
     /// This keeps track of the sole instances of each <see cref="Log"/>.</summary>
@@ -84,8 +86,11 @@ namespace CodeParadox.Tenor.Diagnostics
     private static readonly StackFrameParser FrameParser = new StackFrameParser();
     /// <summary>The real <see cref="FilePath"/> to use globally.</summary>
     private static FilePath globalFilePath = new FilePath(@"DevLogs/PlayerLog.txt");
-    /// <summary>See: <see cref="ErrorLog"/></summary>
+    /// <summary>The sole <see cref="Log"/> that reads <see cref="Exception"/>s across the
+    /// entire program. Only one <see cref="Log"/> can do this at a time to prevent spam.</summary>
     private static Log errorLog = null;
+    /// <summary>See: <see cref="ErrorMode"/></summary>
+    private static ErrorLogMode errorLogMode = ErrorLogMode.All;
     /// <summary>See: <see cref="DefaultLogLevel"/></summary>
     private static Level defaultLogLevel;
     /// <summary>See: <see cref="DefaultExceptionLevel"/></summary>
@@ -521,6 +526,86 @@ namespace CodeParadox.Tenor.Diagnostics
     }
 
     /// <summary>
+    /// A function for setting a type of <see cref="Log"/> as the sole <see cref="Log"/> that
+    /// catches the <see cref="AppDomain.CurrentDomain"/>'s <see cref="Exception"/>
+    /// <see langword="event"/>s.
+    /// </summary>
+    /// <typeparam name="T">The type of the <see cref="Log"/>.</typeparam>
+    /// <remarks>Also see <see cref="ErrorLogMode"/> and <see cref="ErrorMode"/>.</remarks>
+    public static void SetErrorLog<T>() where T : Log
+    {
+      // Make sure the Log is registered.
+      if (EnsureRegistry(typeof(T), out Log log))
+      {
+        // If there is a previous Log, unbind it's events.
+        if (errorLog != null)
+          UnbindErrorLog();
+
+        // Set the new Log and rebind the events.
+        errorLog = log;
+        BindErrorLog();
+      }
+    }
+
+    /// <summary>
+    /// A function for unbinding the <see cref="errorLog"/> from the <see cref="Exception"/>
+    /// <see langword="event"/>s.
+    /// </summary>
+    private static void UnbindErrorLog()
+    {
+      switch (errorLogMode)
+      {
+        case ErrorLogMode.Unhandled:
+          AppDomain.CurrentDomain.UnhandledException -= errorLog.OnUnhandledException;
+          break;
+        case ErrorLogMode.All:
+          AppDomain.CurrentDomain.UnhandledException -= errorLog.OnUnhandledException;
+          AppDomain.CurrentDomain.FirstChanceException -= errorLog.OnFirstChanceException;
+              break;
+        default:
+          break;
+      }
+    }
+
+    /// <summary>
+    /// A function for binding the <see cref="errorLog"/> to the <see cref="Exception"/>
+    /// <see langword="event"/>s.
+    /// </summary>
+    private static void BindErrorLog()
+    {
+      switch (errorLogMode)
+      {
+        case ErrorLogMode.Unhandled:
+          AppDomain.CurrentDomain.UnhandledException += errorLog.OnUnhandledException;
+          break;
+        case ErrorLogMode.All:
+          AppDomain.CurrentDomain.UnhandledException += errorLog.OnUnhandledException;
+          AppDomain.CurrentDomain.FirstChanceException += errorLog.OnFirstChanceException;
+          break;
+        default:
+          break;
+      }
+    }
+
+    /// <summary>
+    /// A function for setting how the <see cref="errorLog"/> handles <see cref="Exception"/>
+    /// <see langword="events"/>s.
+    /// </summary>
+    /// <param name="mode"></param>
+    private static void SetErrorLogMode(ErrorLogMode mode)
+    {
+      // If a Log exists, unbind the events, set the mode, and rebind. Otherwise, just set the mode.
+      if (errorLog != null)
+      {
+        UnbindErrorLog();
+        errorLogMode = mode;
+        BindErrorLog();
+      }
+      else
+        errorLogMode = mode;
+    }
+
+    /// <summary>
     /// A function for attempting to ensure that a type of <see cref="Log"/> is registered for use.
     /// </summary>
     /// <param name="type">The <see cref="Log"/>'s <see cref="Type"/>.</param>
@@ -931,6 +1016,12 @@ namespace CodeParadox.Tenor.Diagnostics
         Logs.Add(type, this);
     }
 
+    /// <summary>
+    /// An internal function for logging a <paramref name="message"/> to a <see cref="Log"/>'s
+    /// file.
+    /// </summary>
+    /// <param name="message">The <see cref="string"/> to log.</param>
+    /// <param name="level">The severity <see cref="Level"/>.</param>
     private void LogToFileInternal(string message, Level level)
     {
       // Determine which FilePath to use.
@@ -959,6 +1050,30 @@ namespace CodeParadox.Tenor.Diagnostics
 
       // The file is no longer being processed.
       isProcessingFile = false;
+    }
+
+    /// <summary>
+    /// A function for logging <see cref="Exception"/>s thrown by the
+    /// <see cref="AppDomain.CurrentDomain"/>'s <see cref="AppDomain.UnhandledException"/>
+    /// <see langword="event"/>.
+    /// </summary>
+    /// <param name="sender">The original sender. Unused.</param>
+    /// <param name="e">The arguments of the <see langword="event"/>.</param>
+    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+      LogExceptionInternal(string.Empty, (Exception)e.ExceptionObject, true, defaultExceptionLevel);
+    }
+
+    /// <summary>
+    /// A function for logging <see cref="Exception"/>s thrown by the
+    /// <see cref="AppDomain.CurrentDomain"/>'s <see cref="AppDomain.FirstChanceException"/>
+    /// <see langword="event"/>.
+    /// </summary>
+    /// <param name="sender">The original sender. Unused.</param>
+    /// <param name="e">The arguments of the <see langword="event"/>.</param>
+    private void OnFirstChanceException(object sender, FirstChanceExceptionEventArgs e)
+    {
+      LogExceptionInternal(string.Empty, e.Exception, true, defaultExceptionLevel);
     }
 
     /// <summary>
