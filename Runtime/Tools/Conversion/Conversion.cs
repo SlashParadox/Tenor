@@ -3,7 +3,7 @@
 \file   Conversion.cs
 \author Craig Williams
 \par    Last Updated
-        2021-06-18
+        2021-06-22
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -19,6 +19,7 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace CodeParadox.Tenor.Tools
 {
@@ -118,6 +119,17 @@ namespace CodeParadox.Tenor.Tools
       // Otherwise, the bytes are null. Return false.
       bytes = null;
       return false;
+    }
+
+
+    public static byte[] ToBase64Bytes(byte[] bytes)
+    {
+      return Convert.FromBase64String(Convert.ToBase64String(bytes));
+    }
+
+    public static string FromBase64ToString(byte[] bytes, Encoding encoding)
+    {
+      return encoding.GetString(ToBase64Bytes(bytes));
     }
   }
   /************************************************************************************************/

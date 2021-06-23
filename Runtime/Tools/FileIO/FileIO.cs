@@ -9,6 +9,7 @@
 
 \brief
   A toolkit of functions related to managing files or manipulating them.
+  Many functions will be rewritten once Unity updates Mono and .NET for new base API functions.
 
 \par Bug List
   LOW
@@ -19,10 +20,15 @@
 */
 /**************************************************************************************************/
 
+using CodeParadox.Tenor.Files;
+using CodeParadox.Tenor.Threading;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeParadox.Tenor.Tools
 {
@@ -35,6 +41,10 @@ namespace CodeParadox.Tenor.Tools
   {
     /// <summary>The value returned when getting a file's size goes wrong.</summary>
     public static readonly long BadFileSize = -1;
+    /// <summary>The default size for <see cref="File"/>'s method buffers.</summary>
+    private static readonly int DefaultCopyBuffer = 81920;
+    /// <summary>The default <see cref="Encoding"/> for <see cref="Stream"/>s.</summary>
+    private static readonly UTF8Encoding DefaultEncoding = new UTF8Encoding(false, true);
 
     /// <summary>A toggle for deleting temporary copies when some operation goes wrong.</summary>
     public static bool DeleteTempCopies = true;
@@ -79,6 +89,40 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function for asynchronously appending an array of <see cref="byte"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filePath">The file to append to.</param>
+    /// <param name="bytes">The array of <see cref="byte"/>s to append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesAsync(CancellationToken token, string filePath,
+                                                        byte[] bytes, bool createIfNull = false)
+    {
+      if (DoesFileExist(filePath, createIfNull))
+        return await AppendFileBytesAsyncInternal(token, filePath, bytes);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending an array of <see cref="byte"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="bytes">The array of <see cref="byte"/>s to append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesAsync(CancellationToken token, FileInfo fileInfo,
+                                                        byte[] bytes, bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileBytesAsyncInternal(token, fileInfo.FullName, bytes);
+
+      return false;
+    }
+
+    /// <summary>
     /// A function for appending an array of <see cref="byte"/>s to a file. This
     /// function creates a temporary copy in case something goes wrong.
     /// </summary>
@@ -112,6 +156,44 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function for asynchronously appending an array of <see cref="byte"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="bytes">The array of <see cref="byte"/>s to append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesSafeAsync(CancellationToken token,
+                                                            string filepath, byte[] bytes,
+                                                            bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileBytesSafeAsyncInternal(token, filepath, bytes);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending an array of <see cref="byte"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="bytes">The array of <see cref="byte"/>s to append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesSafeAsync(CancellationToken token,
+                                                            FileInfo fileInfo, byte[] bytes,
+                                                            bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileBytesSafeAsyncInternal(token, fileInfo.FullName, bytes);
+
+      return false;
+    }
+
+    /// <summary>
     /// A function for appending a serializable object to a file.
     /// </summary>
     /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
@@ -139,6 +221,43 @@ namespace CodeParadox.Tenor.Tools
     {
       if (DoesFileExist(fileInfo, createIfNull))
         return AppendFileBytesInternal(fileInfo.FullName, obj);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a serializable object to a file.
+    /// </summary>
+    /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="obj">The object to serialize and append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was sucessfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesAsync<T>(CancellationToken token, string filepath,
+                                                           T obj, bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileBytesAsyncInternal(token, filepath, obj);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a serializable object to a file.
+    /// </summary>
+    /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="obj">The object to serialize and append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was sucessfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesAsync<T>(CancellationToken token,
+                                                           FileInfo fileInfo, T obj,
+                                                           bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileBytesAsyncInternal(token, fileInfo.FullName, obj);
 
       return false;
     }
@@ -178,6 +297,46 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function for asynchronously appending a serializable object to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="obj">The object to serialize and append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was sucessfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesSafeAsync<T>(CancellationToken token,
+                                                               string filepath, T obj,
+                                                               bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileBytesSafeAsyncInternal(token, filepath, obj);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a serializable object to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="obj">The object to serialize and append.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was sucessfully appended to.</returns>
+    public static async Task<bool> AppendFileBytesSafeAsync<T>(CancellationToken token,
+                                                               FileInfo fileInfo, T obj,
+                                                               bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileBytesSafeAsyncInternal(token, fileInfo.FullName, obj);
+
+      return false;
+    }
+
+    /// <summary>
     /// A function for appending a <see cref="string"/> to a file.
     /// </summary>
     /// <param name="filepath">The file to append to.</param>
@@ -189,7 +348,62 @@ namespace CodeParadox.Tenor.Tools
                                         bool createIfNull = false)
     {
       if (DoesFileExist(filepath, createIfNull))
-        return AppendFileStringInternal(filepath, message, newline);
+        return AppendFileStringInternal(filepath, message, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending a <see cref="string"/> to a file.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileString(FileInfo fileInfo, string message, bool newline = true,
+                                        bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringInternal(fileInfo.FullName, message, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringAsync(CancellationToken token, string filepath,
+                                                         string message, bool newline = true,
+                                                         bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringAsyncInternal(token, filepath, message, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringAsync(CancellationToken token, FileInfo fileInfo,
+                                                         string message, bool newline = true,
+                                                         bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringAsyncInternal(token, fileInfo.FullName, message, newline, DefaultEncoding);
 
       return false;
     }
@@ -213,6 +427,66 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function for appending a <see cref="string"/> to a file.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileString(FileInfo fileInfo, string message, Encoding encoding,
+                                        bool newline = true, bool createIfNull = false)
+    {
+      if (encoding != null && DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringInternal(fileInfo.FullName, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringAsync(CancellationToken token, string filepath,
+                                                         string message, Encoding encoding,
+                                                         bool newline = true,
+                                                         bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringAsyncInternal(token, filepath, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringAsync(CancellationToken token, FileInfo fileInfo,
+                                                         string message, Encoding encoding,
+                                                         bool newline = true,
+                                                         bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringAsyncInternal(token, fileInfo.FullName, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
     /// A function for appending a <see cref="string"/> to a file. This
     /// function creates a temporary copy in case something goes wrong.
     /// </summary>
@@ -225,7 +499,67 @@ namespace CodeParadox.Tenor.Tools
                                             bool createIfNull = false)
     {
       if (DoesFileExist(filepath, createIfNull))
-        return AppendFileStringSafeInternal(filepath, message, newline);
+        return AppendFileStringSafeInternal(filepath, message, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStringSafe(FileInfo fileInfo, string message, bool newline = true,
+                                            bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringSafeInternal(fileInfo.FullName, message, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringSafeAsync(CancellationToken token,
+                                                             string filepath, string message,
+                                                             bool newline = true,
+                                                             bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringSafeAsyncInternal(token, filepath, message, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringSafeAsync(CancellationToken token,
+                                                             FileInfo fileInfo, string message,
+                                                             bool newline = true,
+                                                             bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringSafeAsyncInternal(token, fileInfo.FullName, message, newline, DefaultEncoding);
 
       return false;
     }
@@ -245,6 +579,389 @@ namespace CodeParadox.Tenor.Tools
     {
       if (encoding != null && DoesFileExist(filepath, createIfNull))
         return AppendFileStringSafeInternal(filepath, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStringSafe(FileInfo fileInfo, string message, Encoding encoding,
+                                            bool newline = true, bool createIfNull = false)
+    {
+      if (encoding != null && DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringSafeInternal(fileInfo.FullName, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringSafeAsync(CancellationToken token,
+                                                             string filepath, string message,
+                                                             Encoding encoding, bool newline = true,
+                                                             bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringSafeAsyncInternal(token, filepath, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringSafeAsync(CancellationToken token,
+                                                             FileInfo fileInfo, string message,
+                                                             Encoding encoding, bool newline = true,
+                                                             bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringSafeAsyncInternal(token, fileInfo.FullName, message, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStrings(string filepath, IEnumerable<string> messages,
+                                         bool newline = true, bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return AppendFileStringsInternal(filepath, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStrings(FileInfo fileInfo, IEnumerable<string> messages,
+                                         bool newline = true, bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringsInternal(fileInfo.FullName, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsAsync(CancellationToken token, string filepath,
+                                                          IEnumerable<string> messages,
+                                                          bool newline = true,
+                                                          bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringsAsyncInternal(token, filepath, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsAsync(CancellationToken token, FileInfo fileInfo,
+                                                          IEnumerable<string> messages,
+                                                          bool newline = true,
+                                                          bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringsAsyncInternal(token, fileInfo.FullName, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStrings(string filepath, IEnumerable<string> messages,
+                                         Encoding encoding, bool newline = true,
+                                         bool createIfNull = false)
+    {
+      if (encoding != null && DoesFileExist(filepath, createIfNull))
+        return AppendFileStringsInternal(filepath, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStrings(FileInfo fileInfo, IEnumerable<string> messages,
+                                         Encoding encoding, bool newline = true,
+                                         bool createIfNull = false)
+    {
+      if (encoding != null && DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringsInternal(fileInfo.FullName, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsAsync(CancellationToken token, string filepath,
+                                                          IEnumerable<string> messages,
+                                                          Encoding encoding, bool newline = true,
+                                                          bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringsAsyncInternal(token, filepath, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsAsync(CancellationToken token, FileInfo fileInfo,
+                                                          IEnumerable<string> messages,
+                                                          Encoding encoding, bool newline = true,
+                                                          bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringsAsyncInternal(token, fileInfo.FullName, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStringsSafe(string filepath, IEnumerable<string> messages,
+                                             bool newline = true, bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return AppendFileStringsSafeInternal(filepath, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStringsSafe(FileInfo fileInfo, IEnumerable<string> messages,
+                                             bool newline = true, bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringsSafeInternal(fileInfo.FullName, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsSafeAsync(CancellationToken token,
+                                                              string filepath,
+                                                              IEnumerable<string> messages,
+                                                              bool newline = true,
+                                                              bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringsSafeAsyncInternal(token, filepath, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsSafeAsync(CancellationToken token,
+                                                              FileInfo fileInfo,
+                                                              IEnumerable<string> messages,
+                                                              bool newline = true,
+                                                              bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringsSafeAsyncInternal(token, fileInfo.FullName, messages, newline, DefaultEncoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStringsSafe(string filepath, IEnumerable<string> messages,
+                                             Encoding encoding, bool newline = true,
+                                             bool createIfNull = false)
+    {
+      if (encoding != null && DoesFileExist(filepath, createIfNull))
+        return AppendFileStringsSafeInternal(filepath, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static bool AppendFileStringsSafe(FileInfo fileInfo, IEnumerable<string> messages,
+                                             Encoding encoding, bool newline = true,
+                                             bool createIfNull = false)
+    {
+      if (encoding != null && DoesFileExist(fileInfo, createIfNull))
+        return AppendFileStringsSafeInternal(fileInfo.FullName, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsSafeAsync(CancellationToken token,
+                                                              string filepath,
+                                                              IEnumerable<string> messages,
+                                                              Encoding encoding, bool newline = true,
+                                                              bool createIfNull = false)
+    {
+      if (DoesFileExist(filepath, createIfNull))
+        return await AppendFileStringsSafeAsyncInternal(token, filepath, messages, newline, encoding);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <param name="newline">A toggle for adding a new line after each message.</param>
+    /// <param name="createIfNull">A toggle for creating the file if it does not exist.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    public static async Task<bool> AppendFileStringsSafeAsync(CancellationToken token,
+                                                              FileInfo fileInfo,
+                                                              IEnumerable<string> messages,
+                                                              Encoding encoding, bool newline = true,
+                                                              bool createIfNull = false)
+    {
+      if (DoesFileExist(fileInfo, createIfNull))
+        return await AppendFileStringsSafeAsyncInternal(token, fileInfo.FullName, messages, newline, encoding);
 
       return false;
     }
@@ -329,6 +1046,78 @@ namespace CodeParadox.Tenor.Tools
         string path = Path.Combine(destination.FullName, fileInfo.Name);
         return CopyFileInternal(fileInfo.FullName, path, overwrite);
       }
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function asynchronously for copying a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to copy.</param>
+    /// <param name="destination">The destination path to copy to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully copied.</returns>
+    public static async Task<bool> CopyFileAsync(CancellationToken token, string filepath,
+                                                 string destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && !string.IsNullOrEmpty(destination))
+        return await CopyFileAsyncInternal(token, filepath, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function asynchronously for copying a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to copy.</param>
+    /// <param name="destination">The destination path to copy to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully copied.</returns>
+    public static async Task<bool> CopyFileAsync(CancellationToken token, FileInfo fileInfo,
+                                                 string destination, bool overwrite)
+    {
+      if (fileInfo != null && !string.IsNullOrEmpty(destination))
+        return await CopyFileAsyncInternal(token, fileInfo.FullName, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function asynchronously for copying a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to copy.</param>
+    /// <param name="destination">The destination path to copy to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully copied.</returns>
+    public static async Task<bool> CopyFileAsync(CancellationToken token, string filepath,
+                                                 FileInfo destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && destination != null)
+        return await CopyFileAsyncInternal(token, filepath, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function asynchronously for copying a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to copy.</param>
+    /// <param name="destination">The destination path to copy to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully copied.</returns>
+    public static async Task<bool> CopyFileAsync(CancellationToken token, FileInfo fileInfo,
+                                                 FileInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+        return await CopyFileAsyncInternal(token, fileInfo.FullName, destination.FullName, overwrite);
 
       return false;
     }
@@ -606,6 +1395,286 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function for asynchronously moving a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileAsync(CancellationToken token, string filepath,
+                                                 string destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && !string.IsNullOrEmpty(destination))
+        return await MoveFileAsyncInternal(token, filepath, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileAsync(CancellationToken token, FileInfo fileInfo,
+                                                 string destination, bool overwrite)
+    {
+      if (fileInfo != null && !string.IsNullOrEmpty(destination))
+        return await MoveFileAsyncInternal(token, fileInfo.FullName, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileAsync(CancellationToken token, string filepath,
+                                                 FileInfo destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && destination != null)
+        return await MoveFileAsyncInternal(token, filepath, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileAsync(CancellationToken token, FileInfo fileInfo,
+                                                 FileInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+        return await MoveFileAsyncInternal(token, fileInfo.FullName, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination directory to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileAsync(CancellationToken token, FileInfo fileInfo,
+                                                 DirectoryInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+      {
+        string path = Path.Combine(destination.FullName, fileInfo.Name);
+        return await MoveFileAsyncInternal(token, fileInfo.FullName, path, overwrite);
+      } 
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for moving a file to a new location. This makes a copy of the original
+    /// file, if overwriting.
+    /// </summary>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static bool MoveFileSafe(string filepath, string destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && !string.IsNullOrEmpty(destination))
+        return MoveFileSafeInternal(filepath, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for moving a file to a new location. This makes a copy of the original
+    /// file, if overwriting.
+    /// </summary>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static bool MoveFileSafe(FileInfo fileInfo, string destination, bool overwrite)
+    {
+      if (fileInfo != null && !string.IsNullOrEmpty(destination))
+        return MoveFileSafeInternal(fileInfo.FullName, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for moving a file to a new location. This makes a copy of the original
+    /// file, if overwriting.
+    /// </summary>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static bool MoveFileSafe(string filepath, FileInfo destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && destination != null)
+        return MoveFileSafeInternal(filepath, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for moving a file to a new location. This makes a copy of the original
+    /// file, if overwriting.
+    /// </summary>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static bool MoveFileSafe(FileInfo fileInfo, FileInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+        return MoveFileSafeInternal(fileInfo.FullName, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for moving a file to a new location. This makes a copy of the original
+    /// file, if overwriting.
+    /// </summary>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination directory to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static bool MoveFileSafe(FileInfo fileInfo, DirectoryInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+      {
+        // Retain the same filename.
+        string path = Path.Combine(destination.FullName, fileInfo.Name);
+        return MoveFileSafeInternal(fileInfo.FullName, path, overwrite);
+      }
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location. This makes a
+    /// copy of the original file, if overwriting.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileSafeAsync(CancellationToken token, string filepath,
+                                                     string destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && !string.IsNullOrEmpty(destination))
+        return await MoveFileSafeAsyncInternal(token, filepath, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location. This makes a
+    /// copy of the original file, if overwriting.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileSafeAsync(CancellationToken token, FileInfo fileInfo,
+                                                     string destination, bool overwrite)
+    {
+      if (fileInfo != null && !string.IsNullOrEmpty(destination))
+        return await MoveFileSafeAsyncInternal(token, fileInfo.FullName, destination, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location. This makes a
+    /// copy of the original file, if overwriting.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileSafeAsync(CancellationToken token, string filepath,
+                                                     FileInfo destination, bool overwrite)
+    {
+      if (!string.IsNullOrEmpty(filepath) && destination != null)
+        return await MoveFileSafeAsyncInternal(token, filepath, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location. This makes a
+    /// copy of the original file, if overwriting.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileSafeAsync(CancellationToken token, FileInfo fileInfo,
+                                                     FileInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+        return await MoveFileSafeAsyncInternal(token, fileInfo.FullName, destination.FullName, overwrite);
+
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously moving a file to a new location. This makes a
+    /// copy of the original file, if overwriting.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The original file to move.</param>
+    /// <param name="destination">The destination directory to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    public static async Task<bool> MoveFileSafeAsync(CancellationToken token, FileInfo fileInfo,
+                                                     DirectoryInfo destination, bool overwrite)
+    {
+      if (fileInfo != null && destination != null)
+      {
+        string path = Path.Combine(destination.FullName, fileInfo.Name);
+        return await MoveFileSafeAsyncInternal(token, fileInfo.FullName, path, overwrite);
+      }
+
+      return false;
+    }
+
+    /// <summary>
     /// A function for reading the <see cref="byte"/>s of a file.
     /// </summary>
     /// <param name="filepath">The file to read from.</param>
@@ -617,12 +1686,8 @@ namespace CodeParadox.Tenor.Tools
     public static bool ReadFileBytes(string filepath, out byte[] bytes, int offset = 0,
                                      int count = 0)
     {
-      // Fix the offset if required.
-      if (offset < 0)
-        offset = 0;
-
       if (!string.IsNullOrEmpty(filepath))
-        return ReadFileBytesInternal(filepath, out bytes, offset, count);
+        return ReadFileBytesInternal(filepath, out bytes, Maths.Max(0, offset), count);
 
       bytes = null;
       return false;
@@ -640,15 +1705,49 @@ namespace CodeParadox.Tenor.Tools
     public static bool ReadFileBytes(FileInfo fileInfo, out byte[] bytes, int offset = 0,
                                      int count = 0)
     {
-      // Fix the offset if required.
-      if (offset < 0)
-        offset = 0;
-
       if (fileInfo != null)
-        return ReadFileBytesInternal(fileInfo.FullName, out bytes, offset, count);
+        return ReadFileBytesInternal(fileInfo.FullName, out bytes, Maths.Max(0, offset), count);
 
       bytes = null;
       return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading the <see cref="byte"/>s of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read from.</param>
+    /// <param name="offset">The number of <see cref="byte"/>s to skip from the start.</param>
+    /// <param name="count">The number of <see cref="byte"/>s to read from the
+    /// <paramref name="offset"/>. Values 0 or less indicate reading the whole file.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<byte[]>> ReadFileBytesAsync(CancellationToken token,
+                                                                 string filepath, int offset = 0,
+                                                                 int count = 0)
+    {
+      if (!string.IsNullOrEmpty(filepath))
+        return await ReadFileBytesAsyncInternal(token, filepath, Maths.Max(0, offset), count);
+
+      return default;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading the <see cref="byte"/>s of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to read from.</param>
+    /// <param name="offset">The number of <see cref="byte"/>s to skip from the start.</param>
+    /// <param name="count">The number of <see cref="byte"/>s to read from the
+    /// <paramref name="offset"/>. Values 0 or less indicate reading the whole file.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<byte[]>> ReadFileBytesAsync(CancellationToken token,
+                                                                 FileInfo fileInfo,
+                                                                 int offset = 0, int count = 0)
+    {
+      if (fileInfo != null)
+        return await ReadFileBytesAsyncInternal(token, fileInfo.FullName, Maths.Max(0, offset), count);
+
+      return default;
     }
 
     /// <summary>
@@ -664,13 +1763,9 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns if the file was succesfully read.</returns>
     public static bool ReadFileBytes<T>(string filepath, out T obj, int offset = 0, int count = 0)
     {
-      // Fix the offset if required.
-      if (offset < 0)
-        offset = 0;
-
       // Read the bytes. If successful, deserialize the bytes into an object.
       if (!string.IsNullOrEmpty(filepath))
-        return ReadFileBytesInternal(filepath, out obj, offset, count);
+        return ReadFileBytesInternal(filepath, out obj, Maths.Max(0, offset), count);
 
       obj = default;
       return false;
@@ -689,16 +1784,54 @@ namespace CodeParadox.Tenor.Tools
     /// <returns>Returns if the file was succesfully read.</returns>
     public static bool ReadFileBytes<T>(FileInfo fileInfo, out T obj, int offset = 0, int count = 0)
     {
-      // Fix the offset if required.
-      if (offset < 0)
-        offset = 0;
-
       // Read the bytes. If successful, deserialize the bytes into an object.
       if (fileInfo != null)
-        return ReadFileBytesInternal(fileInfo.FullName, out obj, offset, count);
+        return ReadFileBytesInternal(fileInfo.FullName, out obj, Maths.Max(0, offset), count);
 
       obj = default;
       return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading the <see cref="byte"/>s of a file and
+    /// converting them into an object.
+    /// </summary>
+    /// <typeparam name="T">The type of the object the <see cref="byte"/>s represent.</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read from.</param>
+    /// <param name="offset">The number of <see cref="byte"/>s to skip from the start.</param>
+    /// <param name="count">The number of <see cref="byte"/>s to read from the
+    /// <paramref name="offset"/>. Values 0 or less indicate reading the whole file.</param>
+    /// <returns>Returns a <see cref="TReturn{T}"/> based on the read's results.</returns>
+    public static async Task<TReturn<T>> ReadFileBytes<T>(CancellationToken token,
+                                                          string filepath, int offset = 0,
+                                                          int count = 0)
+    {
+      if (!string.IsNullOrEmpty(filepath))
+        return await ReadFileBytesAsyncInternal<T>(token, filepath, Maths.Max(0, offset), count);
+
+      return default;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading the <see cref="byte"/>s of a file and
+    /// converting them into an object.
+    /// </summary>
+    /// <typeparam name="T">The type of the object the <see cref="byte"/>s represent.</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to read from.</param>
+    /// <param name="offset">The number of <see cref="byte"/>s to skip from the start.</param>
+    /// <param name="count">The number of <see cref="byte"/>s to read from the
+    /// <paramref name="offset"/>. Values 0 or less indicate reading the whole file.</param>
+    /// <returns>Returns a <see cref="TReturn{T}"/> based on the read's results.</returns>
+    public static async Task<TReturn<T>> ReadFileBytes<T>(CancellationToken token,
+                                                          FileInfo fileInfo, int offset = 0,
+                                                          int count = 0)
+    {
+      if (offset >= 0 && fileInfo != null)
+        return await ReadFileBytesAsyncInternal<T>(token, fileInfo.FullName, offset, count);
+
+      return default;
     }
 
     /// <summary>
@@ -708,7 +1841,7 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="line">The line that was read.</param>
     /// <param name="lineNumber">The line to read, starting with 0.</param>
     /// <returns>Returns if the file was successfully read.</returns>
-    public static bool ReadFileString(string filepath, out string line, ulong lineNumber)
+    public static bool ReadFileString(string filepath, out string line, long lineNumber)
     {
       if (!string.IsNullOrEmpty(filepath))
         return ReadFileStringInternal(filepath, out line, lineNumber);
@@ -724,13 +1857,133 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="line">The line that was read.</param>
     /// <param name="lineNumber">The line to read, starting with 0.</param>
     /// <returns>Returns if the file was successfully read.</returns>
-    public static bool ReadFileString(FileInfo fileInfo, out string line, ulong lineNumber)
+    public static bool ReadFileString(FileInfo fileInfo, out string line, long lineNumber)
     {
       if (fileInfo != null)
         return ReadFileStringInternal(fileInfo.FullName, out line, lineNumber);
 
       line = string.Empty;
       return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading a specific line of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read.</param>
+    /// <param name="lineNumber">The line to read, starting with 0.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<string>> ReadFileStringAsync(CancellationToken token,
+                                                                  string filepath,
+                                                                  long lineNumber)
+    {
+      if (!string.IsNullOrEmpty(filepath))
+        return await ReadFileStringAsyncInternal(token, filepath, lineNumber);
+
+      return default;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading a specific line of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to read.</param>
+    /// <param name="lineNumber">The line to read, starting with 0.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<string>> ReadFileStringAsync(CancellationToken token,
+                                                                  FileInfo fileInfo,
+                                                                  long lineNumber)
+    {
+      if (fileInfo != null)
+        return await ReadFileStringAsyncInternal(token, fileInfo.FullName, lineNumber);
+
+      return default;
+    }
+
+    /// <summary>
+    /// A function for reading a section of a text file.
+    /// </summary>
+    /// <param name="filepath">The file to read.</param>
+    /// <param name="lines">The outputted <see cref="List{T}"/> of read lines.</param>
+    /// <param name="startIndex">The inclusive first index to read from.</param>
+    /// <param name="lastIndex">The inclusive last index to read to.</param>
+    /// <returns>Returns if the file was successfully read.</returns>
+    public static bool ReadFileStrings(string filepath, out List<string> lines,
+                                       long startIndex, long lastIndex)
+    {
+      if (!string.IsNullOrEmpty(filepath) && Maths.InRangeIE(startIndex, 0, lastIndex) &&
+          Maths.InRangeEI(lastIndex, startIndex, long.MaxValue))
+      {
+        return ReadFileStringsInternal(filepath, out lines, startIndex, lastIndex);
+      }
+
+      lines = null;
+      return false;
+    }
+
+    /// <summary>
+    /// A function for reading a section of a text file.
+    /// </summary>
+    /// <param name="fileInfo">The file to read.</param>
+    /// <param name="lines">The outputted <see cref="List{T}"/> of read lines.</param>
+    /// <param name="startIndex">The inclusive first index to read from.</param>
+    /// <param name="lastIndex">The inclusive last index to read to.</param>
+    /// <returns>Returns if the file was successfully read.</returns>
+    public static bool ReadFileStrings(FileInfo fileInfo, out List<string> lines,
+                                       long startIndex, long lastIndex)
+    {
+      if (fileInfo != null && Maths.InRangeIE(startIndex, 0, lastIndex) &&
+          Maths.InRangeEI(lastIndex, startIndex, long.MaxValue))
+      {
+        return ReadFileStringsInternal(fileInfo.FullName, out lines, startIndex, lastIndex);
+      }
+
+      lines = null;
+      return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading a section of a text file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read.</param>
+    /// <param name="startIndex">The inclusive first index to read from.</param>
+    /// <param name="lastIndex">The inclusive last index to read to.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<List<string>>> ReadFileStringsAsync(CancellationToken token,
+                                                                         string filepath,
+                                                                         long startIndex,
+                                                                         long lastIndex)
+    {
+      if (!string.IsNullOrEmpty(filepath) && Maths.InRangeIE(startIndex, 0, lastIndex) &&
+          Maths.InRangeEI(lastIndex, startIndex, long.MaxValue))
+      {
+        return await ReadFileStringsAsyncInternal(token, filepath, startIndex, lastIndex);
+      }
+
+      return default;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading a section of a text file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="fileInfo">The file to read.</param>
+    /// <param name="startIndex">The inclusive first index to read from.</param>
+    /// <param name="lastIndex">The inclusive last index to read to.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<List<string>>> ReadFileStringsAsync(CancellationToken token,
+                                                                         FileInfo fileInfo,
+                                                                         long startIndex,
+                                                                         long lastIndex)
+    {
+      if (fileInfo != null && Maths.InRangeIE(startIndex, 0, lastIndex) &&
+          Maths.InRangeEI(lastIndex, startIndex, long.MaxValue))
+      {
+        return await ReadFileStringsAsyncInternal(token, fileInfo.FullName, startIndex, lastIndex);
+      }
+
+      return default;
     }
 
     /// <summary>
@@ -761,6 +2014,38 @@ namespace CodeParadox.Tenor.Tools
 
       text = string.Empty;
       return false;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading all of the text of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch. Currently, this
+    /// function does not properly support cancellation due to API limitations.</param>
+    /// <param name="filepath">The file to read.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<string>> ReadFileTextAsync(CancellationToken token,
+                                                                string filepath)
+    {
+      if (!string.IsNullOrEmpty(filepath))
+        return await ReadFileTextAsyncInternal(token, filepath);
+
+      return default;
+    }
+
+    /// <summary>
+    /// A function for asynchronously reading all of the text of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch. Currently, this
+    /// function does not properly support cancellation due to API limitations.</param>
+    /// <param name="fileInfo">The file to read.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    public static async Task<TReturn<string>> ReadFileTextAsync(CancellationToken token,
+                                                                FileInfo fileInfo)
+    {
+      if (fileInfo != null)
+        return await ReadFileTextAsyncInternal(token, fileInfo.FullName);
+
+      return default;
     }
 
     /// <summary>
@@ -812,6 +2097,32 @@ namespace CodeParadox.Tenor.Tools
       }
       catch
       {
+        
+      }
+
+      // If the stream couldn't be written to, return false.
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously appending an array of <see cref="byte"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="bytes">The array of <see cref="byte"/>s to append.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static async Task<bool> AppendFileBytesAsyncInternal(CancellationToken token,
+                                                                 string filepath, byte[] bytes)
+    {
+      try
+      {
+        // Open up a FileStream and attempt to append the array.
+        using FileStream fStream = new FileStream(filepath, FileMode.Append, FileAccess.Write);
+        await fStream.WriteAsync(bytes, 0, bytes.Length, token);
+        return !token.IsCancellationRequested;
+      }
+      catch
+      {
 
       }
 
@@ -832,24 +2143,44 @@ namespace CodeParadox.Tenor.Tools
       if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
         return false;
 
-      try
+      // If the append is successful, delete the temporary file and return validity.
+      if (AppendFileBytesInternal(filepath, bytes))
       {
-        // Open up a FileStream and attempt to append the array.
-        using FileStream fStream = new FileStream(filepath, FileMode.Append, FileAccess.Write);
-        fStream.Write(bytes, 0, bytes.Length);
-        File.Delete(temp);
+        DeleteTempFile(temp);
         return true;
       }
-      catch
-      {
-        // In the event of an error, copy back over the temporary copy and clean up.
-        CopyFileInternal(temp, filepath, true);
 
-        if (DeleteTempCopies)
-          DeleteFileInternal(temp);
+      // In the event of an error, copy back over the temporary copy and clean up.
+      CopyFileInternal(temp, filepath, true);
+      DeleteTempFile(temp);
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously appending an array of <see cref="byte"/>s to a file.
+    /// This function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="bytes">The array of <see cref="byte"/>s to append.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static async Task<bool> AppendFileBytesSafeAsyncInternal(CancellationToken token,
+                                                                     string filepath, byte[] bytes)
+    {
+      // If a temporary file cannot be copied to, return false.
+      if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
+        return false;
+
+      // If the append is successful, delete the temporary file and return validity.
+      if (await AppendFileBytesAsyncInternal(token, filepath, bytes))
+      {
+        DeleteTempFile(temp);
+        return true;
       }
 
-      // If the stream couldn't be written to, return false.
+      // In the event of an error, copy back over the temporary copy and clean up.
+      await CopyFileAsyncInternal(new CancellationTokenSource().Token, temp, filepath, true);
+      DeleteTempFile(temp);
       return false;
     }
 
@@ -869,6 +2200,23 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// An internal function for asynchronously appending a serializable object to a file.
+    /// </summary>
+    /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="obj">The object to serialize and append.</param>
+    /// <returns>Returns if the file was sucessfully appended to.</returns>
+    private static async Task<bool> AppendFileBytesAsyncInternal<T>(CancellationToken token,
+                                                                    string filepath, T obj)
+    {
+      if (Conversion.SerializeFromObject(obj, out byte[] bytes))
+        return false;
+
+      return await AppendFileBytesAsyncInternal(token, filepath, bytes);
+    }
+
+    /// <summary>
     /// An internal function for appending a serializable object to a file. This
     /// function creates a temporary copy in case something goes wrong.
     /// </summary>
@@ -885,34 +2233,21 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// An internal function for appending a <see cref="string"/> to a file.
+    /// An internal function for asynchronously appending a serializable object to a file. This
+    /// function creates a temporary copy in case something goes wrong.
     /// </summary>
+    /// <typeparam name="T">The type of the object. This must be serializable!</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
     /// <param name="filepath">The file to append to.</param>
-    /// <param name="message">The <see cref="string"/> to write.</param>
-    /// <param name="newline">A toggle for adding a new line after the message.</param>
-    /// <returns>Returns if the file was successfully appended to.</returns>
-    private static bool AppendFileStringInternal(string filepath, string message, bool newline)
+    /// <param name="obj">The object to serialize and append.</param>
+    /// <returns>Returns if the file was sucessfully appended to.</returns>
+    private static async Task<bool> AppendFileBytesSafeAsyncInternal<T>(CancellationToken token,
+                                                                        string filepath, T obj)
     {
-      try
-      {
-        // Open up a FileStream and attempt to append the array.
-        using StreamWriter sWriter = new StreamWriter(filepath, true);
+      if (Conversion.SerializeFromObject(obj, out byte[] bytes))
+        return false;
 
-        // Write with a newline or no newline.
-        if (newline)
-          sWriter.WriteLine(message);
-        else
-          sWriter.Write(message);
-
-        return true;
-      }
-      catch
-      {
-
-      }
-
-      // If the stream couldn't be written to, return false.
-      return false;
+      return await AppendFileBytesSafeAsyncInternal(token, filepath, bytes);
     }
 
     /// <summary>
@@ -937,7 +2272,7 @@ namespace CodeParadox.Tenor.Tools
         else
           sWriter.Write(message);
 
-        return true;
+        return true; // The file was successfully appended to.
       }
       catch
       {
@@ -949,39 +2284,38 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
-    /// An internal function for appending a <see cref="string"/> to a file. This
-    /// function creates a temporary copy in case something goes wrong.
+    /// An internal function for asynchronously appending a <see cref="string"/> to a file.
     /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch. Currently, this
+    /// function does not properly support cancellation due to API limitations.</param>
     /// <param name="filepath">The file to append to.</param>
     /// <param name="message">The <see cref="string"/> to write.</param>
     /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
     /// <returns>Returns if the file was successfully appended to.</returns>
-    private static bool AppendFileStringSafeInternal(string filepath, string message, bool newline)
+    private static async Task<bool> AppendFileStringAsyncInternal(CancellationToken token,
+                                                                  string filepath, string message,
+                                                                  bool newline, Encoding encoding)
     {
-      // If a temporary file cannot be copied to, return false.
-      if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
+      if (token.IsCancellationRequested)
         return false;
 
       try
       {
         // Open up a FileStream and attempt to append the array.
-        using StreamWriter sWriter = new StreamWriter(filepath, true);
+        using StreamWriter sWriter = new StreamWriter(filepath, true, encoding);
 
         // Write with a newline or no newline.
         if (newline)
-          sWriter.WriteLine(message);
+          await sWriter.WriteLineAsync(message);
         else
-          sWriter.Write(message);
+          await sWriter.WriteAsync(message);
 
-        return true;
+        return true; // The file was successfully appended to.
       }
       catch
       {
-        // In the event of an error, copy back over the temporary copy and clean up.
-        CopyFileInternal(temp, filepath, true);
 
-        if (DeleteTempCopies)
-          DeleteFileInternal(temp);
       }
 
       // If the stream couldn't be written to, return false.
@@ -1000,33 +2334,206 @@ namespace CodeParadox.Tenor.Tools
     private static bool AppendFileStringSafeInternal(string filepath, string message, bool newline,
                                                      Encoding encoding)
     {
-      // If a temporary file cannot be copied to, return false.
+      // Attempt to make a temporary file. If not possible, return false immediately.
       if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
         return false;
 
+      // If the append is successful, delete the temporary file and return validity.
+      if (AppendFileStringInternal(filepath, message, newline, encoding))
+      {
+        DeleteTempFile(temp);
+        return true;
+      }
+
+
+      // In the event of an error, copy back over the temporary copy and clean up.
+      CopyFileInternal(temp, filepath, true);
+      DeleteTempFile(temp);
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously appending a <see cref="string"/> to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="message">The <see cref="string"/> to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static async Task<bool> AppendFileStringSafeAsyncInternal(CancellationToken token,
+                                                                      string filepath,
+                                                                      string message, bool newline,
+                                                                      Encoding encoding)
+    {
+      // Attempt to make a temporary file. If not possible, return false immediately.
+      if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
+        return false;
+
+      // If the append is successful, delete the temporary file and return validity.
+      if (await AppendFileStringAsyncInternal(token, filepath, message, newline, encoding))
+      {
+        DeleteTempFile(temp);
+        return true;
+      }
+
+      // In the event of an error, copy back over the temporary copy and clean up.
+      await CopyFileAsyncInternal(new CancellationTokenSource().Token, temp, filepath, true);
+      DeleteTempFile(temp);
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static bool AppendFileStringsInternal(string filepath, IEnumerable<string> messages,
+                                                  bool newline, Encoding encoding)
+    {
       try
       {
         // Open up a FileStream and attempt to append the array.
         using StreamWriter sWriter = new StreamWriter(filepath, true, encoding);
 
-        // Write with a newline or no newline.
+        // Write each message with a newline or no newline.
         if (newline)
-          sWriter.WriteLine(message);
+        {
+          foreach (string message in messages)
+            sWriter.WriteLine(message);
+        }
         else
-          sWriter.Write(message);
+        {
+          foreach (string message in messages)
+            sWriter.Write(message);
+        }
+        return true;
+      }
+      catch
+      {
+
+      }
+
+      // If the stream couldn't be written to, return false.
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously appending several <see cref="string"/>s to a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static async Task<bool> AppendFileStringsAsyncInternal(CancellationToken token,
+                                                                   string filepath,
+                                                                   IEnumerable<string> messages,
+                                                                   bool newline, Encoding encoding)
+    {
+      try
+      {
+        // Open up a FileStream and attempt to append the array.
+        using StreamWriter sWriter = new StreamWriter(filepath, true, encoding);
+
+        // Write each message with a newline or no newline.
+        if (newline)
+        {
+          foreach (string message in messages)
+          {
+            if (token.IsCancellationRequested)
+              return false;
+
+            await sWriter.WriteLineAsync(message);
+          }
+            
+        }
+        else
+        {
+          foreach (string message in messages)
+          {
+            if (token.IsCancellationRequested)
+              return false;
+
+            await sWriter.WriteAsync(message);
+          }
+        }
 
         return true;
       }
       catch
       {
-        // In the event of an error, copy back over the temporary copy and clean up.
-        CopyFileInternal(temp, filepath, true);
 
-        if (DeleteTempCopies)
-          DeleteFileInternal(temp);
       }
 
       // If the stream couldn't be written to, return false.
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for appending several <see cref="string"/>s to a file. This
+    /// function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static bool AppendFileStringsSafeInternal(string filepath, IEnumerable<string> messages,
+                                                      bool newline, Encoding encoding)
+    {
+      // If a temporary file cannot be copied to, return false.
+      if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
+        return false;
+
+      // If the append is successful, delete the temporary file and return validity.
+      if (AppendFileStringsInternal(filepath, messages, newline, encoding))
+      {
+        DeleteTempFile(temp);
+        return true;
+      }
+
+      // In the event of an error, copy back over the temporary copy and clean up.
+      CopyFileInternal(temp, filepath, true);
+      DeleteTempFile(temp);
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously appending several <see cref="string"/>s to a file.
+    /// This function creates a temporary copy in case something goes wrong.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to append to.</param>
+    /// <param name="messages">The <see cref="string"/>s to write.</param>
+    /// <param name="newline">A toggle for adding a new line after the message.</param>
+    /// <param name="encoding">The <see cref="Encoding"/> type of the file.</param>
+    /// <returns>Returns if the file was successfully appended to.</returns>
+    private static async Task<bool> AppendFileStringsSafeAsyncInternal(CancellationToken token,
+                                                                       string filepath,
+                                                                       IEnumerable<string> messages,
+                                                                       bool newline,
+                                                                       Encoding encoding)
+    {
+      // If a temporary file cannot be copied to, return false.
+      if (!CreateTempFile(out string temp) || !CopyFileInternal(filepath, temp, false))
+        return false;
+
+      // If the append is successful, delete the temporary file and return validity.
+      if (await AppendFileStringsAsyncInternal(token, filepath, messages, newline, encoding))
+      {
+        DeleteTempFile(temp);
+        return true;
+      }
+
+      // In the event of an error, copy back over the temporary copy and clean up.
+      await CopyFileAsyncInternal(new CancellationTokenSource().Token, temp, filepath, true);
+      DeleteTempFile(temp);
       return false;
     }
 
@@ -1143,6 +2650,40 @@ namespace CodeParadox.Tenor.Tools
         // Copy already throws errors if something doesn't exist or overwriting can't happen.
         File.Copy(filepath, destination, overwrite);
         return true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// An internal function asynchronously for copying a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to copy.</param>
+    /// <param name="destination">The destination path to copy to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully copied.</returns>
+    private static async Task<bool> CopyFileAsyncInternal(CancellationToken token, string filepath,
+                                                          string destination, bool overwrite)
+    {
+      // Attempt to copy the file over, using a try-catch for safety.
+      try
+      {
+        // If the file does not exist, create it. If it does, make sure overwriting is allowed.
+        if (!File.Exists(destination))
+          File.Create(destination);
+        else if (!overwrite)
+          return false;
+
+
+        // Open up two streams between the files, and copy the file. CopyAsync overwrites.
+        using FileStream fRead = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+        using FileStream fWrite = new FileStream(destination, FileMode.Open, FileAccess.Write);
+        await fRead.CopyToAsync(fWrite, DefaultCopyBuffer, token);
+        return !token.IsCancellationRequested; // Return based on the copy's success.
       }
       catch
       {
@@ -1287,6 +2828,173 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// An internal function for moving a file to a new location. This makes a copy of the original
+    /// file, if overwriting.
+    /// </summary>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    private static bool MoveFileSafeInternal(string filepath, string destination, bool overwrite)
+    {
+      bool oldExisted = File.Exists(destination); // Check if the file already exists.
+      string tempPath = null;
+
+      // Attempt to move the file over, using a try-catch for safety.
+      try
+      {
+        // If the file does not exist, create it.
+        if (!oldExisted)
+          File.Create(destination);
+        else
+        {
+          // If the file cannot be overwritten, return false. Otherwise, make a backup.
+          if (!overwrite || CreateTempFile(out tempPath))
+            return false;
+
+          // Copy the file that is being destroyed.
+          CopyFileInternal(destination, tempPath, true);
+        }
+
+        // Move already throws errors if something doesn't exist.
+        File.Move(filepath, destination);
+        return true;
+      }
+      catch
+      {
+        // If the old file existed, copy it back over.
+        if (oldExisted)
+        {
+          CopyFileInternal(tempPath, destination, true);
+          File.Delete(tempPath); // Delete the temporary copy.
+        }
+
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously moving a file to a new location.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    private static async Task<bool> MoveFileAsyncInternal(CancellationToken token, string filepath,
+                                                          string destination, bool overwrite)
+    {
+      // Attempt to copy the file over, using a try-catch for safety.
+      try
+      {
+        // If the file does not exist, create it. If it does, make sure overwriting is allowed.
+        if (!File.Exists(destination))
+          File.Create(destination);
+        else if (!overwrite)
+          return false;
+
+
+        // Open up two streams between the files, and copy the file. CopyAsync overwrites.
+        using FileStream fRead = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+        using FileStream fWrite = new FileStream(destination, FileMode.Open, FileAccess.Write);
+        await fRead.CopyToAsync(fWrite, DefaultCopyBuffer, token);
+
+        // If the file was successfully copied, delete the old file.
+        if (!token.IsCancellationRequested)
+          File.Delete(filepath);
+
+
+        return !token.IsCancellationRequested; // Return based on the copy's success.
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously moving a file to a new location. This makes a
+    /// copy of the original file, if overwriting.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The original file to move.</param>
+    /// <param name="destination">The destination path to move to.</param>
+    /// <param name="overwrite">A toggle for allowing the <paramref name="destination"/> to be
+    /// overwritten, if that file already exists.</param>
+    /// <returns>Returns if the file was successfully moved.</returns>
+    private static async Task<bool> MoveFileSafeAsyncInternal(CancellationToken token,
+                                                              string filepath, string destination,
+                                                              bool overwrite)
+    {
+      bool oldExisted = File.Exists(destination); // Check if the file already exists.
+      string tempPath = null;
+
+      // Attempt to copy the file over, using a try-catch for safety.
+      try
+      {
+        // If the file does not exist, create it.
+        if (!oldExisted)
+          File.Create(destination);
+        else
+        {
+          // If the file cannot be overwritten, return false. Otherwise, make a backup.
+          if (!overwrite || CreateTempFile(out tempPath))
+            return false;
+
+          // Copy the file that is being destroyed.
+          using FileStream fOriginal = new FileStream(destination, FileMode.Open, FileAccess.Read);
+          using FileStream fTemp = new FileStream(filepath, FileMode.Open, FileAccess.Write);
+          await (fOriginal.CopyToAsync(fTemp, DefaultCopyBuffer, token));
+
+          // If cancelled at any point, delete the temporary file.
+          if (token.IsCancellationRequested)
+          {
+            if (DeleteTempCopies)
+              DeleteFileInternal(tempPath);
+            return false;
+          }
+        }
+
+        // Open up two streams between the files, and copy the file. CopyAsync overwrites.
+        using FileStream fRead = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+        using FileStream fWrite = new FileStream(destination, FileMode.Open, FileAccess.Write);
+        await fRead.CopyToAsync(fWrite, DefaultCopyBuffer, token);
+
+        // If the file was successfully copied, delete the old file.
+        if (!token.IsCancellationRequested)
+        {
+          File.Delete(filepath);
+
+          // Delete the temporary copy as well.
+          if (oldExisted)
+            File.Delete(tempPath);
+        }
+
+        return !token.IsCancellationRequested; // Return based on the copy's success.
+      }
+      catch
+      {
+        // Move back over the original file if required.
+        if (oldExisted)
+        {
+          // Copy the file that is being destroyed.
+          using FileStream fOriginal = new FileStream(destination, FileMode.Open, FileAccess.Write);
+          using FileStream fTemp = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+          await fTemp.CopyToAsync(fOriginal, DefaultCopyBuffer);
+
+          if (DeleteTempCopies)
+            DeleteFileInternal(tempPath);
+        }
+        else
+          File.Delete(destination); // Otherwise, delete the newly created file.
+
+        return false;
+      }
+    }
+
+    /// <summary>
     /// An internal function for reading the <see cref="byte"/>s of a file.
     /// </summary>
     /// <param name="filepath">The file to read from.</param>
@@ -1334,6 +3042,54 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// An internal function for asynchronously reading the <see cref="byte"/>s of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read from.</param>
+    /// <param name="offset">The number of <see cref="byte"/>s to skip from the start.</param>
+    /// <param name="count">The number of <see cref="byte"/>s to read from the
+    /// <paramref name="offset"/>. Values 0 or less indicate reading the whole file.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    private static async Task<TReturn<byte[]>> ReadFileBytesAsyncInternal(CancellationToken token,
+                                                                          string filepath,
+                                                                          int offset, int count)
+    {
+      TReturn<byte[]> treturn = default; // Create a return value.
+
+      try
+      {
+        // Create a reading filestream.
+        using (FileStream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+        {
+          // If no data can actually be read from the file, return false.
+          if (!Maths.InRangeIE(stream.Length - offset, 0, int.MaxValue))
+            return treturn;
+
+          // If the count is 0 or less, this signals to read the entire file.
+          if (count <= 0)
+            count = (int)stream.Length;
+          // If the offset and count is too great, the count becomes all readable data.
+          if (count + offset >= stream.Length)
+            count = (int)stream.Length - offset;
+
+          // Initialize the byte array and read the data.
+          treturn.value = new byte[count];
+          await stream.ReadAsync(treturn.value, offset, count, token);
+        }
+
+        treturn.isValid = true;
+        return treturn;
+      }
+      catch
+      {
+      }
+
+      // In the event of an error, reset to default settings and return.
+      treturn.value = null;
+      return treturn;
+    }
+
+    /// <summary>
     /// An internal function for reading the <see cref="byte"/>s of a file and converting them
     /// into an object.
     /// </summary>
@@ -1355,18 +3111,44 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// An internal function for asynchronously reading the <see cref="byte"/>s of a file and
+    /// converting them into an object.
+    /// </summary>
+    /// <typeparam name="T">The type of the object the <see cref="byte"/>s represent.</typeparam>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read from.</param>
+    /// <param name="offset">The number of <see cref="byte"/>s to skip from the start.</param>
+    /// <param name="count">The number of <see cref="byte"/>s to read from the
+    /// <paramref name="offset"/>. Values 0 or less indicate reading the whole file.</param>
+    /// <returns>Returns a <see cref="TReturn{T}"/> based on the read's results.</returns>
+    private static async Task<TReturn<T>> ReadFileBytesAsyncInternal<T>(CancellationToken token,
+                                                                        string filepath,
+                                                                        int offset, int count)
+    {
+      // Attempt to get the bytes read asyncly.
+      TReturn<byte[]> breturn = await ReadFileBytesAsyncInternal(token, filepath, offset, count);
+      TReturn<T> oreturn = default;
+
+      // If the read was valid, and cancellation has not occured, deserialize the bytes.
+      if (breturn.isValid && !token.IsCancellationRequested)
+        oreturn.isValid = Conversion.DeserializeToObject(breturn.value, out oreturn.value);
+
+      return oreturn; // Return the results.
+    }
+
+    /// <summary>
     /// An internal function for reading a specific line of a file.
     /// </summary>
     /// <param name="filepath">The file to read.</param>
     /// <param name="line">The line that was read.</param>
     /// <param name="lineNumber">The line to read, starting with 0.</param>
     /// <returns>Returns if the file was successfully read.</returns>
-    private static bool ReadFileStringInternal(string filepath, out string line, ulong lineNumber)
+    private static bool ReadFileStringInternal(string filepath, out string line, long lineNumber)
     {
       // Check if the file can be read at all.
       if (ReadFileTextInternal(filepath, out IEnumerable<string> enumerator))
       {
-        ulong index = 0; // Initialize an index.
+        long index = 0; // Initialize an index.
 
         // Iterate through each line.
         foreach (string l in enumerator)
@@ -1383,6 +3165,141 @@ namespace CodeParadox.Tenor.Tools
       // If the file is too short, or couldn't be opened, return an empty line.
       line = string.Empty;
       return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously reading a specific line of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read.</param>
+    /// <param name="lineNumber">The line to read, starting with 0.</param>
+    /// <returns>Returns a <see cref="TReturn{T0}"/> based on the read's results.</returns>
+    private static async Task<TReturn<string>> ReadFileStringAsyncInternal(CancellationToken token,
+                                                                           string filepath,
+                                                                           long lineNumber)
+    {
+      TReturn<string> sreturn = default; // Initialize a default return.
+
+      // Check if the file can be read at all.
+      if (ReadFileTextInternal(filepath, out IEnumerable<string> enumerator))
+      {
+        long index = 0; // Initialize an index.
+
+        // Iterate through each line.
+        foreach (string l in enumerator)
+        {
+          if (token.IsCancellationRequested)
+            return sreturn;
+
+          // If we've hit the wanted line, return that line. Otherwise, increment the index.
+          if (index++ == lineNumber)
+          {
+            sreturn.isValid = true;
+            sreturn.value = l;
+            return sreturn;
+          }
+
+          await Task.Yield(); // Yield between each line.
+        }
+      }
+
+      // If the file is too short, or couldn't be opened, return an empty line.
+      return sreturn;
+    }
+
+    /// <summary>
+    /// An internal function for reading a section of a text file.
+    /// </summary>
+    /// <param name="filepath">The file to read.</param>
+    /// <param name="lines">The outputted <see cref="List{T}"/> of read lines.</param>
+    /// <param name="startIndex">The inclusive first index to read from.</param>
+    /// <param name="lastIndex">The inclusive last index to read to.</param>
+    /// <returns>Returns if the file was successfully read.</returns>
+    private static bool ReadFileStringsInternal(string filepath, out List<string> lines,
+                                                long startIndex, long lastIndex)
+    {
+      // Make sure that everything can fit into the List.
+      if ((lastIndex - startIndex + 1) <= int.MaxValue)
+      {
+        // Check if the file can be read at all.
+        if (ReadFileTextInternal(filepath, out IEnumerable<string> enumerator))
+        {
+          long index = 0; // Initialize an index.
+          lines = new List<string>((int)(lastIndex - startIndex + 1)); // Create the list.
+
+          // Iterate through each line.
+          foreach (string l in enumerator)
+          {
+            // If the index is within range, add the current line.
+            if (Maths.InRangeII(index, startIndex, lastIndex))
+              lines.Add(l);
+            else if (index > lastIndex) // If past the last index, break out.
+              break;
+
+            index++; // Increment the index.
+          }
+
+          // If any lines were properly read, return true.
+          if (lines.Count > 0)
+            return true;
+        }
+      }
+
+      // Reset the List and return false.
+      lines = null;
+      return false;
+    }
+
+    /// <summary>
+    /// An internal function for asynchronously reading a section of a text file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch.</param>
+    /// <param name="filepath">The file to read.</param>
+    /// <param name="startIndex">The inclusive first index to read from.</param>
+    /// <param name="lastIndex">The inclusive last index to read to.</param>
+    /// <returns>Returns a <see cref="StringListReturn"/> based on the read's results.</returns>
+    private static async Task<TReturn<List<string>>> ReadFileStringsAsyncInternal(CancellationToken token,
+                                                                                  string filepath,
+                                                                                  long startIndex,
+                                                                                  long lastIndex)
+    {
+      TReturn<List<string>> slreturn = default;
+
+      // Make sure that everything can fit into the List.
+      if ((lastIndex - startIndex + 1) <= int.MaxValue)
+      {
+        // Check if the file can be read at all.
+        if (ReadFileTextInternal(filepath, out IEnumerable<string> enumerator))
+        {
+          long index = 0; // Initialize an index.
+          slreturn.value = new List<string>((int)(lastIndex - startIndex + 1)); // Make the list.
+
+          // Iterate through each line.
+          foreach (string l in enumerator)
+          {
+            // If the request is cancelled, return a null array with invalidity.
+            if (token.IsCancellationRequested)
+            {
+              slreturn.value = null;
+              return slreturn;
+            }
+
+            // If the index is within range, add the current line.
+            if (Maths.InRangeII(index, startIndex, lastIndex))
+              slreturn.value.Add(l);
+            else if (index > lastIndex) // If past the last index, break out.
+              break;
+
+            index++; // Increment the index.
+            await Task.Yield();
+          }
+
+          // If any lines were properly read, return true.
+          slreturn.isValid = slreturn.value.Count > 0;
+        }
+      }
+
+      return slreturn; // Return the results.
     }
 
     /// <summary>
@@ -1409,6 +3326,35 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// An internal function for asynchronously reading all of the text of a file.
+    /// </summary>
+    /// <param name="token">The <see cref="CancellationToken"/> to watch. Currently, this
+    /// function does not properly support cancellation due to API limitations.</param>
+    /// <param name="filepath">The file to read.</param>
+    /// <returns>Returns a <see cref="StringReturn"/> based on the read's results.</returns>
+    private static async Task<TReturn<string>> ReadFileTextAsyncInternal(CancellationToken token,
+                                                                         string filepath)
+    {
+      TReturn<string> sreturn = default; // Create a default return.
+
+      try
+      {
+        if (!token.IsCancellationRequested)
+        {
+          // Attempt to create a reader. If successful, read teh entire file.
+          using StreamReader reader = new StreamReader(filepath);
+          sreturn.value = await reader.ReadToEndAsync();
+          sreturn.isValid = sreturn.value != null;
+        }
+      }
+      catch
+      {
+      }
+      
+      return sreturn;
+    }
+
+    /// <summary>
     /// An internal function for getting an enumerator for a file, being able to read each
     /// individual line.
     /// </summary>
@@ -1429,6 +3375,17 @@ namespace CodeParadox.Tenor.Tools
         enumerator = null;
         return false;
       }
+    }
+
+    /// <summary>
+    /// A very small helper function for checking if a temporary file should be deleted.
+    /// </summary>
+    /// <param name="tempFilepath">The path to the temporary file.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void DeleteTempFile(string tempFilepath)
+    {
+      if (DeleteTempCopies)
+        DeleteFileInternal(tempFilepath);
     }
   }
   /************************************************************************************************/

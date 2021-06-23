@@ -23,7 +23,7 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 
-namespace CodeParadox.Tenor.Tools
+namespace CodeParadox.Tenor.Diagnostics
 {
   /************************************************************************************************/
   /// <summary>

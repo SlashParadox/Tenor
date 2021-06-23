@@ -16,6 +16,7 @@
 */
 /**************************************************************************************************/
 
+using System;
 using System.Runtime.CompilerServices;
 
 namespace CodeParadox.Tenor.Tools
@@ -62,6 +63,32 @@ namespace CodeParadox.Tenor.Tools
     public static bool IsLastChar(this string str, char ch)
     {
       return str[str.Length - 1] == ch;
+    }
+
+    public static bool IsBase64(this string str)
+    {
+      try
+      {
+        _ = Convert.FromBase64String(str);
+        return true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    public static bool IsBase64(byte[] bytes)
+    {
+      try
+      {
+        _ = Convert.ToBase64String(bytes);
+        return true;
+      }
+      catch
+      {
+        return false;
+      }
     }
   }
   /************************************************************************************************/

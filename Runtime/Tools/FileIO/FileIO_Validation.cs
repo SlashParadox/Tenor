@@ -21,6 +21,7 @@
 /**************************************************************************************************/
 
 using CodeParadox.Tenor.Data;
+using CodeParadox.Tenor.Files;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -472,7 +473,7 @@ namespace CodeParadox.Tenor.Tools
     {
       if (!Maths.InRangeII(directory.Length, 0, MaxPathUniversal))
         return false;
-
+      
       // If invalid directory characters are found, return false immediately.
       if (!Regex.IsMatch(directory, DirectoryCheckUNIX, RegexOptions.CultureInvariant))
         return false;

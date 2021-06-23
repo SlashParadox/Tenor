@@ -288,6 +288,98 @@ namespace CodeParadox.Tenor.Diagnostics
     }
 
     /// <summary>
+    /// A function for logging a given <see cref="Exception"/> to some <see cref="Log"/>, and then
+    /// immediately throw it. If the <paramref name="exception"/> has already been thrown, it is
+    /// captured in <see cref="ExceptionDispatchInfo"/> to prevent overwriting.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Log"/> to use.</typeparam>
+    /// <param name="exception">The <see cref="Exception"/> to log.</param>
+    /// <param name="useExceptionTrace">A toggle for printing the <paramref name="exception"/>'s
+    /// <see cref="StackTrace"/>.</param>
+    public static void LogAndThrow<T>(Exception exception, bool useExceptionTrace = true)
+                                      where T : Log
+    {
+      // Make sure that the log is valid. If so, log the message.
+      if (exception != null)
+      {
+        if (IsValidLogOperation<T>(out Log log))
+          log.LogExceptionInternal(string.Empty, exception, useExceptionTrace, defaultExceptionLevel);
+
+        ExceptionDispatchInfo.Capture(exception).Throw();
+      }
+    }
+
+    /// <summary>
+    /// A function for logging a given <see cref="Exception"/> to some <see cref="Log"/>, and then
+    /// immediately throw it. If the <paramref name="exception"/> has already been thrown, it is
+    /// captured in <see cref="ExceptionDispatchInfo"/> to prevent overwriting.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Log"/> to use.</typeparam>
+    /// <param name="exception">The <see cref="Exception"/> to log.</param>
+    /// <param name="level">The <see cref="Level"/> of severity.</param>
+    /// <param name="useExceptionTrace">A toggle for printing the <paramref name="exception"/>'s
+    /// <see cref="StackTrace"/>.</param>
+    public static void LogAndThrow<T>(Exception exception, Level level,
+                                      bool useExceptionTrace = true) where T : Log
+    {
+      // Make sure that the log is valid. If so, log the message.
+      if (exception != null)
+      {
+        if (IsValidLogOperation<T>(string.Empty, level, out Log log))
+          log.LogExceptionInternal(string.Empty, exception, useExceptionTrace, level);
+
+        ExceptionDispatchInfo.Capture(exception).Throw();
+      }
+    }
+
+    /// <summary>
+    /// A function for logging a given <see cref="Exception"/> to some <see cref="Log"/>, and then
+    /// immediately throw it. If the <paramref name="exception"/> has already been thrown, it is
+    /// captured in <see cref="ExceptionDispatchInfo"/> to prevent overwriting.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Log"/> to use.</typeparam>
+    /// <param name="exception">The <see cref="Exception"/> to log.</param>
+    /// <param name="message">An extra <see cref="string"/> to log.</param>
+    /// <param name="useExceptionTrace">A toggle for printing the <paramref name="exception"/>'s
+    /// <see cref="StackTrace"/>.</param>
+    public static void LogAndThrow<T>(Exception exception, string message,
+                                      bool useExceptionTrace = true) where T : Log
+    {
+      // Make sure that the log is valid. If so, log the message.
+      if (exception != null)
+      {
+        if (IsValidLogOperation<T>(message, out Log log))
+          log.LogExceptionInternal(message, exception, useExceptionTrace, defaultExceptionLevel);
+
+        ExceptionDispatchInfo.Capture(exception).Throw();
+      }
+    }
+
+    /// <summary>
+    /// A function for logging a given <see cref="Exception"/> to some <see cref="Log"/>, and then
+    /// immediately throw it. If the <paramref name="exception"/> has already been thrown, it is
+    /// captured in <see cref="ExceptionDispatchInfo"/> to prevent overwriting.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="Type"/> of the <see cref="Log"/> to use.</typeparam>
+    /// <param name="exception">The <see cref="Exception"/> to log.</param>
+    /// <param name="message">An extra <see cref="string"/> to log.</param>
+    /// <param name="level">The <see cref="Level"/> of severity.</param>
+    /// <param name="useExceptionTrace">A toggle for printing the <paramref name="exception"/>'s
+    /// <see cref="StackTrace"/>.</param>
+    public static void LogAndThrow<T>(Exception exception, string message, Level level,
+                                      bool useExceptionTrace = true) where T : Log
+    {
+      // Make sure that the log is valid. If so, log the message.
+      if (exception != null )
+      {
+        if (IsValidLogOperation<T>(message, level, out Log log))
+          log.LogExceptionInternal(message, exception, useExceptionTrace, level);
+
+        ExceptionDispatchInfo.Capture(exception).Throw();
+      }
+    }
+
+    /// <summary>
     /// A function for logging some <paramref name="message"/> to the <see cref="Console"/>.
     /// This does not use any actual <see cref="Log"/>.
     /// </summary>
