@@ -1,9 +1,9 @@
 /**************************************************************************************************/
 /*!
-\file   Interpolation.cs
+\file   Lerp.cs
 \author Craig Williams
 \par    Last Updated
-        2021-06-23
+        2021-06-02
 \par    Copyright
         Copyright © 2021 Craig Joseph Williams, All Rights Reserved.
 
@@ -35,7 +35,7 @@ namespace CodeParadox.Tenor.Tools
   /// implementations for basic numeric types, types in <see cref="System.Numerics"/>, and anything
   /// that inherits and implements <see cref="ILerp{T}"/>.
   /// </summary>
-  public static partial class Interpolation
+  public static partial class Lerp
   {
     /// <summary>A constant error-based value, matching the one used with .NET.</summary>
     public const float SlerpEpsilon = 1e-6f;

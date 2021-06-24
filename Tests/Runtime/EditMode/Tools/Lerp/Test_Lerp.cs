@@ -24,19 +24,19 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
 {
   /************************************************************************************************/
   /// <summary>
-  /// A test class for <see cref="Tenor.Tools.Interpolation"/>, for checking lerp functions.
+  /// A test class for <see cref="Tenor.Tools.Lerp"/>, for checking lerp functions.
   /// </summary>
   [Explicit] // Comment this to allow this to be run automatically.
   public class Test_Lerp
   {
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(sbyte, sbyte, float)"/>,
-    /// <see cref="Interpolation.LerpValue(sbyte, sbyte, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(sbyte, sbyte, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(sbyte, sbyte, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(sbyte, sbyte, float)"/>,
+    /// <see cref="Lerp.LerpValue(sbyte, sbyte, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(sbyte, sbyte, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(sbyte, sbyte, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_SByte_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -53,10 +53,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      sbyte actualResultFC = Interpolation.LerpValue((sbyte)randStart, (sbyte)randEnd, t);
-      sbyte actualResultDC = Interpolation.LerpValue((sbyte)randStart, (sbyte)randEnd, (double)t);
-      sbyte actualResultFU = Interpolation.LerpUnclamped((sbyte)randStart, (sbyte)randEnd, t);
-      sbyte actualResultDU = Interpolation.LerpUnclamped((sbyte)randStart, (sbyte)randEnd, (double)t);
+      sbyte actualResultFC = Lerp.LerpValue((sbyte)randStart, (sbyte)randEnd, t);
+      sbyte actualResultDC = Lerp.LerpValue((sbyte)randStart, (sbyte)randEnd, (double)t);
+      sbyte actualResultFU = Lerp.LerpUnclamped((sbyte)randStart, (sbyte)randEnd, t);
+      sbyte actualResultDU = Lerp.LerpUnclamped((sbyte)randStart, (sbyte)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((sbyte)expectedResultC.X, actualResultFC);
@@ -66,13 +66,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(byte, byte, float)"/>,
-    /// <see cref="Interpolation.LerpValue(byte, byte, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(byte, byte, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(byte, byte, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(byte, byte, float)"/>,
+    /// <see cref="Lerp.LerpValue(byte, byte, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(byte, byte, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(byte, byte, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Byte_ReturnsSuccess([Random(0.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -89,10 +89,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      byte actualResultFC = Interpolation.LerpValue((byte)randStart, (byte)randEnd, t);
-      byte actualResultDC = Interpolation.LerpValue((byte)randStart, (byte)randEnd, (double)t);
-      byte actualResultFU = Interpolation.LerpUnclamped((byte)randStart, (byte)randEnd, t);
-      byte actualResultDU = Interpolation.LerpUnclamped((byte)randStart, (byte)randEnd, (double)t);
+      byte actualResultFC = Lerp.LerpValue((byte)randStart, (byte)randEnd, t);
+      byte actualResultDC = Lerp.LerpValue((byte)randStart, (byte)randEnd, (double)t);
+      byte actualResultFU = Lerp.LerpUnclamped((byte)randStart, (byte)randEnd, t);
+      byte actualResultDU = Lerp.LerpUnclamped((byte)randStart, (byte)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((byte)expectedResultC.X, actualResultFC);
@@ -102,13 +102,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(short, short, float)"/>,
-    /// <see cref="Interpolation.LerpValue(short, short, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(short, short, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(short, short, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(short, short, float)"/>,
+    /// <see cref="Lerp.LerpValue(short, short, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(short, short, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(short, short, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Short_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -125,10 +125,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      short actualResultFC = Interpolation.LerpValue((short)randStart, (short)randEnd, t);
-      short actualResultDC = Interpolation.LerpValue((short)randStart, (short)randEnd, (double)t);
-      short actualResultFU = Interpolation.LerpUnclamped((short)randStart, (short)randEnd, t);
-      short actualResultDU = Interpolation.LerpUnclamped((short)randStart, (short)randEnd, (double)t);
+      short actualResultFC = Lerp.LerpValue((short)randStart, (short)randEnd, t);
+      short actualResultDC = Lerp.LerpValue((short)randStart, (short)randEnd, (double)t);
+      short actualResultFU = Lerp.LerpUnclamped((short)randStart, (short)randEnd, t);
+      short actualResultDU = Lerp.LerpUnclamped((short)randStart, (short)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((short)expectedResultC.X, actualResultFC);
@@ -138,13 +138,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(ushort, ushort, float)"/>,
-    /// <see cref="Interpolation.LerpValue(ushort, ushort, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(ushort, ushort, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(ushort, ushort, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(ushort, ushort, float)"/>,
+    /// <see cref="Lerp.LerpValue(ushort, ushort, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(ushort, ushort, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(ushort, ushort, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_UShort_ReturnsSuccess([Random(0.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -161,10 +161,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      ushort actualResultFC = Interpolation.LerpValue((ushort)randStart, (ushort)randEnd, t);
-      ushort actualResultDC = Interpolation.LerpValue((ushort)randStart, (ushort)randEnd, (double)t);
-      ushort actualResultFU = Interpolation.LerpUnclamped((ushort)randStart, (ushort)randEnd, t);
-      ushort actualResultDU = Interpolation.LerpUnclamped((ushort)randStart, (ushort)randEnd, (double)t);
+      ushort actualResultFC = Lerp.LerpValue((ushort)randStart, (ushort)randEnd, t);
+      ushort actualResultDC = Lerp.LerpValue((ushort)randStart, (ushort)randEnd, (double)t);
+      ushort actualResultFU = Lerp.LerpUnclamped((ushort)randStart, (ushort)randEnd, t);
+      ushort actualResultDU = Lerp.LerpUnclamped((ushort)randStart, (ushort)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((ushort)expectedResultC.X, actualResultFC);
@@ -174,13 +174,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(int, int, float)"/>,
-    /// <see cref="Interpolation.LerpValue(int, int, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(int, int, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(int, int, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(int, int, float)"/>,
+    /// <see cref="Lerp.LerpValue(int, int, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(int, int, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(int, int, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Int_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -197,10 +197,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      int actualResultFC = Interpolation.LerpValue((int)randStart, (int)randEnd, t);
-      int actualResultDC = Interpolation.LerpValue((int)randStart, (int)randEnd, (double)t);
-      int actualResultFU = Interpolation.LerpUnclamped((int)randStart, (int)randEnd, t);
-      int actualResultDU = Interpolation.LerpUnclamped((int)randStart, (int)randEnd, (double)t);
+      int actualResultFC = Lerp.LerpValue((int)randStart, (int)randEnd, t);
+      int actualResultDC = Lerp.LerpValue((int)randStart, (int)randEnd, (double)t);
+      int actualResultFU = Lerp.LerpUnclamped((int)randStart, (int)randEnd, t);
+      int actualResultDU = Lerp.LerpUnclamped((int)randStart, (int)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((int)expectedResultC.X, actualResultFC);
@@ -210,13 +210,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(uint, uint, float)"/>,
-    /// <see cref="Interpolation.LerpValue(uint, uint, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(uint, uint, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(uint, uint, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(uint, uint, float)"/>,
+    /// <see cref="Lerp.LerpValue(uint, uint, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(uint, uint, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(uint, uint, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_UInt_ReturnsSuccess([Random(0.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -233,10 +233,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      uint actualResultFC = Interpolation.LerpValue((uint)randStart, (uint)randEnd, t);
-      uint actualResultDC = Interpolation.LerpValue((uint)randStart, (uint)randEnd, (double)t);
-      uint actualResultFU = Interpolation.LerpUnclamped((uint)randStart, (uint)randEnd, t);
-      uint actualResultDU = Interpolation.LerpUnclamped((uint)randStart, (uint)randEnd, (double)t);
+      uint actualResultFC = Lerp.LerpValue((uint)randStart, (uint)randEnd, t);
+      uint actualResultDC = Lerp.LerpValue((uint)randStart, (uint)randEnd, (double)t);
+      uint actualResultFU = Lerp.LerpUnclamped((uint)randStart, (uint)randEnd, t);
+      uint actualResultDU = Lerp.LerpUnclamped((uint)randStart, (uint)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((uint)expectedResultC.X, actualResultFC);
@@ -246,13 +246,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(long, long, float)"/>,
-    /// <see cref="Interpolation.LerpValue(long, long, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(long, long, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(long, long, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(long, long, float)"/>,
+    /// <see cref="Lerp.LerpValue(long, long, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(long, long, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(long, long, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Long_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -269,10 +269,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      long actualResultFC = Interpolation.LerpValue((long)randStart, (long)randEnd, t);
-      long actualResultDC = Interpolation.LerpValue((long)randStart, (long)randEnd, (double)t);
-      long actualResultFU = Interpolation.LerpUnclamped((long)randStart, (long)randEnd, t);
-      long actualResultDU = Interpolation.LerpUnclamped((long)randStart, (long)randEnd, (double)t);
+      long actualResultFC = Lerp.LerpValue((long)randStart, (long)randEnd, t);
+      long actualResultDC = Lerp.LerpValue((long)randStart, (long)randEnd, (double)t);
+      long actualResultFU = Lerp.LerpUnclamped((long)randStart, (long)randEnd, t);
+      long actualResultDU = Lerp.LerpUnclamped((long)randStart, (long)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((long)expectedResultC.X, actualResultFC);
@@ -282,13 +282,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(ulong, ulong, float)"/>,
-    /// <see cref="Interpolation.LerpValue(ulong, ulong, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(ulong, ulong, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(ulong, ulong, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(ulong, ulong, float)"/>,
+    /// <see cref="Lerp.LerpValue(ulong, ulong, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(ulong, ulong, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(ulong, ulong, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_ULong_ReturnsSuccess([Random(0.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -305,10 +305,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      ulong actualResultFC = Interpolation.LerpValue((ulong)randStart, (ulong)randEnd, t);
-      ulong actualResultDC = Interpolation.LerpValue((ulong)randStart, (ulong)randEnd, (double)t);
-      ulong actualResultFU = Interpolation.LerpUnclamped((ulong)randStart, (ulong)randEnd, t);
-      ulong actualResultDU = Interpolation.LerpUnclamped((ulong)randStart, (ulong)randEnd, (double)t);
+      ulong actualResultFC = Lerp.LerpValue((ulong)randStart, (ulong)randEnd, t);
+      ulong actualResultDC = Lerp.LerpValue((ulong)randStart, (ulong)randEnd, (double)t);
+      ulong actualResultFU = Lerp.LerpUnclamped((ulong)randStart, (ulong)randEnd, t);
+      ulong actualResultDU = Lerp.LerpUnclamped((ulong)randStart, (ulong)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((ulong)expectedResultC.X, actualResultFC);
@@ -318,13 +318,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(float, float, float)"/>,
-    /// <see cref="Interpolation.LerpValue(float, float, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(float, float, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(float, float, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(float, float, float)"/>,
+    /// <see cref="Lerp.LerpValue(float, float, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(float, float, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(float, float, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Float_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -341,10 +341,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      float actualResultFC = Interpolation.LerpValue((float)randStart, (float)randEnd, t);
-      float actualResultDC = Interpolation.LerpValue((float)randStart, (float)randEnd, (double)t);
-      float actualResultFU = Interpolation.LerpUnclamped((float)randStart, (float)randEnd, t);
-      float actualResultDU = Interpolation.LerpUnclamped((float)randStart, (float)randEnd, (double)t);
+      float actualResultFC = Lerp.LerpValue((float)randStart, (float)randEnd, t);
+      float actualResultDC = Lerp.LerpValue((float)randStart, (float)randEnd, (double)t);
+      float actualResultFU = Lerp.LerpUnclamped((float)randStart, (float)randEnd, t);
+      float actualResultDU = Lerp.LerpUnclamped((float)randStart, (float)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC);
@@ -354,13 +354,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(double, double, float)"/>,
-    /// <see cref="Interpolation.LerpValue(double, double, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(double, double, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(double, double, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(double, double, float)"/>,
+    /// <see cref="Lerp.LerpValue(double, double, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(double, double, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(double, double, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Double_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -377,10 +377,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      double actualResultFC = Interpolation.LerpValue((double)randStart, (double)randEnd, t);
-      double actualResultDC = Interpolation.LerpValue((double)randStart, (double)randEnd, (double)t);
-      double actualResultFU = Interpolation.LerpUnclamped((double)randStart, (double)randEnd, t);
-      double actualResultDU = Interpolation.LerpUnclamped((double)randStart, (double)randEnd, (double)t);
+      double actualResultFC = Lerp.LerpValue((double)randStart, (double)randEnd, t);
+      double actualResultDC = Lerp.LerpValue((double)randStart, (double)randEnd, (double)t);
+      double actualResultFU = Lerp.LerpUnclamped((double)randStart, (double)randEnd, t);
+      double actualResultDU = Lerp.LerpUnclamped((double)randStart, (double)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, (float)actualResultFC);
@@ -391,13 +391,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(decimal, decimal, float)"/>,
-    /// <see cref="Interpolation.LerpValue(decimal, decimal, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(decimal, decimal, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(decimal, decimal, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(decimal, decimal, float)"/>,
+    /// <see cref="Lerp.LerpValue(decimal, decimal, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(decimal, decimal, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(decimal, decimal, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Decimal_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -414,10 +414,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      decimal actualResultFC = Interpolation.LerpValue((decimal)randStart, (decimal)randEnd, t);
-      decimal actualResultDC = Interpolation.LerpValue((decimal)randStart, (decimal)randEnd, (double)t);
-      decimal actualResultFU = Interpolation.LerpUnclamped((decimal)randStart, (decimal)randEnd, t);
-      decimal actualResultDU = Interpolation.LerpUnclamped((decimal)randStart, (decimal)randEnd, (double)t);
+      decimal actualResultFC = Lerp.LerpValue((decimal)randStart, (decimal)randEnd, t);
+      decimal actualResultDC = Lerp.LerpValue((decimal)randStart, (decimal)randEnd, (double)t);
+      decimal actualResultFU = Lerp.LerpUnclamped((decimal)randStart, (decimal)randEnd, t);
+      decimal actualResultDU = Lerp.LerpUnclamped((decimal)randStart, (decimal)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, (float)actualResultFC, 0.0001);
@@ -427,13 +427,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(BigInteger, BigInteger, float)"/>,
-    /// <see cref="Interpolation.LerpValue(BigInteger, BigInteger, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(BigInteger, BigInteger, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(BigInteger, BigInteger, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(BigInteger, BigInteger, float)"/>,
+    /// <see cref="Lerp.LerpValue(BigInteger, BigInteger, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(BigInteger, BigInteger, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(BigInteger, BigInteger, double)"/>.
     /// </summary>
     /// <param name="t">The BigIntegererpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_BigInteger_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -451,10 +451,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      BigInteger actualResultFC = Interpolation.LerpValue((BigInteger)randStart, (BigInteger)randEnd, t);
-      BigInteger actualResultDC = Interpolation.LerpValue((BigInteger)randStart, (BigInteger)randEnd, (double)t);
-      BigInteger actualResultFU = Interpolation.LerpUnclamped((BigInteger)randStart, (BigInteger)randEnd, t);
-      BigInteger actualResultDU = Interpolation.LerpUnclamped((BigInteger)randStart, (BigInteger)randEnd, (double)t);
+      BigInteger actualResultFC = Lerp.LerpValue((BigInteger)randStart, (BigInteger)randEnd, t);
+      BigInteger actualResultDC = Lerp.LerpValue((BigInteger)randStart, (BigInteger)randEnd, (double)t);
+      BigInteger actualResultFU = Lerp.LerpUnclamped((BigInteger)randStart, (BigInteger)randEnd, t);
+      BigInteger actualResultDU = Lerp.LerpUnclamped((BigInteger)randStart, (BigInteger)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual((BigInteger)expectedResultC.X, actualResultFC);
@@ -464,13 +464,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Complex, Complex, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Complex, Complex, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Complex, Complex, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Complex, Complex, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Complex, Complex, float)"/>,
+    /// <see cref="Lerp.LerpValue(Complex, Complex, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Complex, Complex, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Complex, Complex, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Complex_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -487,10 +487,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      Complex actualResultFC = Interpolation.LerpValue((Complex)randStart, (Complex)randEnd, t);
-      Complex actualResultDC = Interpolation.LerpValue((Complex)randStart, (Complex)randEnd, (double)t);
-      Complex actualResultFU = Interpolation.LerpUnclamped((Complex)randStart, (Complex)randEnd, t);
-      Complex actualResultDU = Interpolation.LerpUnclamped((Complex)randStart, (Complex)randEnd, (double)t);
+      Complex actualResultFC = Lerp.LerpValue((Complex)randStart, (Complex)randEnd, t);
+      Complex actualResultDC = Lerp.LerpValue((Complex)randStart, (Complex)randEnd, (double)t);
+      Complex actualResultFU = Lerp.LerpUnclamped((Complex)randStart, (Complex)randEnd, t);
+      Complex actualResultDU = Lerp.LerpUnclamped((Complex)randStart, (Complex)randEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, (float)actualResultFC.Real, 0.0001);
@@ -500,13 +500,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Matrix3x2, Matrix3x2, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Matrix3x2, Matrix3x2, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Matrix3x2, Matrix3x2, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Matrix3x2, Matrix3x2, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Matrix3x2, Matrix3x2, float)"/>,
+    /// <see cref="Lerp.LerpValue(Matrix3x2, Matrix3x2, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Matrix3x2, Matrix3x2, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Matrix3x2, Matrix3x2, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Matrix3x2_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -527,10 +527,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Matrix3x2 expectedResultU = Matrix3x2.Lerp(testStart, testEnd, t);
 
       // Calculate the actual results for each possible function.
-      Matrix3x2 actualResultFC = Interpolation.LerpValue(testStart, testEnd, t);
-      Matrix3x2 actualResultDC = Interpolation.LerpValue(testStart, testEnd, (double)t);
-      Matrix3x2 actualResultFU = Interpolation.LerpUnclamped(testStart, testEnd, t);
-      Matrix3x2 actualResultDU = Interpolation.LerpUnclamped(testStart, testEnd, (double)t);
+      Matrix3x2 actualResultFC = Lerp.LerpValue(testStart, testEnd, t);
+      Matrix3x2 actualResultDC = Lerp.LerpValue(testStart, testEnd, (double)t);
+      Matrix3x2 actualResultFU = Lerp.LerpUnclamped(testStart, testEnd, t);
+      Matrix3x2 actualResultDU = Lerp.LerpUnclamped(testStart, testEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC, actualResultFC);
@@ -540,13 +540,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Matrix3x2, Matrix3x2, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Matrix3x2, Matrix3x2, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Matrix3x2, Matrix3x2, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Matrix3x2, Matrix3x2, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Matrix3x2, Matrix3x2, float)"/>,
+    /// <see cref="Lerp.LerpValue(Matrix3x2, Matrix3x2, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Matrix3x2, Matrix3x2, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Matrix3x2, Matrix3x2, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Matrix4x4_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -577,10 +577,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Matrix4x4 expectedResultU = Matrix4x4.Lerp(testStart, testEnd, t);
 
       // Calculate the actual results for each possible function.
-      Matrix4x4 actualResultFC = Interpolation.LerpValue(testStart, testEnd, t);
-      Matrix4x4 actualResultDC = Interpolation.LerpValue(testStart, testEnd, (double)t);
-      Matrix4x4 actualResultFU = Interpolation.LerpUnclamped(testStart, testEnd, t);
-      Matrix4x4 actualResultDU = Interpolation.LerpUnclamped(testStart, testEnd, (double)t);
+      Matrix4x4 actualResultFC = Lerp.LerpValue(testStart, testEnd, t);
+      Matrix4x4 actualResultDC = Lerp.LerpValue(testStart, testEnd, (double)t);
+      Matrix4x4 actualResultFU = Lerp.LerpUnclamped(testStart, testEnd, t);
+      Matrix4x4 actualResultDU = Lerp.LerpUnclamped(testStart, testEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC, actualResultFC);
@@ -590,13 +590,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Plane, Plane, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Plane, Plane, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Plane, Plane, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Plane, Plane, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Plane, Plane, float)"/>,
+    /// <see cref="Lerp.LerpValue(Plane, Plane, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Plane, Plane, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Plane, Plane, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Plane_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -616,10 +616,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Plane planeEnd = new Plane(randEnd, randEnd, randEnd, randEnd);
 
       // Calculate the actual results for each possible function.
-      Plane actualResultFC = Interpolation.LerpValue(planeStart, planeEnd, t);
-      Plane actualResultDC = Interpolation.LerpValue(planeStart, planeEnd, (double)t);
-      Plane actualResultFU = Interpolation.LerpUnclamped(planeStart, planeEnd, t);
-      Plane actualResultDU = Interpolation.LerpUnclamped(planeStart, planeEnd, (double)t);
+      Plane actualResultFC = Lerp.LerpValue(planeStart, planeEnd, t);
+      Plane actualResultDC = Lerp.LerpValue(planeStart, planeEnd, (double)t);
+      Plane actualResultFU = Lerp.LerpUnclamped(planeStart, planeEnd, t);
+      Plane actualResultDU = Lerp.LerpUnclamped(planeStart, planeEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.Normal.X, 0.0001);
@@ -644,13 +644,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Quaternion, Quaternion, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Quaternion, Quaternion, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Quaternion, Quaternion, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Quaternion, Quaternion, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Quaternion, Quaternion, float)"/>,
+    /// <see cref="Lerp.LerpValue(Quaternion, Quaternion, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Quaternion, Quaternion, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Quaternion, Quaternion, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Quaternion_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -667,10 +667,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Quaternion expectedResultU = Quaternion.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      Quaternion actualResultFC = Interpolation.LerpValue(testLerpStart, testLerpEnd, t);
-      Quaternion actualResultDC = Interpolation.LerpValue(testLerpStart, testLerpEnd, (double)t);
-      Quaternion actualResultFU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, t);
-      Quaternion actualResultDU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Quaternion actualResultFC = Lerp.LerpValue(testLerpStart, testLerpEnd, t);
+      Quaternion actualResultDC = Lerp.LerpValue(testLerpStart, testLerpEnd, (double)t);
+      Quaternion actualResultFU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, t);
+      Quaternion actualResultDU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC, Quaternion.Normalize(actualResultFC));
@@ -680,13 +680,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Vector2, Vector2, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Vector2, Vector2, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Vector2, Vector2, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Vector2, Vector2, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Vector2, Vector2, float)"/>,
+    /// <see cref="Lerp.LerpValue(Vector2, Vector2, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Vector2, Vector2, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Vector2, Vector2, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Vector2_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -703,10 +703,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector2 expectedResultU = Vector2.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      Vector2 actualResultFC = Interpolation.LerpValue(testLerpStart, testLerpEnd, t);
-      Vector2 actualResultDC = Interpolation.LerpValue(testLerpStart, testLerpEnd, (double)t);
-      Vector2 actualResultFU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, t);
-      Vector2 actualResultDU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Vector2 actualResultFC = Lerp.LerpValue(testLerpStart, testLerpEnd, t);
+      Vector2 actualResultDC = Lerp.LerpValue(testLerpStart, testLerpEnd, (double)t);
+      Vector2 actualResultFU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, t);
+      Vector2 actualResultDU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.X, 0.0001);
@@ -716,13 +716,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Vector3, Vector3, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Vector3, Vector3, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Vector3, Vector3, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Vector3, Vector3, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Vector3, Vector3, float)"/>,
+    /// <see cref="Lerp.LerpValue(Vector3, Vector3, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Vector3, Vector3, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Vector3, Vector3, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Vector3_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -739,10 +739,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      Vector3 actualResultFC = Interpolation.LerpValue(testLerpStart, testLerpEnd, t);
-      Vector3 actualResultDC = Interpolation.LerpValue(testLerpStart, testLerpEnd, (double)t);
-      Vector3 actualResultFU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, t);
-      Vector3 actualResultDU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Vector3 actualResultFC = Lerp.LerpValue(testLerpStart, testLerpEnd, t);
+      Vector3 actualResultDC = Lerp.LerpValue(testLerpStart, testLerpEnd, (double)t);
+      Vector3 actualResultFU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, t);
+      Vector3 actualResultDU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.X, 0.0001);
@@ -752,13 +752,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.LerpValue(Vector4, Vector4, float)"/>,
-    /// <see cref="Interpolation.LerpValue(Vector4, Vector4, double)"/>,
-    /// <see cref="Interpolation.LerpUnclamped(Vector4, Vector4, float)"/>, and
-    /// <see cref="Interpolation.LerpUnclamped(Vector4, Vector4, double)"/>.
+    /// A test for <see cref="Lerp.LerpValue(Vector4, Vector4, float)"/>,
+    /// <see cref="Lerp.LerpValue(Vector4, Vector4, double)"/>,
+    /// <see cref="Lerp.LerpUnclamped(Vector4, Vector4, float)"/>, and
+    /// <see cref="Lerp.LerpUnclamped(Vector4, Vector4, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Lerp_Vector4_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -775,10 +775,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector4 expectedResultU = Vector4.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      Vector4 actualResultFC = Interpolation.LerpValue(testLerpStart, testLerpEnd, t);
-      Vector4 actualResultDC = Interpolation.LerpValue(testLerpStart, testLerpEnd, (double)t);
-      Vector4 actualResultFU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, t);
-      Vector4 actualResultDU = Interpolation.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Vector4 actualResultFC = Lerp.LerpValue(testLerpStart, testLerpEnd, t);
+      Vector4 actualResultDC = Lerp.LerpValue(testLerpStart, testLerpEnd, (double)t);
+      Vector4 actualResultFU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, t);
+      Vector4 actualResultDU = Lerp.LerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.X, 0.0001);
@@ -788,13 +788,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.NlerpValue(Plane, Plane, float)"/>,
-    /// <see cref="Interpolation.NlerpValue(Plane, Plane, double)"/>,
-    /// <see cref="Interpolation.NlerpUnclamped(Plane, Plane, float)"/>, and
-    /// <see cref="Interpolation.NlerpUnclamped(Plane, Plane, double)"/>.
+    /// A test for <see cref="Lerp.NlerpValue(Plane, Plane, float)"/>,
+    /// <see cref="Lerp.NlerpValue(Plane, Plane, double)"/>,
+    /// <see cref="Lerp.NlerpUnclamped(Plane, Plane, float)"/>, and
+    /// <see cref="Lerp.NlerpUnclamped(Plane, Plane, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Nlerp_Plane_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -814,10 +814,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Plane planeEnd = new Plane(randEnd, randEnd / 2, randEnd / 3, 0);
 
       // Calculate the actual results for each possible function.
-      Plane actualResultFC = Interpolation.NlerpValue(planeStart, planeEnd, t);
-      Plane actualResultDC = Interpolation.NlerpValue(planeStart, planeEnd, (double)t);
-      Plane actualResultFU = Interpolation.NlerpUnclamped(planeStart, planeEnd, t);
-      Plane actualResultDU = Interpolation.NlerpUnclamped(planeStart, planeEnd, (double)t);
+      Plane actualResultFC = Lerp.NlerpValue(planeStart, planeEnd, t);
+      Plane actualResultDC = Lerp.NlerpValue(planeStart, planeEnd, (double)t);
+      Plane actualResultFU = Lerp.NlerpUnclamped(planeStart, planeEnd, t);
+      Plane actualResultDU = Lerp.NlerpUnclamped(planeStart, planeEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.Normal.X, 0.0001);
@@ -837,13 +837,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.NlerpValue(Quaternion, Quaternion, float)"/>,
-    /// <see cref="Interpolation.NlerpValue(Quaternion, Quaternion, double)"/>,
-    /// <see cref="Interpolation.NlerpUnclamped(Quaternion, Quaternion, float)"/>, and
-    /// <see cref="Interpolation.NlerpUnclamped(Quaternion, Quaternion, double)"/>.
+    /// A test for <see cref="Lerp.NlerpValue(Quaternion, Quaternion, float)"/>,
+    /// <see cref="Lerp.NlerpValue(Quaternion, Quaternion, double)"/>,
+    /// <see cref="Lerp.NlerpUnclamped(Quaternion, Quaternion, float)"/>, and
+    /// <see cref="Lerp.NlerpUnclamped(Quaternion, Quaternion, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Nlerp_Quaternion_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -860,10 +860,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Quaternion expectedResultU = Quaternion.Lerp(testLerpStart, testLerpEnd, t);
 
       // Calculate the actual results for each possible function.
-      Quaternion actualResultFC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, t);
-      Quaternion actualResultDC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, (double)t);
-      Quaternion actualResultFU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, t);
-      Quaternion actualResultDU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Quaternion actualResultFC = Lerp.NlerpValue(testLerpStart, testLerpEnd, t);
+      Quaternion actualResultDC = Lerp.NlerpValue(testLerpStart, testLerpEnd, (double)t);
+      Quaternion actualResultFU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, t);
+      Quaternion actualResultDU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(Quaternion.Normalize(expectedResultC).X, actualResultFC.X, 0.0001);
@@ -888,13 +888,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.NlerpValue(Vector2, Vector2, float)"/>,
-    /// <see cref="Interpolation.NlerpValue(Vector2, Vector2, double)"/>,
-    /// <see cref="Interpolation.NlerpUnclamped(Vector2, Vector2, float)"/>, and
-    /// <see cref="Interpolation.NlerpUnclamped(Vector2, Vector2, double)"/>.
+    /// A test for <see cref="Lerp.NlerpValue(Vector2, Vector2, float)"/>,
+    /// <see cref="Lerp.NlerpValue(Vector2, Vector2, double)"/>,
+    /// <see cref="Lerp.NlerpUnclamped(Vector2, Vector2, float)"/>, and
+    /// <see cref="Lerp.NlerpUnclamped(Vector2, Vector2, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Nlerp_Vector2_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -911,10 +911,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector2 expectedResultU = Vector2.Normalize(Vector2.Lerp(testLerpStart, testLerpEnd, t));
 
       // Calculate the actual results for each possible function.
-      Vector2 actualResultFC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, t);
-      Vector2 actualResultDC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, (double)t);
-      Vector2 actualResultFU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, t);
-      Vector2 actualResultDU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Vector2 actualResultFC = Lerp.NlerpValue(testLerpStart, testLerpEnd, t);
+      Vector2 actualResultDC = Lerp.NlerpValue(testLerpStart, testLerpEnd, (double)t);
+      Vector2 actualResultFU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, t);
+      Vector2 actualResultDU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.X, 0.0001);
@@ -924,13 +924,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.NlerpValue(Vector3, Vector3, float)"/>,
-    /// <see cref="Interpolation.NlerpValue(Vector3, Vector3, double)"/>,
-    /// <see cref="Interpolation.NlerpUnclamped(Vector3, Vector3, float)"/>, and
-    /// <see cref="Interpolation.NlerpUnclamped(Vector3, Vector3, double)"/>.
+    /// A test for <see cref="Lerp.NlerpValue(Vector3, Vector3, float)"/>,
+    /// <see cref="Lerp.NlerpValue(Vector3, Vector3, double)"/>,
+    /// <see cref="Lerp.NlerpUnclamped(Vector3, Vector3, float)"/>, and
+    /// <see cref="Lerp.NlerpUnclamped(Vector3, Vector3, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Nlerp_Vector3_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -947,10 +947,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector3 expectedResultU = Vector3.Normalize(Vector3.Lerp(testLerpStart, testLerpEnd, t));
 
       // Calculate the actual results for each possible function.
-      Vector3 actualResultFC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, t);
-      Vector3 actualResultDC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, (double)t);
-      Vector3 actualResultFU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, t);
-      Vector3 actualResultDU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Vector3 actualResultFC = Lerp.NlerpValue(testLerpStart, testLerpEnd, t);
+      Vector3 actualResultDC = Lerp.NlerpValue(testLerpStart, testLerpEnd, (double)t);
+      Vector3 actualResultFU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, t);
+      Vector3 actualResultDU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.X, 0.0001);
@@ -960,13 +960,13 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
     }
 
     /// <summary>
-    /// A test for <see cref="Interpolation.NlerpValue(Vector4, Vector4, float)"/>,
-    /// <see cref="Interpolation.NlerpValue(Vector4, Vector4, double)"/>,
-    /// <see cref="Interpolation.NlerpUnclamped(Vector4, Vector4, float)"/>, and
-    /// <see cref="Interpolation.NlerpUnclamped(Vector4, Vector4, double)"/>.
+    /// A test for <see cref="Lerp.NlerpValue(Vector4, Vector4, float)"/>,
+    /// <see cref="Lerp.NlerpValue(Vector4, Vector4, double)"/>,
+    /// <see cref="Lerp.NlerpUnclamped(Vector4, Vector4, float)"/>, and
+    /// <see cref="Lerp.NlerpUnclamped(Vector4, Vector4, double)"/>.
     /// </summary>
     /// <param name="t">The interpolation between two random values.</param>
-    [Test(TestOf = typeof(Interpolation))]
+    [Test(TestOf = typeof(Lerp))]
     public void Nlerp_Vector4_ReturnsSuccess([Random(-2.0f, 2.0f, 10)] float t)
     {
       // Generate random values.
@@ -983,10 +983,10 @@ namespace CodeParadox.Tenor.Tests.Runtime.EditMode
       Vector4 expectedResultU = Vector4.Normalize(Vector4.Lerp(testLerpStart, testLerpEnd, t));
 
       // Calculate the actual results for each possible function.
-      Vector4 actualResultFC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, t);
-      Vector4 actualResultDC = Interpolation.NlerpValue(testLerpStart, testLerpEnd, (double)t);
-      Vector4 actualResultFU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, t);
-      Vector4 actualResultDU = Interpolation.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
+      Vector4 actualResultFC = Lerp.NlerpValue(testLerpStart, testLerpEnd, t);
+      Vector4 actualResultDC = Lerp.NlerpValue(testLerpStart, testLerpEnd, (double)t);
+      Vector4 actualResultFU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, t);
+      Vector4 actualResultDU = Lerp.NlerpUnclamped(testLerpStart, testLerpEnd, (double)t);
 
       // Assert that everything equals what is expected.
       Assert.AreEqual(expectedResultC.X, actualResultFC.X, 0.0001);
