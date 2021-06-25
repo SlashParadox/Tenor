@@ -748,7 +748,7 @@ namespace CodeParadox.Tenor.Diagnostics
 
 #if !DEBUG
         // In Release builds, Debug-Only Logs cannot run.
-        if (checkLog.DebugBuildOnly)
+        if (checkLog.debugBuildOnly)
           return false;
 #endif
 
@@ -1137,7 +1137,7 @@ namespace CodeParadox.Tenor.Diagnostics
       isProcessingFile = true; // The file is now being processed.
 
       // Append the message, the success of which determines validity.
-      if (!FileIO.AppendFileString(path, message, true, true))
+      if (true)//!FileIO.AppendFileString(path, message, true, true))
         filePath.Invalidate(true);
 
       // The file is no longer being processed.
