@@ -302,6 +302,40 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function to set a value to a member variable. Use this if you do not know if the
+    /// variable is a Field or a Property.
+    /// </summary>
+    /// <typeparam name="T">The type of the variable. If you don't know, use 'object'.</typeparam>
+    /// <param name="obj">The starting object to get the value off from.</param>
+    /// <param name="value">The value to set into the object.</param>
+    /// <param name="path">The series of paths to get to the value.</param>
+    /// <returns>Returns if the value was properly set or not.</returns>
+    public static bool SetMemberValue<T>(object obj, T value, params string[] path)
+    {
+      return SetMemberValue(obj, value, DefaultFlags, path);
+    }
+
+    /// <summary>
+    /// A function to set a value to a member variable. Use this if you do not know if the
+    /// variable is a Field or a Property.
+    /// </summary>
+    /// <typeparam name="T">The type of the variable. If you don't know, use 'object'.</typeparam>
+    /// <param name="obj">The starting object to get the value off from.</param>
+    /// <param name="value">The value to set into the object.</param>
+    /// <param name="flags">The flags used to get the value. Use this to limit or expand what is
+    /// available to access.</param>
+    /// <param name="path">The series of paths to get to the value.</param>
+    /// <returns>Returns if the value was properly set or not.</returns>
+    public static bool SetMemberValue<T>(object obj, T value, BindingFlags flags,
+                                         params string[] path)
+    {
+      if (!SetFieldValue(obj, value, flags, path))
+        return SetPropertyValue(obj, value, flags, path);
+
+      return true;
+    }
+
+    /// <summary>
     /// A function to get a value from a Field after a series of paths.
     /// A Field is a variable without a {get;set;}. The <see cref="DefaultFlags"/> are used.
     /// </summary>
