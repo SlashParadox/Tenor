@@ -17,6 +17,7 @@
 */
 /**************************************************************************************************/
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -112,6 +113,47 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function to get the <see cref="Type"/> of an object's variable value, given a
+    /// <paramref name="path"/>. Uses the <see cref="DefaultFlags"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the variable <see cref="Type"/> from.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="Type"/> of the variable at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static Type GetFieldType(object obj, params string[] path)
+    {
+      return GetFieldType(obj, DefaultFlags, path);
+    }
+
+    /// <summary>
+    /// A function to get the <see cref="Type"/> of an object's variable value, given a
+    /// <paramref name="path"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the variable <see cref="Type"/> from.</param>
+    /// <param name="flags">The <see cref="BindingFlags"/> to determine what is accessible.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="Type"/> of the variable at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static Type GetFieldType(object obj, BindingFlags flags, params string[] path)
+    {
+      FieldInfo info = GetFieldInfo(obj, flags, path);
+      return info?.FieldType;
+    }
+
+    /// <summary>
+    /// A function to get an object's <see cref="FieldInfo"/>, given a <paramref name="path"/>.
+    /// Uses the <see cref="DefaultFlags"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the <see cref="FieldInfo"/> from.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="FieldInfo"/> at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static FieldInfo GetFieldInfo(object obj, params string[] path)
+    {
+      return GetFieldInfo(obj, DefaultFlags, path);
+    }
+
+    /// <summary>
     /// A function to get an object's <see cref="FieldInfo"/>, given a <paramref name="path"/>.
     /// </summary>
     /// <param name="obj">The starting object to get the <see cref="FieldInfo"/> from.</param>
@@ -179,6 +221,47 @@ namespace CodeParadox.Tenor.Tools
       }
 
       return field; // Return the found FieldInfo.
+    }
+
+    /// <summary>
+    /// A function to get the <see cref="Type"/> of an object's variable value, given a
+    /// <paramref name="path"/>. Uses the <see cref="DefaultFlags"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the variable <see cref="Type"/> from.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="Type"/> of the variable at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static Type GetPropertyType(object obj, params string[] path)
+    {
+      return GetPropertyType(obj, DefaultFlags, path);
+    }
+
+    /// <summary>
+    /// A function to get the <see cref="Type"/> of an object's variable value, given a
+    /// <paramref name="path"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the variable <see cref="Type"/> from.</param>
+    /// <param name="flags">The <see cref="BindingFlags"/> to determine what is accessible.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="Type"/> of the variable at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static Type GetPropertyType(object obj, BindingFlags flags, params string[] path)
+    {
+      PropertyInfo info = GetPropertyInfo(obj, flags, path);
+      return info?.PropertyType;
+    }
+
+    /// <summary>
+    /// A function to get an object's <see cref="PropertyInfo"/>, given a <paramref name="path"/>.
+    /// Uses the <see cref="DefaultFlags"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the <see cref="PropertyInfo"/> from.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="PropertyInfo"/> at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static PropertyInfo GetPropertyInfo(object obj, params string[] path)
+    {
+      return GetPropertyInfo(obj, DefaultFlags, path);
     }
 
     /// <summary>
@@ -252,6 +335,38 @@ namespace CodeParadox.Tenor.Tools
     }
 
     /// <summary>
+    /// A function to get the <see cref="Type"/> of an object's variable value, given a
+    /// <paramref name="path"/>. Uses the <see cref="DefaultFlags"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the variable <see cref="Type"/> from.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="Type"/> of the variable at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static Type GetVariableType(object obj, params string[] path)
+    {
+      return GetVariableType(obj, DefaultFlags, path);
+    }
+
+    /// <summary>
+    /// A function to get the <see cref="Type"/> of an object's variable value, given a
+    /// <paramref name="path"/>.
+    /// </summary>
+    /// <param name="obj">The starting object to get the variable <see cref="Type"/> from.</param>
+    /// <param name="flags">The <see cref="BindingFlags"/> to determine what is accessible.</param>
+    /// <param name="path">The array of path pieces to the wanted value.</param>
+    /// <returns>Returns the <see cref="Type"/> of the variable at the end of the paths.
+    /// Returns null in the event of an error.</returns>
+    public static Type GetVariableType(object obj, BindingFlags flags, params string[] path)
+    {
+      FieldInfo fInfo = GetFieldInfo(obj, flags, path); // Get the Field Info.
+      // If the FieldInfo is valid, return its type.
+      if (fInfo != null)
+        return fInfo.FieldType;
+      // Otherwise, try returning the Property type.
+      return GetPropertyInfo(obj, flags, path)?.PropertyType;
+    }
+
+    /// <summary>
     /// A function to get a value from a member variable. Use this if you do not know if the
     /// variable is a Field or a Property. The <see cref="DefaultFlags"/> are used.
     /// </summary>
@@ -260,9 +375,9 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="path">The series of paths to get to the value.</param>
     /// <returns>Returns the value found at the path. If something goes wrong,
     /// it returns <typeparamref name="T"/>'s default value.</returns>
-    public static T GetMemberValue<T>(object obj, params string[] path)
+    public static T GetVariableValue<T>(object obj, params string[] path)
     {
-      return GetMemberValue<T>(obj, DefaultFlags, path); // Get the value of the FieldInfo.
+      return GetVariableValue<T>(obj, DefaultFlags, path); // Get the value of the FieldInfo.
     }
 
     /// <summary>
@@ -276,7 +391,7 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="path">The series of paths to get to the value.</param>
     /// <returns>Returns the value found at the path. If something goes wrong,
     /// it returns <typeparamref name="T"/>'s default value.</returns>
-    public static T GetMemberValue<T>(object obj, BindingFlags flags, params string[] path)
+    public static T GetVariableValue<T>(object obj, BindingFlags flags, params string[] path)
     {
       object current = obj;
       FieldInfo field = GetFieldInfo(ref current, out _, flags, path);
@@ -310,9 +425,9 @@ namespace CodeParadox.Tenor.Tools
     /// <param name="value">The value to set into the object.</param>
     /// <param name="path">The series of paths to get to the value.</param>
     /// <returns>Returns if the value was properly set or not.</returns>
-    public static bool SetMemberValue<T>(object obj, T value, params string[] path)
+    public static bool SetVariableValue<T>(object obj, T value, params string[] path)
     {
-      return SetMemberValue(obj, value, DefaultFlags, path);
+      return SetVariableValue(obj, value, DefaultFlags, path);
     }
 
     /// <summary>
@@ -326,8 +441,8 @@ namespace CodeParadox.Tenor.Tools
     /// available to access.</param>
     /// <param name="path">The series of paths to get to the value.</param>
     /// <returns>Returns if the value was properly set or not.</returns>
-    public static bool SetMemberValue<T>(object obj, T value, BindingFlags flags,
-                                         params string[] path)
+    public static bool SetVariableValue<T>(object obj, T value, BindingFlags flags,
+                                           params string[] path)
     {
       if (!SetFieldValue(obj, value, flags, path))
         return SetPropertyValue(obj, value, flags, path);
