@@ -17,6 +17,8 @@
 /**************************************************************************************************/
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace CodeParadox.Tenor.Tools
@@ -89,6 +91,32 @@ namespace CodeParadox.Tenor.Tools
       {
         return false;
       }
+    }
+
+    /// <summary>
+    /// An extension function for checking if a string contains any items within an
+    /// <see cref="IList"/>.
+    /// </summary>
+    /// <param name="str">The <see cref="string"/> to check.</param>
+    /// <param name="candidates">The messages the <paramref name="str"/> might contain.</param>
+    /// <returns>Returns if the <paramref name="str"/> contains any
+    /// <paramref name="candidates"/>.</returns>
+    public static bool ContainsAny(this string str, IList<string> candidates)
+    {
+      // Make sure the list is valid.
+      if (candidates.IsNotEmptyOrNull())
+      {
+        // Iterate through all candidates.
+        int count = candidates.Count;
+        for (int i = 0; i < count; i++)
+        {
+          // If the string contains a candidate, return true immediately.
+          if (str.Contains(candidates[i]))
+            return true;
+        }
+      }
+
+      return false; // Candidate Not Found.
     }
   }
   /************************************************************************************************/
