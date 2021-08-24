@@ -16,6 +16,8 @@
 */
 /**************************************************************************************************/
 
+using System.Collections.Generic;
+
 namespace CodeParadox.Tenor.Tools
 {
   /************************************************************************************************/
@@ -39,6 +41,33 @@ namespace CodeParadox.Tenor.Tools
     public static double DegreesToRadians(double degrees)
     {
       return degrees * (System.Math.PI / 180.0);
+    }
+
+    /// <summary>
+    /// A function for creating a <see cref="List{T}"/> of the digits within a
+    /// <paramref name="number"/>.
+    /// </summary>
+    /// <param name="number">The number to get the digits of.</param>
+    /// <param name="keepOrder">If true, the digits will be in the same order as the
+    /// <paramref name="number"/>. Otherwise, the digits are reversed.</param>
+    /// <returns>Returns the <see cref="List{T}"/> of digits.</returns>
+    public static List<int> CreateDigitList(int number, bool keepOrder)
+    {
+      List<int> digits = new List<int>(); // The list of digits.
+      
+      // Add each individual digit, backwards. Use a do-while to enforce 0 being added.
+      do
+      {
+        digits.Add(number % 10); // Get the current digit.
+        number /= 10; // Divide evenly to remove the digit.
+      }
+      while (number > 0);
+
+      // If keeping order, reverse into the right order.
+      if (keepOrder)
+        digits.Reverse();
+
+      return digits;
     }
   }
   /************************************************************************************************/

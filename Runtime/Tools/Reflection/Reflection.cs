@@ -680,6 +680,7 @@ namespace CodeParadox.Tenor.Tools
 
       return false; // The value was not set.
     }
+      
   }
   /************************************************************************************************/
 }
