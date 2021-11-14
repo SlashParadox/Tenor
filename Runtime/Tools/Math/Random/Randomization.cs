@@ -22,13 +22,13 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Math;
-using CodeParadox.Tenor.Exceptions;
+using SlashParadox.Tenor.Math;
+using SlashParadox.Tenor.Exceptions;
 using System;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

@@ -22,7 +22,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

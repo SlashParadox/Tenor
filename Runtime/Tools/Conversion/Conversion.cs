@@ -21,7 +21,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

@@ -1,5 +1,5 @@
 {
-  "name": "com.codeparadox.tenor",
+  "name": "com.slashparadox.tenor",
   "version": "0.1.0",
   "displayName": "Tenor For Unity",
   "description": "Tenor is a collection of various tools for C#, extending its functionality\nwith useful additions. This version is built for Unity, including\nUnity-centric editor code.",

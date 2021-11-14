@@ -19,7 +19,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace CodeParadox.Tenor.Data
+namespace SlashParadox.Tenor.Data
 {
   /************************************************************************************************/
   /// <summary>

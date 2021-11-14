@@ -18,7 +18,7 @@
 
 using System.Threading.Tasks;
 
-namespace CodeParadox.Tenor.Threading
+namespace SlashParadox.Tenor.Threading
 {
   /************************************************************************************************/
   /// <summary>

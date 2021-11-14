@@ -19,7 +19,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace CodeParadox.Tenor.Exceptions
+namespace SlashParadox.Tenor.Exceptions
 {
   /************************************************************************************************/
   /// <summary>

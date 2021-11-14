@@ -17,11 +17,11 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Tools;
+using SlashParadox.Tenor.Tools;
 using System;
 using System.Threading;
 
-namespace CodeParadox.Tenor.Threading
+namespace SlashParadox.Tenor.Threading
 {
   /************************************************************************************************/
   /// <summary>

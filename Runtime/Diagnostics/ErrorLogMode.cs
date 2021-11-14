@@ -18,7 +18,7 @@
 
 using System;
 
-namespace CodeParadox.Tenor.Diagnostics
+namespace SlashParadox.Tenor.Diagnostics
 {
   /************************************************************************************************/
   public abstract partial class Log

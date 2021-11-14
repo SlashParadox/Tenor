@@ -19,7 +19,7 @@
 using System;
 using System.Diagnostics;
 
-namespace CodeParadox.Tenor.Diagnostics
+namespace SlashParadox.Tenor.Diagnostics
 {
   /************************************************************************************************/
   /// <summary>

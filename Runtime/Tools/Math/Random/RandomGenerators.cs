@@ -18,7 +18,7 @@
 
 using System.Security.Cryptography;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

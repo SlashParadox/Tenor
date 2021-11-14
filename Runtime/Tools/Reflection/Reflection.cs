@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

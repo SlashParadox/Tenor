@@ -16,7 +16,7 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Tools;
+using SlashParadox.Tenor.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +24,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CodeParadox.Tenor.Files
+namespace SlashParadox.Tenor.Files
 {
   /************************************************************************************************/
   /// <summary>

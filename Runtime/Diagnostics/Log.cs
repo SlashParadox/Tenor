@@ -18,7 +18,7 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Tools;
+using SlashParadox.Tenor.Tools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
 
-namespace CodeParadox.Tenor.Diagnostics
+namespace SlashParadox.Tenor.Diagnostics
 {
   /************************************************************************************************/
   /// <summary>

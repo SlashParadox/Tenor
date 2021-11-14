@@ -23,11 +23,11 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Math;
+using SlashParadox.Tenor.Math;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

@@ -20,8 +20,8 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Files;
-using CodeParadox.Tenor.Threading;
+using SlashParadox.Tenor.Files;
+using SlashParadox.Tenor.Threading;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   /// <summary>

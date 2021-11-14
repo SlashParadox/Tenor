@@ -18,7 +18,7 @@
 
 using System.Collections.Generic;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   public static partial class Maths

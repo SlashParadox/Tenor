@@ -17,11 +17,11 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Math;
+using SlashParadox.Tenor.Math;
 using System;
 using System.Numerics;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   public static partial class Maths

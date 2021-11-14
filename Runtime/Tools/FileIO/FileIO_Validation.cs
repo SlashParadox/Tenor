@@ -20,13 +20,13 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Data;
-using CodeParadox.Tenor.Files;
+using SlashParadox.Tenor.Data;
+using SlashParadox.Tenor.Files;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-namespace CodeParadox.Tenor.Tools
+namespace SlashParadox.Tenor.Tools
 {
   /************************************************************************************************/
   public static partial class FileIO

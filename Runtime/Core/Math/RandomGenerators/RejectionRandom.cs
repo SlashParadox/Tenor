@@ -17,10 +17,10 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Exceptions;
-using CodeParadox.Tenor.Tools;
+using SlashParadox.Tenor.Exceptions;
+using SlashParadox.Tenor.Tools;
 
-namespace CodeParadox.Tenor.Math
+namespace SlashParadox.Tenor.Math
 {
   /************************************************************************************************/
   /// <summary>

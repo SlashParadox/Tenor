@@ -16,11 +16,11 @@
 */
 /**************************************************************************************************/
 
-using CodeParadox.Tenor.Tools;
+using SlashParadox.Tenor.Tools;
 using System;
 using System.IO;
 
-namespace CodeParadox.Tenor.Diagnostics
+namespace SlashParadox.Tenor.Diagnostics
 {
   /************************************************************************************************/
   public abstract partial class Log

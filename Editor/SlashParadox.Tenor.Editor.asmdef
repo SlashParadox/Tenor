@@ -1,0 +1,22 @@
+{
+    "name": "SlashParadox.Tenor.Editor",
+    "rootNamespace": "SlashParadox.Tenor.Editor",
+    "references": [
+        "SlashParadox.Tenor.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "TENOR_INITIALIZE_TASKS_FOR_UNITY"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
